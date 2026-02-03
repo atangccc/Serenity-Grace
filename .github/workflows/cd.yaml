@@ -1,0 +1,16 @@
+name: CD
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  cd:
+    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v3
+    permissions:
+      contents: write
+    with:
+      skip-appstore-release: true
+      node-version: 22
+      pnpm-version: 9

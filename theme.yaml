@@ -6,15 +6,15 @@ spec:
   displayName: Serenity-Grace
   author:
     name: Serenity
-    website: https://github.com/your-username
+    website: https://github.com/atangccc
   description: Serenity 开发的 Halo 博客主题，简约优雅，支持亮色/暗色模式。
   logo: /themes/theme-Serenity/assets/public/logo.webp
-  homepage: https://github.com/your-username/theme-Serenity
-  repo: https://github.com/your-username/theme-Serenity
-  issues: https://github.com/your-username/theme-Serenity/issues
+  homepage: https://github.com/atangccc/Serenity-Grace
+  repo: https://github.com/atangccc/Serenity-Grace
+  issues: https://github.com/atangccc/Serenity-Grace/issues
   license:
     - name: GPL-3.0
-      url: https://github.com/your-username/theme-Serenity/blob/main/LICENSE
+      url: https://github.com/atangccc/Serenity-Grace/blob/main/LICENSE
   settingName: theme-Serenity-setting
   configMapName: theme-Serenity-configmap
   version: 1.1.1

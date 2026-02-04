@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(title = ${post != null and post.spec != null ? post.spec.title : '文章详情'}, content = ~{::content}, head = ~{::head})}" data-fp="0b2cdbcb" data-theme-build="1770188783"><th:block th:fragment="head"><link rel="stylesheet" th:href="@{/assets/css/post-page.css}" /> <script th:src="@{/assets/js/post.js}" defer></script> </th:block><head> <script th:if="${theme.config.seo != null && (theme.config.seo.enableJsonLd == null || theme.config.seo.enableJsonLd)}" type="application/ld+json" th:inline="javascript">
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(title = ${post != null and post.spec != null ? post.spec.title : '文章详情'}, content = ~{::content}, head = ~{::head})}" data-fp="1b7e94fd" data-theme-build="1770190497"><th:block th:fragment="head"><link rel="stylesheet" th:href="@{/assets/css/post-page.css}" /> <script th:src="@{/assets/js/post.js}" defer></script> </th:block><head> <script th:if="${theme.config.seo != null && (theme.config.seo.enableJsonLd == null || theme.config.seo.enableJsonLd)}" type="application/ld+json" th:inline="javascript">
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

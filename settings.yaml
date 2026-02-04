@@ -105,20 +105,11 @@ spec:
           label: 吉祥物来源链接
           value: "https://x.com/Seseren_kr"
           help: 吉祥物素材的来源链接，显示为 Twitter/X 图标，留空则不显示
-        - $formkit: repeater
+        - $formkit: textarea
           name: sayings
           label: 吉祥物语录
-          help: 吉祥物气泡随机显示的话语
-          value:
-            - text: "点击任意处进入哦~"
-            - text: "欢迎来到我的小站~"
-            - text: "今天也要元气满满！"
-            - text: "很高兴见到你~"
-          children:
-            - $formkit: text
-              name: text
-              label: 语录内容
-              validation: required
+          value: "点击任意处进入哦~\n欢迎来到我的小站~\n今天也要元气满满！\n很高兴见到你~"
+          help: 吉祥物气泡随机显示的话语，每行一条
 
     - group: social
       label: 社交链接
@@ -571,6 +562,21 @@ spec:
           label: 显示十年之约
           value: true
           help: 是否在关于页面显示十年之约倒计时组件
+        - $formkit: checkbox
+          name: showMascot
+          label: 显示吉祥物
+          value: true
+          help: 是否在关于页面显示吉祥物（站在卡片上的小人）
+        - $formkit: attachment
+          name: mascotImage
+          label: 吉祥物图片
+          value: ""
+          help: 自定义吉祥物图片，留空使用默认图片，支持 GIF 动图
+        - $formkit: text
+          name: mascotText
+          label: 吉祥物文字
+          value: "嘿，你好啊~"
+          help: 吉祥物旁边显示的文字
         - $formkit: text
           name: foreverBlogStartDate
           label: 建站日期

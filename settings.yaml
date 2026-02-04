@@ -316,6 +316,11 @@ spec:
           label: 版权声明文字
           value: "本文采用 <a href=\"https://creativecommons.org/licenses/by-nc-sa/4.0/\" target=\"_blank\" class=\"copyright-license\">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。"
         - $formkit: checkbox
+          name: showShare
+          label: 显示分享按钮
+          value: true
+          help: 在文章底部显示分享按钮（复制链接、微博、微信、QQ）
+        - $formkit: checkbox
           name: showReward
           label: 显示打赏组件
           value: false

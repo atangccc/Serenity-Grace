@@ -1,0 +1,20 @@
+# CD workflow - 暂时禁用自动打包
+# 等 Halo 应用市场审核通过后，可以启用自动发布到应用市场功能
+# 
+# name: CD
+# 
+# on:
+#   release:
+#     types:
+#       - published
+# 
+# jobs:
+#   cd:
+#     uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v3
+#     permissions:
+#       contents: write
+#     with:
+#       skip-appstore-release: false
+#       app-id: YOUR_APP_ID
+#     secrets:
+#       HALO_PAT: ${{ secrets.HALO_PAT }}

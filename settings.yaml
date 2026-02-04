@@ -79,6 +79,47 @@ spec:
           value: "一个热爱技术、喜欢折腾的开发者。\n专注于前端开发，偶尔写写后端。\n记录生活，分享技术，探索未知。"
           help: 显示在首页的详细介绍，支持多行
 
+    - group: welcome
+      label: 欢迎页设置
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 启用欢迎页
+          value: true
+          help: 首次访问时显示全屏欢迎页，点击任意处进入主页
+        - $formkit: checkbox
+          name: showMascot
+          label: 显示吉祥物
+          value: true
+          help: 在欢迎页右下角显示吉祥物动画（启用欢迎页后可配置）
+        - $formkit: attachment
+          name: mascotDark
+          label: 暗色模式吉祥物
+          help: 上传暗色模式下显示的吉祥物 GIF/图片，留空则使用默认 Babara
+        - $formkit: attachment
+          name: mascotLight
+          label: 亮色模式吉祥物
+          help: 上传亮色模式下显示的吉祥物 GIF/图片，留空则使用默认 Kirara
+        - $formkit: text
+          name: mascotCredit
+          label: 吉祥物来源链接
+          value: "https://x.com/Seseren_kr"
+          help: 吉祥物素材的来源链接，显示为 Twitter/X 图标，留空则不显示
+        - $formkit: repeater
+          name: sayings
+          label: 吉祥物语录
+          help: 吉祥物气泡随机显示的话语
+          value:
+            - text: "点击任意处进入哦~"
+            - text: "欢迎来到我的小站~"
+            - text: "今天也要元气满满！"
+            - text: "很高兴见到你~"
+          children:
+            - $formkit: text
+              name: text
+              label: 语录内容
+              validation: required
+
     - group: social
       label: 社交链接
       formSchema:

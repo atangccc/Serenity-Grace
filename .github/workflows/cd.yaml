@@ -47,7 +47,7 @@ jobs:
       - name: Upload Release Assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} dist/*
+        run: gh release upload ${{ github.event.release.tag_name }} dist/* --clobber
 
   appstore-release:
     name: App Store Release

@@ -418,11 +418,26 @@ spec:
           label: 服务商链接
           value: ""
           help: 点击 Logo 跳转的链接，留空则不可点击
+        - $formkit: checkbox
+          name: showPrivacy
+          label: 显示隐私政策
+          value: true
+          help: 在页脚显示隐私政策链接
         - $formkit: textarea
-          name: about
-          label: 关于文字
-          value: "一个热爱技术的开发者，记录生活，分享技术。"
-          help: 显示在页脚的简短介绍
+          name: privacyContent
+          label: 隐私政策内容
+          value: ""
+          help: 隐私政策的详细内容，支持 Markdown 语法
+        - $formkit: checkbox
+          name: showTerms
+          label: 显示服务条款
+          value: true
+          help: 在页脚显示服务条款链接
+        - $formkit: textarea
+          name: termsContent
+          label: 服务条款内容
+          value: ""
+          help: 服务条款的详细内容，支持 Markdown 语法
 
     - group: sidebar
       label: 侧边栏设置

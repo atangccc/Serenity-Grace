@@ -1,20 +1,73 @@
-# CD workflow - 暂时禁用自动打包
-# 等 Halo 应用市场审核通过后，可以启用自动发布到应用市场功能
-# 
-# name: CD
-# 
-# on:
-#   release:
-#     types:
-#       - published
-# 
-# jobs:
-#   cd:
-#     uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v3
-#     permissions:
-#       contents: write
-#     with:
-#       skip-appstore-release: false
-#       app-id: YOUR_APP_ID
-#     secrets:
-#       HALO_PAT: ${{ secrets.HALO_PAT }}
+name: Theme CD
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  package:
+    name: Package Theme
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create theme package
+        run: |
+          mkdir -p dist
+          zip -r dist/theme-Serenity-${{ github.event.release.tag_name }}.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "dist/*" \
+            -x "*.md" \
+            -x ".gitignore"
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-package
+          path: dist
+
+  github-release:
+    name: GitHub Release
+    runs-on: ubuntu-latest
+    needs: package
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-package
+          path: dist
+      
+      - name: Upload Release Assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.event.release.tag_name }} dist/*
+
+  appstore-release:
+    name: App Store Release
+    runs-on: ubuntu-latest
+    needs: package
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-package
+          path: dist
+      
+      - name: Release to App Store
+        uses: halo-sigs/app-store-release-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          app-id: app-ltmkjavf
+          halo-backend-baseurl: https://www.halo.run
+          release-id: ${{ github.event.release.id }}
+          assets-dir: dist
+          halo-pat: ${{ secrets.HALO_PAT }}

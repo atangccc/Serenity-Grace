@@ -667,6 +667,11 @@ spec:
     - group: projects
       label: 项目展示
       formSchema:
+        - $formkit: text
+          name: githubToken
+          label: GitHub Token (可选)
+          placeholder: ghp_xxxxxxxxxxxx
+          help: 用于拉取私有仓库或提高 API 请求限制，前往 GitHub Settings > Developer settings > Personal access tokens 创建
         - $formkit: repeater
           name: githubRepos
           label: GitHub 项目列表
@@ -679,6 +684,16 @@ spec:
               validation: required
               help: 完整的 GitHub 仓库链接，如 https://github.com/username/repo
               placeholder: "https://github.com/username/repo"
+            - $formkit: select
+              name: ownerType
+              label: 项目归属
+              value: "mine"
+              options:
+                - label: 我的项目
+                  value: mine
+                - label: 收藏项目
+                  value: starred
+              help: 区分是自己开发的项目还是收藏的他人项目
         - $formkit: repeater
           name: customProjects
           label: 自定义项目列表
@@ -697,6 +712,16 @@ spec:
               validation: required
               help: 项目的访问链接
               placeholder: "https://example.com"
+            - $formkit: select
+              name: ownerType
+              label: 项目归属
+              value: "mine"
+              options:
+                - label: 我的项目
+                  value: mine
+                - label: 收藏项目
+                  value: starred
+              help: 区分是自己开发的项目还是收藏的他人项目
             - $formkit: textarea
               name: description
               label: 项目描述

@@ -1,0 +1,787 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: theme-Serenity-setting
+spec:
+  forms:
+    - group: basic
+      label: 基本设置
+      formSchema:
+        - $formkit: text
+          name: title
+          label: 站点标题
+          value: "Serenity's Blog"
+          help: 显示在浏览器标签和页脚
+        - $formkit: attachment
+          name: favicon
+          label: 浏览器图标 (Favicon)
+          help: 显示在浏览器标签上的小图标，建议使用 .ico 或 .png 格式，尺寸 32x32 或 64x64，留空则使用主题默认图标 (ics6.webp)
+        - $formkit: text
+          name: author
+          label: 作者名称
+          value: "Serenity"
+          help: 用于关于页面和文章署名
+        - $formkit: textarea
+          name: description
+          label: 站点描述
+          value: "前端开发者 / 独立开发者 / 博主"
+          help: 显示在首页和关于页面
+        - $formkit: attachment
+          name: logo
+          label: 站点Logo
+          help: 用于关于页面和友链申请，建议尺寸 200x200，留空则使用头像或主题默认图标 (ics6.webp)
+        - $formkit: select
+          name: defaultTheme
+          label: 默认主题模式
+          value: dark
+          options:
+            - label: 暗色模式
+              value: dark
+            - label: 亮色模式
+              value: light
+            - label: 跟随系统
+              value: auto
+          help: 用户首次访问时的默认主题
+        - $formkit: textarea
+          name: customHead
+          label: 自定义 Head 代码
+          help: 在 <head> 标签中插入自定义代码，如统计代码、自定义样式等
+        - $formkit: textarea
+          name: customScript
+          label: 自定义 JavaScript
+          help: 在页面底部插入自定义 JavaScript 代码
+
+    - group: hero
+      label: 首页头部
+      formSchema:
+        - $formkit: attachment
+          name: avatar
+          label: 头像
+          help: 建议使用正方形图片，尺寸 400x400 以上，留空则使用主题默认头像 (ics6.webp)
+        - $formkit: text
+          name: name
+          label: 显示名称
+          value: "Serenity"
+          help: 显示在首页头像下方
+        - $formkit: checkbox
+          name: enableTypewriter
+          label: 启用打字机效果
+          value: true
+          help: 为首页大标题添加打字机动画效果
+        - $formkit: text
+          name: tagline
+          label: 个性标语
+          value: "热爱可抵岁月漫长"
+          help: 显示在名称下方的一句话介绍
+        - $formkit: textarea
+          name: bio
+          label: 个人简介
+          value: "一个热爱技术、喜欢折腾的开发者。\n专注于前端开发，偶尔写写后端。\n记录生活，分享技术，探索未知。"
+          help: 显示在首页的详细介绍，支持多行
+
+    - group: welcome
+      label: 欢迎页设置
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 启用欢迎页
+          value: true
+          help: 首次访问时显示全屏欢迎页，点击任意处进入主页
+        - $formkit: checkbox
+          name: showMascot
+          label: 显示吉祥物
+          value: true
+          help: 在欢迎页右下角显示吉祥物动画（启用欢迎页后可配置）
+        - $formkit: attachment
+          name: mascotDark
+          label: 暗色模式吉祥物
+          help: 上传暗色模式下显示的吉祥物 GIF/图片，留空则使用默认 Babara
+        - $formkit: attachment
+          name: mascotLight
+          label: 亮色模式吉祥物
+          help: 上传亮色模式下显示的吉祥物 GIF/图片，留空则使用默认 Kirara
+        - $formkit: text
+          name: mascotCredit
+          label: 吉祥物来源链接
+          value: "https://x.com/Seseren_kr"
+          help: 吉祥物素材的来源链接，显示为 Twitter/X 图标，留空则不显示
+        - $formkit: textarea
+          name: sayings
+          label: 吉祥物语录
+          value: "点击任意处进入哦~\n欢迎来到我的小站~\n今天也要元气满满！\n很高兴见到你~"
+          help: 吉祥物气泡随机显示的话语，每行一条
+
+    - group: social
+      label: 社交链接
+      formSchema:
+        - $formkit: repeater
+          name: links
+          label: 社交链接列表
+          help: 添加你的社交媒体链接，支持自定义图标和链接
+          value:
+            - name: "GitHub"
+              url: ""
+              icon: "github"
+            - name: "Twitter"
+              url: ""
+              icon: "twitter"
+            - name: "Email"
+              url: ""
+              icon: "email"
+          children:
+            - $formkit: text
+              name: name
+              label: 名称
+              validation: required
+              help: 社交平台名称，如 GitHub、Twitter 等
+            - $formkit: text
+              name: url
+              label: 链接
+              validation: required
+              help: 完整的链接地址，Email 请填写邮箱地址
+            - $formkit: select
+              name: icon
+              label: 图标
+              value: "github"
+              options:
+                - label: GitHub
+                  value: github
+                - label: Twitter / X
+                  value: twitter
+                - label: Email
+                  value: email
+                - label: 微博
+                  value: weibo
+                - label: 哔哩哔哩
+                  value: bilibili
+                - label: 知乎
+                  value: zhihu
+                - label: Telegram
+                  value: telegram
+                - label: Discord
+                  value: discord
+              help: 选择对应的图标
+        - $formkit: checkbox
+          name: enableSponsor
+          label: 启用赞助功能
+          value: false
+          help: 在首页社交图标最右边显示赞助图标
+        - $formkit: attachment
+          name: sponsorQrCode
+          label: 赞助二维码
+          help: 上传赞助二维码图片，鼠标悬停时显示
+        - $formkit: text
+          name: sponsorTitle
+          label: 赞助标题
+          value: "赞赏支持"
+          help: 赞助悬浮层的标题
+        - $formkit: text
+          name: sponsorText
+          label: 赞助说明
+          value: "感谢你的支持 ❤️"
+          help: 赞助悬浮层的说明文字
+
+    - group: compass
+      label: 风向标设置
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 启用风向标
+          value: true
+          help: 是否在首页显示风向标导航区域
+        - $formkit: text
+          name: title
+          label: 标题
+          value: "风向标"
+        - $formkit: text
+          name: subtitle
+          label: 副标题
+          value: "快速导航到你想去的地方"
+        - $formkit: checkbox
+          name: showArchives
+          label: 显示归档链接
+          value: true
+        - $formkit: checkbox
+          name: showTags
+          label: 显示标签链接
+          value: true
+        - $formkit: checkbox
+          name: showCategories
+          label: 显示分类链接
+          value: true
+        - $formkit: checkbox
+          name: showAbout
+          label: 显示关于我链接
+          value: true
+        - $formkit: checkbox
+          name: showMoments
+          label: 显示碎碎念链接
+          value: true
+        - $formkit: checkbox
+          name: showLinks
+          label: 显示朋友们链接
+          value: true
+        - $formkit: checkbox
+          name: showGuestbook
+          label: 显示留言板链接
+          value: true
+        - $formkit: checkbox
+          name: showProjects
+          label: 显示项目集链接
+          value: true
+        - $formkit: checkbox
+          name: showPhotos
+          label: 显示图库链接
+          value: true
+        - $formkit: checkbox
+          name: showFriendsCircle
+          label: 显示朋友圈链接
+          value: true
+
+    - group: home
+      label: 首页内容
+      formSchema:
+        - $formkit: checkbox
+          name: showHeroBackground
+          label: 显示首页背景壁纸
+          value: true
+          help: 在首页第一屏显示背景壁纸，滚动时逐渐模糊消失。提示：为避免影响观感，建议背景壁纸和装饰图片只启用其一
+        - $formkit: attachment
+          name: heroBackground
+          label: 背景壁纸图片/视频
+          help: 上传首页背景壁纸（支持图片或 MP4/WebM 视频），留空则使用默认图片
+        - $formkit: checkbox
+          name: showThemeDecor
+          label: 显示主题装饰图片
+          value: false
+          help: 在首页头部显示主题切换的装饰图片。提示：为避免影响观感，建议背景壁纸和装饰图片只启用其一
+        - $formkit: attachment
+          name: customDecorLight
+          label: 自定义亮色装饰图片
+          help: 上传自定义的亮色模式装饰图片，留空则使用默认图片
+        - $formkit: attachment
+          name: customDecorDark
+          label: 自定义暗色装饰图片
+          help: 上传自定义的暗色模式装饰图片，留空则使用默认图片
+        - $formkit: checkbox
+          name: showWeatherClock
+          label: 显示天气时钟
+          value: false
+          help: 在首页头像下方显示时间、城市、天气、温度信息
+        - $formkit: text
+          name: seniverseKey
+          label: 心知天气 API Key
+          placeholder: 请输入心知天气 API Key
+          help: 前往 https://www.seniverse.com 注册获取，免费版即可，自动根据访客 IP 定位
+        - $formkit: checkbox
+          name: showRecentPosts
+          label: 显示近期笔记
+          value: false
+          help: 在首页显示最新文章列表
+        - $formkit: checkbox
+          name: showActivity
+          label: 显示站点动态
+          value: false
+          help: 在首页显示最新文章、碎碎念等动态流
+        - $formkit: checkbox
+          name: showMemoCards
+          label: 显示随想碎片
+          value: false
+          help: 在首页显示随想碎片卡片轮播
+        - $formkit: checkbox
+          name: showLifeMoments
+          label: 显示生活回想
+          value: false
+          help: 在首页显示生活回想（碎碎念图片展示）
+
+    - group: post
+      label: 文章页面
+      formSchema:
+        - $formkit: repeater
+          name: sidebarOrder
+          label: 侧边栏组件顺序
+          help: 拖动调整侧边栏组件的显示顺序
+          value:
+            - component: "toc"
+              enabled: true
+            - component: "author"
+              enabled: true
+            - component: "related"
+              enabled: true
+            - component: "tags"
+              enabled: true
+          children:
+            - $formkit: select
+              name: component
+              label: 组件类型
+              value: "toc"
+              options:
+                - label: 文章目录
+                  value: toc
+                - label: 作者信息
+                  value: author
+                - label: 相关文章
+                  value: related
+                - label: 热门标签
+                  value: tags
+              help: 选择侧边栏组件类型
+            - $formkit: checkbox
+              name: enabled
+              label: 启用
+              value: true
+              help: 是否显示该组件
+        - $formkit: number
+          name: relatedCount
+          label: 相关文章数量
+          value: 3
+          min: 2
+          max: 6
+          step: 1
+          help: 相关文章组件显示的文章数量
+        - $formkit: checkbox
+          name: showCopyright
+          label: 显示版权信息
+          value: true
+          help: 在文章底部显示版权声明
+        - $formkit: textarea
+          name: copyrightText
+          label: 版权声明文字
+          value: "本文采用 <a href=\"https://creativecommons.org/licenses/by-nc-sa/4.0/\" target=\"_blank\" class=\"copyright-license\">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。"
+        - $formkit: checkbox
+          name: showShare
+          label: 显示分享按钮
+          value: true
+          help: 在文章底部显示分享按钮（复制链接、微博、微信、QQ）
+        - $formkit: checkbox
+          name: showReward
+          label: 显示打赏组件
+          value: false
+          help: 在文章底部显示打赏组件
+        - $formkit: attachment
+          name: rewardQrCode
+          label: 打赏二维码
+          help: 上传打赏二维码图片
+        - $formkit: text
+          name: rewardTitle
+          label: 打赏标题
+          value: "赞赏支持"
+          help: 打赏组件的标题
+        - $formkit: textarea
+          name: rewardText
+          label: 打赏说明
+          value: "如果觉得文章对你有帮助，可以请作者喝杯咖啡 ☕"
+          help: 打赏组件的说明文字
+
+    - group: footer
+      label: 页脚设置
+      formSchema:
+        - $formkit: text
+          name: icp
+          label: ICP 备案号
+          value: ""
+          help: 网站备案号，留空则不显示
+        - $formkit: text
+          name: policeRecord
+          label: 公安备案号
+          value: ""
+          help: 公安备案号，留空则不显示
+        - $formkit: text
+          name: startYear
+          label: 建站年份
+          value: "2024"
+          help: 用于显示版权年份范围
+        - $formkit: checkbox
+          name: showRss
+          label: 显示 RSS 订阅
+          value: true
+        - $formkit: checkbox
+          name: showPoweredBy
+          label: 显示 Powered by
+          value: true
+          help: 是否显示"由 Halo 驱动"
+        - $formkit: checkbox
+          name: showProvider
+          label: 显示服务商标识
+          value: false
+          help: 在页脚显示"本站由 [Logo] 提供支持"
+        - $formkit: attachment
+          name: providerLogo
+          label: 服务商 Logo
+          help: 上传服务商的 Logo 图片
+        - $formkit: text
+          name: providerName
+          label: 服务商名称
+          value: ""
+          help: 服务商名称，用于 alt 属性
+        - $formkit: text
+          name: providerUrl
+          label: 服务商链接
+          value: ""
+          help: 点击 Logo 跳转的链接，留空则不可点击
+        - $formkit: checkbox
+          name: showPrivacy
+          label: 显示隐私政策
+          value: true
+          help: 在页脚显示隐私政策链接
+        - $formkit: textarea
+          name: privacyContent
+          label: 隐私政策内容
+          value: ""
+          help: 隐私政策的详细内容，支持 Markdown 语法
+        - $formkit: checkbox
+          name: showTerms
+          label: 显示服务条款
+          value: true
+          help: 在页脚显示服务条款链接
+        - $formkit: textarea
+          name: termsContent
+          label: 服务条款内容
+          value: ""
+          help: 服务条款的详细内容，支持 Markdown 语法
+
+    - group: sidebar
+      label: 侧边栏设置
+      formSchema:
+        - $formkit: checkbox
+          name: showFortune
+          label: 显示一言
+          value: true
+          help: 是否显示一言模块
+        - $formkit: text
+          name: hitokotoApi
+          label: 一言 API 地址
+          value: "https://v1.hitokoto.cn/?c=a&c=b&c=c&c=d&c=i&c=k"
+          help: 一言 API 地址，留空则使用默认地址。默认文字为"热爱可抵岁月漫长"
+        - $formkit: checkbox
+          name: showTagCloud
+          label: 显示标签云
+          value: true
+          help: 是否显示标签云模块
+        - $formkit: checkbox
+          name: showHotPosts
+          label: 显示热门文章
+          value: true
+        - $formkit: number
+          name: hotPostsCount
+          label: 热门文章数量
+          value: 5
+          min: 3
+          max: 10
+          step: 1
+        - $formkit: checkbox
+          name: showRecentComments
+          label: 显示最新评论
+          value: true
+        - $formkit: number
+          name: recentCommentsCount
+          label: 最新评论数量
+          value: 5
+          min: 3
+          max: 10
+          step: 1
+
+    - group: about
+      label: 关于页面
+      formSchema:
+        - $formkit: repeater
+          name: tagsLeft
+          label: 左侧标签
+          help: 显示在头像左侧的标签，最多3个
+          value:
+            - text: "热爱开源"
+            - text: "设计爱好者"
+            - text: "终身学习"
+          children:
+            - $formkit: text
+              name: text
+              label: 标签文字
+              validation: required
+        - $formkit: repeater
+          name: tagsRight
+          label: 右侧标签
+          help: 显示在头像右侧的标签，最多3个
+          value:
+            - text: "前端开发"
+            - text: "独立开发者"
+            - text: "折腾爱好者"
+          children:
+            - $formkit: text
+              name: text
+              label: 标签文字
+              validation: required
+        - $formkit: repeater
+          name: skills
+          label: 技能列表
+          help: 在关于页面显示的技能，最多8个
+          value:
+            - name: "JavaScript"
+              level: 90
+              icon: "js"
+            - name: "TypeScript"
+              level: 85
+              icon: "ts"
+            - name: "React"
+              level: 88
+              icon: "react"
+            - name: "Vue"
+              level: 82
+              icon: "vue"
+            - name: "Node.js"
+              level: 75
+              icon: "node"
+            - name: "CSS / Sass"
+              level: 92
+              icon: "css"
+          children:
+            - $formkit: text
+              name: name
+              label: 技能名称
+            - $formkit: number
+              name: level
+              label: 熟练度
+              min: 0
+              max: 100
+              step: 5
+            - $formkit: select
+              name: icon
+              label: 图标
+              options:
+                - label: JavaScript
+                  value: js
+                - label: TypeScript
+                  value: ts
+                - label: React
+                  value: react
+                - label: Vue
+                  value: vue
+                - label: Node.js
+                  value: node
+                - label: CSS
+                  value: css
+                - label: HTML
+                  value: html
+                - label: Python
+                  value: python
+        - $formkit: textarea
+          name: aboutSite
+          label: 关于本站
+          value: "嗨，欢迎来到我的小站。这里是我记录技术探索、分享生活感悟的地方。\n\n作为一名前端开发者，我热衷于探索新技术，追求简洁优雅的代码。工作之余，我喜欢折腾各种有趣的项目，也会在这里分享一些心得。"
+          help: 显示在关于页面的"关于本站"部分
+        - $formkit: textarea
+          name: siteHistory
+          label: 建站历程
+          value: "始建于 2024 年，纯个人兴趣建站，记录技术与生活。\n\n最初使用 Hexo 搭建，后迁移至 Halo，体验更现代化的博客系统。\n\n记录生活中的点滴，分享技术探索的心得，收藏有趣的发现，顺便当做备忘录。\n\n经历了多次改版、换主题、折腾服务器，一直靠热爱支撑，毕竟它承载着成长和回忆。"
+          help: 显示在关于页面的"建站历程"部分
+        - $formkit: checkbox
+          name: showForeverBlog
+          label: 显示十年之约
+          value: true
+          help: 是否在关于页面显示十年之约倒计时组件
+        - $formkit: checkbox
+          name: showMascot
+          label: 显示吉祥物
+          value: true
+          help: 是否在关于页面显示吉祥物（站在卡片上的小人）
+        - $formkit: attachment
+          name: mascotImage
+          label: 吉祥物图片
+          value: ""
+          help: 自定义吉祥物图片，留空使用默认图片，支持 GIF 动图
+        - $formkit: text
+          name: mascotText
+          label: 吉祥物文字
+          value: "嘿，你好啊~"
+          help: 吉祥物旁边显示的文字
+        - $formkit: text
+          name: foreverBlogStartDate
+          label: 建站日期
+          value: "2024-01-01"
+          help: 建站日期，格式：YYYY-MM-DD（如：2024-01-01），用于计算十年之约倒计时
+        - $formkit: checkbox
+          name: showAfdian
+          label: 显示爱发电赞助
+          value: false
+          help: 是否在关于页面显示爱发电赞助者组件（需要安装爱发电插件）
+        - $formkit: text
+          name: afdianUrl
+          label: 爱发电链接
+          value: ""
+          help: 你的爱发电主页链接，如 https://afdian.net/a/username，留空则不显示"成为赞助者"按钮
+
+    - group: seo
+      label: SEO 优化
+      formSchema:
+        - $formkit: text
+          name: keywords
+          label: 网站关键词
+          value: "博客,技术,前端,开发"
+          help: 用逗号分隔，用于 SEO
+        - $formkit: checkbox
+          name: enableJsonLd
+          label: 启用 JSON-LD
+          value: true
+          help: 启用结构化数据标记，有利于 SEO
+        - $formkit: text
+          name: baiduSiteVerification
+          label: 百度站点验证
+          value: ""
+          help: 百度站长平台验证代码
+        - $formkit: text
+          name: googleSiteVerification
+          label: Google 站点验证
+          value: ""
+          help: Google Search Console 验证代码
+
+    - group: watermark
+      label: 水印设置
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 启用水印
+          value: true
+          help: 是否在页面各处显示装饰性水印（不影响功能）
+        - $formkit: text
+          name: text
+          label: 水印文字
+          value: "Serenity"
+          help: 自定义水印显示的文字，默认为站点标题
+        - $formkit: select
+          name: source
+          label: 水印来源
+          value: "custom"
+          options:
+            - label: 自定义文字
+              value: custom
+            - label: 使用站点标题
+              value: siteTitle
+          help: 选择水印文字的来源
+        - $formkit: number
+          name: opacity
+          label: 水印透明度
+          value: 0.05
+          min: 0.01
+          max: 0.2
+          step: 0.01
+          help: 水印的透明度，范围 0.01-0.2，默认 0.05（非常淡）
+
+    - group: projects
+      label: 项目展示
+      formSchema:
+        - $formkit: text
+          name: githubToken
+          label: GitHub Token (可选)
+          placeholder: ghp_xxxxxxxxxxxx
+          help: 用于拉取私有仓库或提高 API 请求限制，前往 GitHub Settings > Developer settings > Personal access tokens 创建
+        - $formkit: repeater
+          name: githubRepos
+          label: GitHub 项目列表
+          help: 添加你的 GitHub 项目仓库链接，将自动获取项目信息并展示
+          value: []
+          children:
+            - $formkit: text
+              name: url
+              label: GitHub 仓库链接
+              validation: required
+              help: 完整的 GitHub 仓库链接，如 https://github.com/username/repo
+              placeholder: "https://github.com/username/repo"
+            - $formkit: select
+              name: ownerType
+              label: 项目归属
+              value: "mine"
+              options:
+                - label: 我的项目
+                  value: mine
+                - label: 收藏项目
+                  value: starred
+              help: 区分是自己开发的项目还是收藏的他人项目
+        - $formkit: repeater
+          name: customProjects
+          label: 自定义项目列表
+          help: 手动添加项目信息，不依赖 GitHub API（适用于 GitHub 无法访问或非 GitHub 项目）
+          value: []
+          children:
+            - $formkit: text
+              name: name
+              label: 项目名称
+              validation: required
+              help: 项目的名称
+              placeholder: "我的项目"
+            - $formkit: text
+              name: url
+              label: 项目链接
+              validation: required
+              help: 项目的访问链接
+              placeholder: "https://example.com"
+            - $formkit: select
+              name: ownerType
+              label: 项目归属
+              value: "mine"
+              options:
+                - label: 我的项目
+                  value: mine
+                - label: 收藏项目
+                  value: starred
+              help: 区分是自己开发的项目还是收藏的他人项目
+            - $formkit: textarea
+              name: description
+              label: 项目描述
+              help: 简短描述项目功能
+              placeholder: "这是一个很棒的项目..."
+            - $formkit: attachment
+              name: avatar
+              label: 项目头像
+              help: 上传项目头像图片，建议尺寸 64x64 或更大
+            - $formkit: text
+              name: language
+              label: 主要语言
+              help: 项目使用的主要编程语言
+              placeholder: "JavaScript"
+            - $formkit: number
+              name: stars
+              label: Star 数量
+              value: 0
+              help: 项目的 Star 数量（可选）
+            - $formkit: number
+              name: forks
+              label: Fork 数量
+              value: 0
+              help: 项目的 Fork 数量（可选）
+            - $formkit: text
+              name: topics
+              label: 项目标签
+              help: 多个标签用逗号分隔，如：vue,typescript,ui
+              placeholder: "vue,typescript,ui"
+
+    - group: links
+      label: 友链页面
+      formSchema:
+        - $formkit: text
+          name: ownerName
+          label: 站点名称
+          value: "Serenity's Blog"
+          help: 友链申请区域显示的站点名称，留空则使用基本设置中的站点标题
+        - $formkit: text
+          name: ownerUrl
+          label: 站点链接
+          value: "https://halo.aobp.cn/"
+          help: 友链申请区域显示的站点链接，留空则使用系统站点地址
+        - $formkit: attachment
+          name: ownerAvatar
+          label: 站点头像
+          value: "/upload/%E5%A4%B4%E5%83%8F.png"
+          help: 友链申请区域显示的站点头像，留空则使用基本设置中的站点 Logo
+        - $formkit: textarea
+          name: ownerDescription
+          label: 站点描述
+          value: "前端开发者 / 独立开发者 / 博主"
+          help: 友链申请区域显示的站点描述，留空则使用基本设置中的站点描述
+        - $formkit: checkbox
+          name: showApplyButton
+          label: 显示申请友链按钮
+          value: true
+          help: 是否在友链申请区域显示"申请友链 ›"按钮
+        - $formkit: text
+          name: offlineLabel
+          label: 失联友链标签
+          value: "失联咯~"
+          help: 失效友链卡片右上角显示的标签文字

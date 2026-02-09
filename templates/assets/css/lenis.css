@@ -1,0 +1,9 @@
+/*
+ * Theme: theme-Serenity
+ * Author: Serenity
+ * Build: 2026-02-09 15:08:45
+ * Fingerprint: 1cf6c8c5bde9d8d7
+ * Copyright © 2026 Serenity. All rights reserved.
+ * Unauthorized copying or distribution is prohibited.
+ */
+html.lenis,html.lenis body{height:auto}.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}.lenis [data-lenis-prevent],.lenis [data-lenis-prevent-wheel],.lenis [data-lenis-prevent-touch]{overscroll-behavior:contain}.lenis.lenis-smooth iframe{pointer-events:none}.lenis.lenis-autoToggle{transition-property:overflow;transition-duration:1ms;transition-behavior:allow-discrete}

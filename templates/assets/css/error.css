@@ -1,0 +1,9 @@
+/*
+ * Theme: theme-Serenity
+ * Author: Serenity
+ * Build: 2026-02-09 15:08:45
+ * Fingerprint: 1cf6c8c5bde9d8d7
+ * Copyright © 2026 Serenity. All rights reserved.
+ * Unauthorized copying or distribution is prohibited.
+ */
+.error-page{min-height:calc(100vh - 200px);display:flex;align-items:center;justify-content:center;padding:80px 20px}.error-content{text-align:center;max-width:500px}.error-code-gradient{font-size:clamp(100px,20vw,160px);font-weight:900;line-height:1;background:linear-gradient(135deg,var(--color-accent) 0%,var(--color-accent-secondary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;letter-spacing:-0.03em}.error-title{font-size:clamp(24px,4vw,32px);font-weight:700;color:var(--color-text);margin-bottom:16px;line-height:1.4;letter-spacing:-0.01em}.error-description{font-size:16px;color:var(--color-text-secondary);margin-bottom:40px;line-height:1.8}.error-actions{display:flex;gap:16px;justify-content:center}.error-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 28px;border-radius:var(--radius-lg);font-size:15px;font-weight:500;text-decoration:none;transition:all var(--duration-normal) var(--ease-out);cursor:pointer;border:2px solid var(--color-border);background:transparent;color:var(--color-text)}.error-btn:hover{transform:translateY(-2px);border-color:var(--color-accent);color:var(--color-accent);background:var(--color-bg-soft)}@media (max-width:640px){.error-page{padding:60px 20px}.error-actions{flex-direction:column;width:100%}.error-btn{width:100%}}

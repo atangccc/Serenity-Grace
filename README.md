@@ -20,9 +20,9 @@ Serenity-Grace 是一款专为 Halo 2.x 设计的现代化博客主题，追求�
 
 ![预览4](screenshots/4.png)
 
-![预览5](screenshots/5.png)
+![预览5](screenshots/5.webp)
 
-![预览6](screenshots/6.png)
+![预览6](screenshots/6.webp)
 
 ## 特性
 

@@ -758,22 +758,25 @@ spec:
         - $formkit: text
           name: ownerName
           label: 站点名称
-          value: "Serenity's Blog"
+          value: ""
+          placeholder: "例如：My Blog"
           help: 友链申请区域显示的站点名称，留空则使用基本设置中的站点标题
         - $formkit: text
           name: ownerUrl
           label: 站点链接
-          value: "https://halo.aobp.cn/"
+          value: ""
+          placeholder: "例如：https://example.com"
           help: 友链申请区域显示的站点链接，留空则使用系统站点地址
         - $formkit: attachment
           name: ownerAvatar
           label: 站点头像
-          value: "/upload/%E5%A4%B4%E5%83%8F.png"
+          value: ""
           help: 友链申请区域显示的站点头像，留空则使用基本设置中的站点 Logo
         - $formkit: textarea
           name: ownerDescription
           label: 站点描述
-          value: "前端开发者 / 独立开发者 / 博主"
+          value: ""
+          placeholder: "例如：一个技术博客"
           help: 友链申请区域显示的站点描述，留空则使用基本设置中的站点描述
         - $formkit: checkbox
           name: showApplyButton
@@ -784,4 +787,4 @@ spec:
           name: offlineLabel
           label: 失联友链标签
           value: "失联咯~"
-          help: 失效友链卡片右上角显示的标签文字
+          help: 失效友链卡片右上角显示的标签文字，需要安装「友链自助提交」插件并在插件中配置无效友链分组后才会生效

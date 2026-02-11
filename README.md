@@ -27,16 +27,16 @@
 
 | 暗色模式 | 亮色模式 |
 |:---:|:---:|
-| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/2.png) |
-| ![首页](screenshots/3.png) | ![文章页](screenshots/4.png) |
-| ![标签页](screenshots/5.webp) | ![更多](screenshots/6.webp) |
+| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/3.png) |
+| ![预览](screenshots/2.png) | ![预览](screenshots/4.png) |
+| ![预览](screenshots/5.webp) | ![预览](screenshots/6.webp) |
 
 
 ## 特性
 
 ### 设计
 
-- 暗色 / 亮色双模式，支持跟随系统偏好，主题切换带圆形扩散动画（View Transition API）
+- 暗色 / 亮色双模式，支持跟随系统偏好，主题切换带圆形扩散动画
 - 响应式布局，桌面端、平板、手机全面适配，移动端各页面独立优化
 - Lenis 丝滑滚动，全局惯性缓动，锚点跳转和返回顶部均为平滑滚动
 - AOS 滚动入场动画，元素随滚动渐入视野

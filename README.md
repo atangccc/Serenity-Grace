@@ -1,130 +1,167 @@
-# Serenity-Grace
+<p align="center">
+  <img src="https://raw.githubusercontent.com/atangccc/Serenity-Grace/main/screenshots/1.png" alt="Serenity-Grace" width="800" />
+</p>
 
-简约优雅的 Halo 博客主题，以樱花粉与湖水蓝为主色调，支持亮暗模式自由切换。
+<h1 align="center">Serenity-Grace</h1>
 
-> 简约而不简单，优雅而不失功能
+<p align="center">
+  简约优雅的 Halo 2.x 博客主题，以樱花粉与湖水蓝为主色调，支持亮暗模式自由切换。
+</p>
 
-## 概览
+<p align="center">
+  <a href="https://github.com/atangccc/Serenity-Grace/releases"><img src="https://img.shields.io/github/v/release/atangccc/Serenity-Grace?style=flat-square&color=F596AA" alt="Release" /></a>
+  <a href="https://github.com/atangccc/Serenity-Grace/blob/main/LICENSE"><img src="https://img.shields.io/github/license/atangccc/Serenity-Grace?style=flat-square&color=33A6B8" alt="License" /></a>
+  <a href="https://halo.run"><img src="https://img.shields.io/badge/Halo-2.x-blue?style=flat-square" alt="Halo" /></a>
+</p>
 
-Serenity-Grace 是一款专为 Halo 2.x 设计的现代化博客主题，追求简约优雅的设计风格，同时提供丰富的功能配置。主题支持亮色/暗色模式切换，响应式设计完美适配各种设备，让你专注于内容创作。
+<p align="center">
+  <a href="https://serenity.aobp.cn/">在线演示</a> · 
+  <a href="#安装">安装指南</a> · 
+  <a href="#页面模板">页面一览</a> · 
+  <a href="https://github.com/atangccc/Serenity-Grace/releases">更新日志</a>
+</p>
 
-**演示站点**：[Serenity's Blog](https://serenity.aobp.cn/)
+---
 
 ## 预览
 
-![预览1](screenshots/1.png)
+| 暗色模式 | 亮色模式 |
+|:---:|:---:|
+| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/2.png) |
+| ![首页](screenshots/3.png) | ![文章页](screenshots/4.png) |
+| ![标签页](screenshots/5.webp) | ![更多](screenshots/6.webp) |
 
-![预览2](screenshots/2.png)
-
-![预览3](screenshots/3.png)
-
-![预览4](screenshots/4.png)
-
-![预览5](screenshots/5.webp)
-
-![预览6](screenshots/6.webp)
 
 ## 特性
 
-### 设计特性
-- 响应式设计，完美适配桌面端、平板、手机
-- 亮色/暗色模式切换，支持跟随系统
-- 简约优雅的 UI 设计，注重阅读体验
-- 流畅的动画效果和过渡
-- 首页背景壁纸支持（图片/视频）
-- 打字机效果标题
-- 首次访问欢迎页（可配置吉祥物、语录）
-- 文章阅读进度条（页面顶部实时显示）
+### 设计
 
-### 内容展示
-- 首页个人信息展示（头像、简介、社交链接）
-- 风向标快速导航
-- 近期笔记列表
-- 站点动态流
-- 随想碎片卡片轮播（Swiper 驱动）
-- 生活回想（Swiper 触摸滑动）
-- 天气时钟组件（集成心知天气 API）
+- 暗色 / 亮色双模式，支持跟随系统偏好，主题切换带圆形扩散动画（View Transition API）
+- 响应式布局，桌面端、平板、手机全面适配，移动端各页面独立优化
+- Lenis 丝滑滚动，全局惯性缓动，锚点跳转和返回顶部均为平滑滚动
+- AOS 滚动入场动画，元素随滚动渐入视野
+- 首次访问全屏欢迎页，可配置吉祥物形象和自定义语录
+- 页面切换过渡动画，跳转时带淡入淡出效果
 
-### 丰富的页面模板
-- 首页 - 个人信息 + 文章列表
-- 文章页 - 目录导航 + 相关文章 + 阅读进度条
-- 归档页 - 时间线展示，支持置顶文章
-- 分类/标签页 - 卡片式展示
-- 关于页 - 技能展示 + 十年之约倒计时
-- 碎碎念 - 适配官方瞬间插件
-- 朋友们 - 友链展示 + 友链申请 + 信息一键复制
-- 留言板 - 访客留言
-- 项目集 - GitHub 项目展示
-- 朋友圈 - 订阅友链文章聚合
-- 图库 - 照片瀑布流展示
+### 页面模板
+
+| 模板 | 说明 |
+|------|------|
+| **首页** | Hero 区域（头像、打字机标题、背景壁纸）+ 风向标导航 + 近期笔记 + 站点动态 + 随想碎片轮播 + 生活回想滑块 + 天气时钟 |
+| **文章详情** | 封面 Hero + 浮动目录导航 + 阅读进度条 + 相关文章推荐 + 版权声明 + 分享（微信/微博/QQ/复制链接） |
+| **归档** | 文章卡片列表 + 侧边栏（一言、热门文章、最新评论、标签云）+ 置顶文章标识 + 分页 |
+| **标签** | 数据面板（圆环统计图 + 柱状图）+ 标签胶囊墙，hover 联动高亮，颜色读取后台配置 |
+| **分类** | 卡片网格展示，每个分类显示图标和文章数 |
+| **关于** | 个人信息 + 技能进度条 + 建站历程时间线 + 十年之约倒计时 + 联系方式 |
+| **碎碎念** | 适配官方瞬间插件，时间线布局，支持图片灯箱 |
+| **朋友们** | 友链卡片 + 友链申请（适配友链自助提交插件）+ 信息一键复制 |
+| **留言板** | 弹幕式留言展示 + 评论组件 |
+| **项目集** | GitHub 项目卡片，区分"我的项目"和"收藏项目"，我的项目支持版本详情弹窗（自动拉取 Releases） |
+| **朋友圈** | 订阅友链文章聚合展示 |
+| **图库** | 照片瀑布流 + 内置灯箱 |
+| **登录 / 注册** | 自定义登录注册页面，与主题风格统一 |
 
 ### 后台配置
-- 完善的后台设置面板
-- 社交链接自定义（GitHub、Twitter、Email、微博、B站等）
-- 赞助/打赏功能
-- SEO 优化配置
-- 自定义 Head/Script 代码注入
-- 水印设置
-- 页脚备案号配置
+
+主题提供完善的后台设置面板，所有内容均可在 Halo Console 中配置：
+
+- **基本设置** — 站点标题、作者、描述、Logo、Favicon、默认主题模式、自定义 Head/Script 代码注入
+- **首页头部** — 头像、名称、标语、个人简介、打字机文字、背景壁纸（图片/视频）
+- **欢迎页** — 启用开关、吉祥物图片（暗色/亮色各一张）、自定义语录、来源链接
+- **社交链接** — GitHub、Twitter/X、Email、微博、B站、知乎等，支持自定义图标
+- **风向标** — 首页快速导航区域，可配置图标和链接
+- **天气时钟** — 集成心知天气 API，显示实时天气和时间
+- **侧边栏** — 一言 API、热门文章数量、最新评论数量、标签云开关
+- **文章页面** — 版权信息、分享按钮、侧边栏组件配置
+- **关于页面** — 技能列表、建站历程、十年之约目标日期
+- **项目展示** — GitHub Token 配置、项目归属类型（我的/收藏）
+- **页脚** — 备案号（ICP/公安）、建站年份、RSS 订阅、自定义链接
+- **SEO** — 关键词、JSON-LD 结构化数据、站点验证码
+- **水印** — 全局水印文字配置
+
 
 ### 插件适配
-- 评论组件插件
-- 瞬间插件
-- 链接管理插件
-- 友链自助提交插件
-- 朋友圈插件
-- 爱发电插件
-- 图库管理插件
-- Dicebear头像插件
-- LightGallery 灯箱插件（可选，未安装时使用内置灯箱）
 
-## 依赖插件
+| 插件 | 用途 | 必需 |
+|------|------|:----:|
+| [评论组件](https://www.halo.run/store/apps/app-YXyaD) | 文章评论、留言板评论 | ✅ |
+| [瞬间](https://www.halo.run/store/apps/app-SnwWD) | 碎碎念页面数据源 | ✅ |
+| [链接管理](https://www.halo.run/store/apps/app-hfbQg) | 友链页面数据源 | ✅ |
+| [图库管理](https://halo.run/store/apps/app-BmQJW) | 图库页面数据源 | ✅ |
+| [友链自助提交](https://www.halo.run/store/apps/app-hfbQg) | 友链申请功能 | 推荐 |
+| [朋友圈](https://docs.kunkunyu.com/docs/plugin-friends) | 朋友圈聚合页面 | 推荐 |
+| [爱发电](https://blog.xindu.site/docs/plugin-afdian) | 关于页面赞助展示 | 可选 |
+| [Dicebear 头像](https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar) | 评论随机头像 | 可选 |
+| [LightGallery 灯箱](https://www.halo.run/store/apps) | 文章图片灯箱（未安装时使用内置灯箱） | 可选 |
 
-| 插件 | 说明 | 必需 |
-|------|------|------|
-| [评论组件](https://www.halo.run/store/apps/app-YXyaD) | 评论插件 | 是 |
-| [瞬间](https://www.halo.run/store/apps/app-SnwWD) | 用于碎碎念页面 | 是 |
-| [链接管理](https://www.halo.run/store/apps/app-hfbQg) | 用于友链页面 | 是 |
-| [友链自助提交](https://www.halo.run/store/apps/app-hfbQg) | 用于友链提交页面 | 是 |
-| [朋友圈](https://docs.kunkunyu.com/docs/plugin-friends) | 用于朋友圈聚合页面 | 是 |
-| [爱发电](https://blog.xindu.site/docs/plugin-afdian) | 用于关于页面 | 是 |
-| [图库管理](https://halo.run/store/apps/app-BmQJW) | 用于图库集页面 | 是 |
-| [Dicebear头像](https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar) | 用于评论组件头像 | 是 |
+> 所有插件均可在 [Halo 应用市场](https://www.halo.run/store/apps) 中安装。
 
-> 依赖插件均可在 [Halo 官方应用市场](https://www.halo.run/store/apps) 中直接安装。
+### 技术栈
 
-## 使用方法
+- **模板引擎** — Thymeleaf（Halo 2.x 原生）
+- **平滑滚动** — Lenis v1.3.17（本地部署，MIT）
+- **滑块组件** — Swiper v11（本地部署，MIT）
+- **滚动动画** — AOS（本地部署，MIT）
+- **图表渲染** — 纯 CSS + JS 实现（圆环图、柱状图），无第三方图表库依赖
+- **灯箱系统** — 内置轻量灯箱，兼容 LightGallery 插件
+- **所有依赖均本地化部署，不依赖任何 CDN**
 
-1. 安装 [Halo](https://docs.halo.run/getting-started/install/docker-compose)（需要 2.0.0 或更高版本）
-2. 到 [Release](https://github.com/atangccc/Serenity-Grace/releases) 下载最新版本的主题压缩包
-3. 在 Halo 后台 Console 端的「外观 → 主题」菜单直接上传安装
-4. 启用主题并进入主题设置进行个性化配置
-5. 根据需要安装相应的依赖插件
+---
 
-## 主题设置
+## 安装
 
-主题提供了丰富的设置选项，包括：
+### 方式一：下载安装（推荐）
 
-- **基本设置**：站点标题、作者、描述、Logo、默认主题模式
-- **首页头部**：头像、名称、标语、个人简介、打字机效果
-- **欢迎页设置**：启用开关、吉祥物配置、自定义语录
-- **社交链接**：支持多种社交平台图标和链接
-- **风向标**：快速导航区域配置
-- **首页内容**：背景壁纸、天气时钟、近期笔记等模块开关
-- **文章页面**：侧边栏组件、版权信息、打赏功能
-- **页脚设置**：备案号、建站年份、RSS 订阅
-- **关于页面**：技能列表、建站历程、十年之约
-- **SEO 优化**：关键词、JSON-LD、站点验证
-- **项目展示**：GitHub 项目自动获取或手动添加
+1. 前往 [Releases](https://github.com/atangccc/Serenity-Grace/releases) 下载最新版本的 `.zip` 文件
+2. 在 Halo 后台「外观 → 主题」页面，点击右上角「安装主题」上传 zip 文件
+3. 启用主题，进入「主题设置」进行个性化配置
 
-## 鸣谢
+### 方式二：远程安装
 
-感谢所有优秀的 Halo 主题作者，你们的作品给了我很多灵感。
+在 Halo 后台「外观 → 主题」页面，点击「远程下载」，输入以下地址：
+
+```
+https://github.com/atangccc/Serenity-Grace/releases/latest/download/theme-Serenity.zip
+```
+
+### 环境要求
+
+- Halo >= 2.0.0
+- 安装必需的依赖插件（见上方插件适配表）
+
+---
+
+## 页面配置
+
+安装主题后，需要在 Halo 后台创建自定义页面并选择对应模板：
+
+| 页面 | 模板选择 | 建议别名 |
+|------|----------|----------|
+| 关于我 | `about.html` | `about` |
+| 碎碎念 | `moments.html` | `moments` |
+| 朋友们 | `links.html` | `links` |
+| 留言板 | `guestbook.html` | `guestbook` |
+| 项目集 | `projects.html` | `projects` |
+| 朋友圈 | `friends-circle.html` | `friends-circle` |
+| 图库 | `photos.html` | `photos` |
+
+> 归档（`/archives`）、标签（`/tags`）、分类（`/categories`）为 Halo 内置路由，无需手动创建页面。
+
+1. 在 Halo 后台「页面」中新建页面
+2. 在页面设置中选择对应的「自定义模板」
+3. 设置页面别名（slug）为上表中的访问路径
+4. 发布页面后即可通过对应路径访问
+
+---
+
+## 更新
+
+- 下载新版本 zip 文件，在后台「外观 → 主题」中重新上传即可覆盖安装
+- 主题设置数据不会丢失
+- 详细更新内容请查看 [CHANGELOG](https://github.com/atangccc/Serenity-Grace/blob/main/CHANGELOG.md)
+
+---
 
 ## License
 
 [GPL-3.0](LICENSE) © Serenity
-
-## 赞赏支持
-
-如果觉得主题做得不错，不妨请作者喝杯咖啡~

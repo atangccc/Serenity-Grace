@@ -16,8 +16,8 @@
 
 <p align="center">
   <a href="https://serenity.aobp.cn/">在线演示</a> · 
-  <a href="#安装">安装指南</a> · 
   <a href="#页面模板">页面一览</a> · 
+  <a href="#页面配置">页面配置</a> · 
   <a href="https://github.com/atangccc/Serenity-Grace/releases">更新日志</a>
 </p>
 
@@ -27,16 +27,16 @@
 
 | 暗色模式 | 亮色模式 |
 |:---:|:---:|
-| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/3.png) |
-| ![预览](screenshots/2.png) | ![预览](screenshots/4.png) |
-| ![预览](screenshots/5.webp) | ![预览](screenshots/6.webp) |
+| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/2.png) |
+| ![首页](screenshots/3.png) | ![文章页](screenshots/4.png) |
+| ![标签页](screenshots/5.webp) | ![更多](screenshots/6.webp) |
 
 
 ## 特性
 
 ### 设计
 
-- 暗色 / 亮色双模式，支持跟随系统偏好，主题切换带圆形扩散动画
+- 暗色 / 亮色双模式，支持跟随系统偏好，主题切换带圆形扩散动画（View Transition API）
 - 响应式布局，桌面端、平板、手机全面适配，移动端各页面独立优化
 - Lenis 丝滑滚动，全局惯性缓动，锚点跳转和返回顶部均为平滑滚动
 - AOS 滚动入场动画，元素随滚动渐入视野
@@ -96,39 +96,6 @@
 
 > 所有插件均可在 [Halo 应用市场](https://www.halo.run/store/apps) 中安装。
 
-### 技术栈
-
-- **模板引擎** — Thymeleaf（Halo 2.x 原生）
-- **平滑滚动** — Lenis v1.3.17（本地部署，MIT）
-- **滑块组件** — Swiper v11（本地部署，MIT）
-- **滚动动画** — AOS（本地部署，MIT）
-- **图表渲染** — 纯 CSS + JS 实现（圆环图、柱状图），无第三方图表库依赖
-- **灯箱系统** — 内置轻量灯箱，兼容 LightGallery 插件
-- **所有依赖均本地化部署，不依赖任何 CDN**
-
----
-
-## 安装
-
-### 方式一：下载安装（推荐）
-
-1. 前往 [Releases](https://github.com/atangccc/Serenity-Grace/releases) 下载最新版本的 `.zip` 文件
-2. 在 Halo 后台「外观 → 主题」页面，点击右上角「安装主题」上传 zip 文件
-3. 启用主题，进入「主题设置」进行个性化配置
-
-### 方式二：远程安装
-
-在 Halo 后台「外观 → 主题」页面，点击「远程下载」，输入以下地址：
-
-```
-https://github.com/atangccc/Serenity-Grace/releases/latest/download/theme-Serenity.zip
-```
-
-### 环境要求
-
-- Halo >= 2.0.0
-- 安装必需的依赖插件（见上方插件适配表）
-
 ---
 
 ## 页面配置
@@ -151,14 +118,6 @@ https://github.com/atangccc/Serenity-Grace/releases/latest/download/theme-Sereni
 2. 在页面设置中选择对应的「自定义模板」
 3. 设置页面别名（slug）为上表中的访问路径
 4. 发布页面后即可通过对应路径访问
-
----
-
-## 更新
-
-- 下载新版本 zip 文件，在后台「外观 → 主题」中重新上传即可覆盖安装
-- 主题设置数据不会丢失
-- 详细更新内容请查看 [CHANGELOG](https://github.com/atangccc/Serenity-Grace/blob/main/CHANGELOG.md)
 
 ---
 

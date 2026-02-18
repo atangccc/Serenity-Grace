@@ -141,7 +141,7 @@ spec:
               help: 完整的链接地址，Email 请填写邮箱地址
             - $formkit: select
               name: icon
-              label: 图标
+              label: 内置图标
               value: "github"
               options:
                 - label: GitHub
@@ -160,7 +160,12 @@ spec:
                   value: telegram
                 - label: Discord
                   value: discord
-              help: 选择对应的图标
+              help: 快速选择常见社交图标（当 Iconify 图标为空时使用）
+            - $formkit: text
+              name: iconifyIcon
+              label: Iconify 图标
+              placeholder: "mdi:github"
+              help: "从 Iconify 图标库输入图标名称（如 mdi:github、ri:twitter-x-fill），可在 https://icon-sets.iconify.design 查找。优先级高于内置图标，留空则使用上方内置图标"
         - $formkit: checkbox
           name: enableSponsor
           label: 启用赞助功能
@@ -381,10 +386,20 @@ spec:
           value: ""
           help: 网站备案号，留空则不显示
         - $formkit: text
+          name: icpUrl
+          label: ICP 备案链接
+          value: "https://beian.miit.gov.cn/"
+          help: ICP 备案号的跳转链接，默认为工信部备案查询页面
+        - $formkit: text
           name: policeRecord
           label: 公安备案号
           value: ""
           help: 公安备案号，留空则不显示
+        - $formkit: text
+          name: policeRecordUrl
+          label: 公安备案链接
+          value: "http://www.beian.gov.cn/portal/registerSystemInfo"
+          help: 公安备案号的跳转链接，默认为公安备案查询页面
         - $formkit: text
           name: startYear
           label: 建站年份
@@ -597,6 +612,11 @@ spec:
           label: 建站日期
           value: "2024-01-01"
           help: 建站日期，格式：YYYY-MM-DD（如：2024-01-01），用于计算十年之约倒计时
+        - $formkit: checkbox
+          name: showSteam
+          label: 显示 Steam 游戏
+          value: false
+          help: 是否在关于页面显示 Steam 游戏组件（需要安装 Steam 插件）
         - $formkit: checkbox
           name: showAfdian
           label: 显示爱发电赞助

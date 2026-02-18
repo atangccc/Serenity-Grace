@@ -27,8 +27,8 @@
 
 | 暗色模式 | 亮色模式 |
 |:---:|:---:|
-| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/2.png) |
-| ![首页](screenshots/3.png) | ![文章页](screenshots/4.png) |
+| ![暗色模式](screenshots/1.png) | ![亮色模式](screenshots/3.png) |
+| ![首页](screenshots/2.png) | ![文章页](screenshots/4.png) |
 | ![标签页](screenshots/5.webp) | ![更多](screenshots/6.webp) |
 
 

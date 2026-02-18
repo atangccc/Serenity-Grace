@@ -406,6 +406,17 @@ spec:
           value: "2024"
           help: 用于显示版权年份范围
         - $formkit: checkbox
+          name: showRuntime
+          label: 显示运行时间
+          value: false
+          help: 在页脚显示"本站已运行 XX 天 XX 小时 XX 分钟 XX 秒"实时跳动计时
+        - $formkit: text
+          name: runtimeStartDate
+          label: 建站精确日期
+          value: "2024-01-01"
+          placeholder: "2024-01-01"
+          help: 运行时间的起算日期，格式 YYYY-MM-DD，留空则使用建站年份的1月1日
+        - $formkit: checkbox
           name: showRss
           label: 显示 RSS 订阅
           value: true
@@ -808,3 +819,47 @@ spec:
           label: 失联友链标签
           value: "失联咯~"
           help: 失效友链卡片右上角显示的标签文字，需要安装「友链自助提交」插件并在插件中配置无效友链分组后才会生效
+
+    - group: music
+      label: 音乐播放器
+      formSchema:
+        - $formkit: checkbox
+          name: enabled
+          label: 启用音乐播放器
+          value: false
+          help: 在页面角落显示一个迷你音乐播放器（基于 APlayer + MetingJS）
+        - $formkit: select
+          name: platform
+          label: 音乐平台
+          value: "netease"
+          options:
+            - label: 网易云音乐
+              value: netease
+            - label: QQ 音乐
+              value: tencent
+          help: 选择音乐平台
+        - $formkit: text
+          name: playlistId
+          label: 歌单 ID
+          placeholder: "12345678"
+          help: 歌单 ID，从歌单页面 URL 中获取
+        - $formkit: checkbox
+          name: autoPlay
+          label: 自动播放
+          value: false
+          help: 页面加载后是否自动播放（部分浏览器可能会阻止）
+        - $formkit: select
+          name: position
+          label: 按钮位置
+          value: "left"
+          options:
+            - label: 左下角
+              value: left
+            - label: 右下角
+              value: right
+          help: 播放器按钮在页面中的位置
+        - $formkit: text
+          name: metingApi
+          label: Meting API 地址（可选）
+          placeholder: "https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&r=:r"
+          help: 自定义 Meting API 地址，留空使用默认公共 API。如果默认 API 不稳定可自行部署

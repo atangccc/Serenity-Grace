@@ -538,26 +538,44 @@ spec:
         - $formkit: repeater
           name: skills
           label: 技能列表
-          help: 在关于页面显示的技能，最多8个
+          help: 在关于页面显示的技能，最多8个。图标优先级：自定义图片 > Iconify 图标 > 内置图标
           value:
             - name: "JavaScript"
               level: 90
               icon: "js"
+              customIcon: ""
+              iconifyIcon: ""
+              iconColor: ""
             - name: "TypeScript"
               level: 85
               icon: "ts"
+              customIcon: ""
+              iconifyIcon: ""
+              iconColor: ""
             - name: "React"
               level: 88
               icon: "react"
+              customIcon: ""
+              iconifyIcon: ""
+              iconColor: ""
             - name: "Vue"
               level: 82
               icon: "vue"
+              customIcon: ""
+              iconifyIcon: ""
+              iconColor: ""
             - name: "Node.js"
               level: 75
               icon: "node"
+              customIcon: ""
+              iconifyIcon: ""
+              iconColor: ""
             - name: "CSS / Sass"
               level: 92
               icon: "css"
+              customIcon: ""
+              iconifyIcon: ""
+              iconColor: ""
           children:
             - $formkit: text
               name: name
@@ -568,10 +586,21 @@ spec:
               min: 0
               max: 100
               step: 5
+            - $formkit: attachment
+              name: customIcon
+              label: 自定义图标图片
+              help: 从附件库选择图标图片（优先级最高），建议正方形 PNG/SVG，尺寸 64x64 以上
+            - $formkit: text
+              name: iconifyIcon
+              label: Iconify 图标
+              placeholder: "skill-icons:javascript"
+              help: "从 Iconify 图标库输入图标名称（如 skill-icons:javascript、logos:vue），可在 https://icon-sets.iconify.design 查找。优先级高于内置图标"
             - $formkit: select
               name: icon
-              label: 图标
+              label: 内置图标（兜底）
               options:
+                - label: 无（使用上方自定义图标）
+                  value: none
                 - label: JavaScript
                   value: js
                 - label: TypeScript
@@ -588,6 +617,12 @@ spec:
                   value: html
                 - label: Python
                   value: python
+              help: 当自定义图片和 Iconify 图标都为空时，使用此内置图标
+            - $formkit: text
+              name: iconColor
+              label: 图标背景色
+              placeholder: "#3178c6"
+              help: 自定义图标背景色（CSS 颜色值），留空则使用默认主题色
         - $formkit: textarea
           name: aboutSite
           label: 关于本站

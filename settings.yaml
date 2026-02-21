@@ -78,6 +78,24 @@ spec:
           label: 个人简介
           value: "一个热爱技术、喜欢折腾的开发者。\n专注于前端开发，偶尔写写后端。\n记录生活，分享技术，探索未知。"
           help: 显示在首页的详细介绍，支持多行
+        - $formkit: text
+          name: nameColor
+          label: 显示名称颜色
+          value: ""
+          placeholder: "FF6B6B 或 linear-gradient(135deg, FF6B6B, FB966E)"
+          help: "自定义显示名称的颜色，支持纯色（如 #FF6B6B）或渐变（如 linear-gradient(135deg, #F596AA, #FB966E)）。留空则使用主题默认颜色（随亮色/暗色切换）。设置后颜色固定，不随主题模式变化"
+        - $formkit: text
+          name: taglineColor
+          label: 个性标语颜色
+          value: ""
+          placeholder: "333 或 linear-gradient(135deg, 667eea, 764ba2)"
+          help: "自定义个性标语的颜色，支持纯色（如 #333333）或渐变（如 linear-gradient(135deg, #667eea, #764ba2)）。留空则使用主题默认颜色。设置后颜色固定，不随主题模式变化"
+        - $formkit: text
+          name: bioColor
+          label: 个人简介颜色
+          value: ""
+          placeholder: "666 或 linear-gradient(135deg, f093fb, f5576c)"
+          help: "自定义个人简介的颜色，支持纯色（如 #666666）或渐变（如 linear-gradient(135deg, #f093fb, #f5576c)）。留空则使用主题默认颜色。设置后颜色固定，不随主题模式变化"
 
     - group: welcome
       label: 欢迎页设置

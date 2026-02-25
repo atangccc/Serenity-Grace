@@ -1,9 +1,9 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-02-23 22:13:40
- * Fingerprint: 76d2445a7ef68c6b
+ * Build: 2026-02-25 11:43:46
+ * Fingerprint: f472fa21d6f1f482
  * Copyright © 2026 Serenity. All rights reserved.
  * Unauthorized copying or distribution is prohibited.
  */
-document.addEventListener('DOMContentLoaded',function(){var filterBtns=document.querySelectorAll('.filter-btn');var photoItems=document.querySelectorAll('.photo-item');filterBtns.forEach(function(btn){btn.addEventListener('click',function(){var group=this.dataset.group;filterBtns.forEach(function(b){b.classList.remove('active');});this.classList.add('active');photoItems.forEach(function(item){if(group==='all'||item.dataset.group===group){item.classList.remove('hidden');}else{item.classList.add('hidden');}});});});SerenityLightbox.create({className:'photo-lightbox',delegateSelector:'.photo-wrapper img'});});
+function initPhotosPage(){'use strict';if(window.__photosCleanup){window.__photosCleanup();}var filterBtns=document.querySelectorAll('.filter-btn');var photoItems=document.querySelectorAll('.photo-item');var masonry=document.getElementById('photos-masonry');if(!masonry)return;function handleFilter(e){var btn=e.target.closest('.filter-btn');if(!btn)return;var group=btn.dataset.group;filterBtns.forEach(function(b){b.classList.remove('active');});btn.classList.add('active');photoItems.forEach(function(item){if(group==='all'||item.dataset.group===group){item.classList.remove('hidden');}else{item.classList.add('hidden');}});}var filterContainer=document.querySelector('.photos-filter');if(filterContainer){filterContainer.addEventListener('click',handleFilter);}var imgs=masonry.querySelectorAll('.photo-wrapper img');imgs.forEach(function(img){var w=img.closest('.photo-wrapper');if(img.complete&&img.naturalHeight>0){if(w)w.classList.add('img-loaded');}else{img.addEventListener('load',function(){if(w)w.classList.add('img-loaded');});img.addEventListener('error',function(){if(w)w.classList.add('img-loaded');});}});if(!window.__photosLightbox&&typeof SerenityLightbox !=='undefined'){window.__photosLightbox=SerenityLightbox.create({className:'photo-lightbox',delegateSelector:'.photo-wrapper img'});}window.__photosCleanup=function(){if(filterContainer){filterContainer.removeEventListener('click',handleFilter);}window.__photosCleanup=null;};}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initPhotosPage);}else{initPhotosPage();}

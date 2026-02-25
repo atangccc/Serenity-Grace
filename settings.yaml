@@ -42,6 +42,66 @@ spec:
             - label: 跟随系统
               value: auto
           help: 用户首次访问时的默认主题
+        - $formkit: text
+          name: iconArchives
+          label: 归档图标
+          value: ""
+          placeholder: "fa-solid fa-box-archive"
+          help: "归档页面的图标 class，留空使用默认图标。图标查找：https://fontawesome.com/search?o=r&m=free"
+        - $formkit: text
+          name: iconTags
+          label: 标签图标
+          value: ""
+          placeholder: "fa-solid fa-tags"
+          help: 标签页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconCategories
+          label: 分类图标
+          value: ""
+          placeholder: "fa-solid fa-folder"
+          help: 分类页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconAbout
+          label: 关于我图标
+          value: ""
+          placeholder: "fa-solid fa-user"
+          help: 关于我页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconMoments
+          label: 碎碎念图标
+          value: ""
+          placeholder: "fa-solid fa-book"
+          help: 碎碎念页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconLinks
+          label: 朋友们图标
+          value: ""
+          placeholder: "fa-solid fa-link"
+          help: 朋友们页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconGuestbook
+          label: 留言板图标
+          value: ""
+          placeholder: "fa-solid fa-comment"
+          help: 留言板页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconProjects
+          label: 项目集图标
+          value: ""
+          placeholder: "fa-brands fa-github"
+          help: 项目集页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconPhotos
+          label: 图库图标
+          value: ""
+          placeholder: "fa-solid fa-images"
+          help: 图库页面的图标 class，留空使用默认图标
+        - $formkit: text
+          name: iconFriendsCircle
+          label: 朋友圈图标
+          value: ""
+          placeholder: "fa-solid fa-camera"
+          help: 朋友圈页面的图标 class，留空使用默认图标
         - $formkit: textarea
           name: customHead
           label: 自定义 Head 代码
@@ -361,6 +421,11 @@ spec:
           max: 6
           step: 1
           help: 相关文章组件显示的文章数量
+        - $formkit: checkbox
+          name: showScrollbar
+          label: 显示页面滚动条
+          value: false
+          help: 在文章详情页右侧显示一个跟随主题色的细滚动条，默认隐藏
         - $formkit: checkbox
           name: showCopyright
           label: 显示版权信息

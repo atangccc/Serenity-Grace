@@ -42,66 +42,90 @@ spec:
             - label: 跟随系统
               value: auto
           help: 用户首次访问时的默认主题
-        - $formkit: text
-          name: iconArchives
-          label: 归档图标
-          value: ""
-          placeholder: "fa-solid fa-box-archive"
-          help: "归档页面的图标 class，留空使用默认图标。图标查找：https://fontawesome.com/search?o=r&m=free"
-        - $formkit: text
-          name: iconTags
-          label: 标签图标
-          value: ""
-          placeholder: "fa-solid fa-tags"
-          help: 标签页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconCategories
-          label: 分类图标
-          value: ""
-          placeholder: "fa-solid fa-folder"
-          help: 分类页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconAbout
-          label: 关于我图标
-          value: ""
-          placeholder: "fa-solid fa-user"
-          help: 关于我页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconMoments
-          label: 碎碎念图标
-          value: ""
-          placeholder: "fa-solid fa-book"
-          help: 碎碎念页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconLinks
-          label: 朋友们图标
-          value: ""
-          placeholder: "fa-solid fa-link"
-          help: 朋友们页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconGuestbook
-          label: 留言板图标
-          value: ""
-          placeholder: "fa-solid fa-comment"
-          help: 留言板页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconProjects
-          label: 项目集图标
-          value: ""
-          placeholder: "fa-brands fa-github"
-          help: 项目集页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconPhotos
-          label: 图库图标
-          value: ""
-          placeholder: "fa-solid fa-images"
-          help: 图库页面的图标 class，留空使用默认图标
-        - $formkit: text
-          name: iconFriendsCircle
-          label: 朋友圈图标
-          value: ""
-          placeholder: "fa-solid fa-camera"
-          help: 朋友圈页面的图标 class，留空使用默认图标
+        - $formkit: group
+          label: 导航图标配置
+          children:
+            - $formkit: text
+              name: iconArchives
+              label: 归档图标
+              value: "fa-solid fa-box-archive"
+              placeholder: "fa-solid fa-box-archive"
+              help: 归档页面图标，图标查找：https://fontawesome.com/search?o=r&m=free
+            - $formkit: text
+              name: iconTags
+              label: 标签图标
+              value: "fa-solid fa-tags"
+              placeholder: "fa-solid fa-tags"
+              help: 标签页面图标
+            - $formkit: text
+              name: iconCategories
+              label: 分类图标
+              value: "fa-solid fa-folder"
+              placeholder: "fa-solid fa-folder"
+              help: 分类页面图标
+            - $formkit: text
+              name: iconAbout
+              label: 关于我图标
+              value: "fa-solid fa-user"
+              placeholder: "fa-solid fa-user"
+              help: 关于我页面图标
+            - $formkit: text
+              name: iconMoments
+              label: 碎碎念图标
+              value: "fa-solid fa-book"
+              placeholder: "fa-solid fa-book"
+              help: 碎碎念页面图标
+            - $formkit: text
+              name: iconLinks
+              label: 朋友们图标
+              value: "fa-solid fa-link"
+              placeholder: "fa-solid fa-link"
+              help: 朋友们页面图标
+            - $formkit: text
+              name: iconGuestbook
+              label: 留言板图标
+              value: "fa-solid fa-comment"
+              placeholder: "fa-solid fa-comment"
+              help: 留言板页面图标
+            - $formkit: text
+              name: iconProjects
+              label: 项目集图标
+              value: "fa-brands fa-github"
+              placeholder: "fa-brands fa-github"
+              help: 项目集页面图标
+            - $formkit: text
+              name: iconPhotos
+              label: 图库图标
+              value: "fa-solid fa-images"
+              placeholder: "fa-solid fa-images"
+              help: 图库页面图标
+            - $formkit: text
+              name: iconFriendsCircle
+              label: 朋友圈图标
+              value: "fa-solid fa-camera"
+              placeholder: "fa-solid fa-camera"
+              help: 朋友圈页面图标
+        - $formkit: repeater
+          name: categoryIcons
+          label: 分类图标列表
+          help: 为每个分类配置自定义图标和颜色，slug 填写分类 URL 中的路径，如 /categories/kai-fa 中的 kai-fa
+          children:
+            - $formkit: text
+              name: slug
+              label: 分类 Slug
+              validation: required
+              placeholder: "例如：kai-fa"
+              help: 分类 URL 中的路径，如 /categories/kai-fa 中的 kai-fa
+            - $formkit: text
+              name: icon
+              label: 图标类名
+              placeholder: "fa-solid fa-folder"
+              help: Font Awesome 图标，如 fa-solid fa-code
+            - $formkit: text
+              name: color
+              label: 图标颜色
+              placeholder: "#FF6B6B"
+              help: 颜色如 #FF6B6B
         - $formkit: textarea
           name: customHead
           label: 自定义 Head 代码
@@ -156,6 +180,18 @@ spec:
           value: ""
           placeholder: "666 或 linear-gradient(135deg, f093fb, f5576c)"
           help: "自定义个人简介的颜色，支持纯色（如 #666666）或渐变（如 linear-gradient(135deg, #f093fb, #f5576c)）。留空则使用主题默认颜色。设置后颜色固定，不随主题模式变化"
+        - $formkit: text
+          name: avatarGlowColor
+          label: 头像光晕颜色
+          value: ""
+          placeholder: "#FF6B6B"
+          help: "自定义头像浮动光晕的颜色，只支持纯色（如 #FF6B6B）。留空则使用主题强调色"
+        - $formkit: text
+          name: weatherColor
+          label: 天气文字颜色
+          value: ""
+          placeholder: "#FF6B6B 或 linear-gradient(135deg, #FF6B6B, #FB966E)"
+          help: "自定义天气文字颜色。留空或纯色（如 #FF6B6B）为镂空描边效果，渐变（如 linear-gradient(135deg, #FF6B6B, #FB966E)）为渐变填充效果，鼠标悬停均填充"
 
     - group: welcome
       label: 欢迎页设置
@@ -332,7 +368,17 @@ spec:
         - $formkit: attachment
           name: heroBackground
           label: 背景壁纸图片/视频
-          help: 上传首页背景壁纸（支持图片或 MP4/WebM 视频），留空则使用默认图片
+          help: 上传首页背景壁纸（支持图片或 MP4/WebM 视频），留空则使用默认图片或 API
+        - $formkit: text
+          name: heroBackgroundApi
+          label: 桌面端背景 API
+          value: ""
+          help: 背景 API 地址，每行一个图片 URL，支持 API 返回多行 URL，留空则使用上传的图片
+        - $formkit: text
+          name: heroBackgroundApiMobile
+          label: 移动端背景 API
+          value: ""
+          help: 移动端专用 API，留空则使用桌面端 API
         - $formkit: checkbox
           name: showThemeDecor
           label: 显示主题装饰图片
@@ -426,6 +472,29 @@ spec:
           label: 显示页面滚动条
           value: false
           help: 在文章详情页右侧显示一个跟随主题色的细滚动条，默认隐藏
+        - $formkit: checkbox
+          name: enableBackground
+          label: 启用背景壁纸
+          value: false
+          help: 在文章详情页顶部显示随机背景壁纸
+        - $formkit: text
+          name: backgroundApi
+          label: 背景壁纸 API
+          value: "https://api.elaina.cat/random"
+          help: 壁纸 API 地址，每行一个图片 URL，支持 API 返回多行 URL（每行一个）
+        - $formkit: text
+          name: backgroundApiMobile
+          label: 移动端壁纸 API
+          value: "https://api.elaina.cat/random/mobile"
+          help: 移动端专用 API，留空则使用桌面端 API
+        - $formkit: number
+          name: backgroundBlur
+          label: 背景模糊程度
+          value: 3
+          min: 0
+          max: 20
+          step: 1
+          help: 背景图片的模糊程度，数值越大越模糊，0 为不模糊
         - $formkit: checkbox
           name: showCopyright
           label: 显示版权信息

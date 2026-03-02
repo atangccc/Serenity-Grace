@@ -1,2 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"><header class="header"><div class="header-inner"><div class="header-left"><a class="logo" th:href="@{/}"><img class="logo-avatar" th:src="${theme.config.hero.avatar ?: '/themes/theme-Serenity/assets/public/ics6.webp'}" th:alt="${site.title}" /></a><nav class="nav-left" id="nav"><a th:href="@{/}" class="nav-btn" title="首页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></a><th:block th:each="menuItem : ${menuFinder.getPrimary().menuItems}"><th:block th:if="${#lists.isEmpty(menuItem.children)}"><a th:href="@{${menuItem.status.href}}" th:target="${menuItem.spec.target?.value}" class="nav-btn nav-btn-text nav-btn-with-icon" th:title="${menuItem.status.displayName}"><th:block th:replace="~{modules/nav-icon :: icon(href=${menuItem.status.href}, item=${menuItem})}" /><span class="nav-btn-text-label" th:text="${menuItem.status.displayName}">菜单</span></a></th:block><div th:if="${not #lists.isEmpty(menuItem.children)}" class="nav-dropdown"><a th:href="@{${menuItem.status.href}}" th:target="${menuItem.spec.target?.value}" class="nav-btn nav-btn-text nav-btn-with-icon" th:title="${menuItem.status.displayName}"><th:block th:replace="~{modules/nav-icon :: icon(href=${menuItem.status.href}, item=${menuItem})}" /><span class="nav-btn-text-label" th:text="${menuItem.status.displayName}">菜单</span></a><div class="nav-dropdown-menu"><a th:each="childMenu : ${menuItem.children}" th:href="@{${childMenu.status.href}}" th:target="${childMenu.spec.target?.value}" class="dropdown-item"><th:block th:replace="~{modules/nav-icon :: icon(href=${childMenu.status.href}, item=${childMenu})}" /><span th:text="${childMenu.status.displayName}">子菜单</span></a></div></div></th:block></nav></div><div class="header-right"><nav class="nav-right"><a href="/console" class="nav-btn" title="登录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></a></nav><div class="search-box" id="search-box"><svg class="search-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span class="search-box-text">搜索文章...</span><kbd class="search-box-kbd">Ctrl K</kbd></div><button class="nav-btn theme-toggle" id="theme-toggle" aria-label="切换主题"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><button class="header-btn menu-toggle" onclick="toggleMenu()" aria-label="菜单"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button></div></div></header></html>
+<html xmlns:th="https://www.thymeleaf.org">
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <a class="logo" th:href="@{/}">
+        <img class="logo-avatar" 
+             th:src="${theme.config.hero.avatar ?: '/themes/theme-Serenity/assets/public/ics6.webp'}" 
+             th:alt="${site.title}" />
+      </a>
+      
+      <nav class="nav-left" id="nav">
+        <a th:href="@{/}" class="nav-btn" title="首页">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </a>
+        
+        <th:block th:each="menuItem : ${menuFinder.getPrimary().menuItems}">
+          <th:block th:if="${#lists.isEmpty(menuItem.children)}">
+            <a th:href="@{${menuItem.status.href}}" 
+               th:target="${menuItem.spec.target?.value}"
+               class="nav-btn nav-btn-text nav-btn-with-icon" 
+               th:title="${menuItem.status.displayName}">
+              <th:block th:replace="~{modules/nav-icon :: icon(href=${menuItem.status.href}, item=${menuItem})}" />
+              <span class="nav-btn-text-label" th:text="${menuItem.status.displayName}">菜单</span>
+            </a>
+          </th:block>
+          
+          <div th:if="${not #lists.isEmpty(menuItem.children)}" class="nav-dropdown">
+            <a th:href="@{${menuItem.status.href}}" 
+               th:target="${menuItem.spec.target?.value}"
+               class="nav-btn nav-btn-text nav-btn-with-icon" 
+               th:title="${menuItem.status.displayName}">
+              <th:block th:replace="~{modules/nav-icon :: icon(href=${menuItem.status.href}, item=${menuItem})}" />
+              <span class="nav-btn-text-label" th:text="${menuItem.status.displayName}">菜单</span>
+            </a>
+            <div class="nav-dropdown-menu">
+              <a th:each="childMenu : ${menuItem.children}"
+                 th:href="@{${childMenu.status.href}}" 
+                 th:target="${childMenu.spec.target?.value}"
+                 class="dropdown-item">
+                <th:block th:replace="~{modules/nav-icon :: icon(href=${childMenu.status.href}, item=${childMenu})}" />
+                <span th:text="${childMenu.status.displayName}">子菜单</span>
+              </a>
+            </div>
+          </div>
+        </th:block>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <nav class="nav-right">
+        <a href="/console" class="nav-btn" title="登录">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M20 21a8 8 0 1 0-16 0"/>
+          </svg>
+        </a>
+      </nav>
+      
+      <!-- 搜索框 - 自定义搜索 -->
+      <div class="search-box" id="search-box">
+        <svg class="search-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <span class="search-box-text">搜索文章...</span>
+        <kbd class="search-box-kbd">Ctrl K</kbd>
+      </div>
+      
+      <button class="nav-btn theme-toggle" id="theme-toggle" aria-label="切换主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      
+      <button class="header-btn menu-toggle" onclick="toggleMenu()" aria-label="菜单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+</html>

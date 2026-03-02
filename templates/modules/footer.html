@@ -1,1 +1,179 @@
-<th:block xmlns:th="https://www.thymeleaf.org"><footer class="footer"><div class="footer-inner"><div class="footer-content"><div class="footer-left"><div class="footer-copyright"><span class="footer-copyright-icon">©</span><span th:if="${theme.config.footer != null && theme.config.footer.startYear != null && !#strings.isEmpty(theme.config.footer.startYear)}" th:text="${theme.config.footer.startYear + (#temporals.format(#temporals.createNow(), 'yyyy') != theme.config.footer.startYear ? ' - ' + #temporals.format(#temporals.createNow(), 'yyyy') : '')}">2024</span><span th:unless="${theme.config.footer != null && theme.config.footer.startYear != null && !#strings.isEmpty(theme.config.footer.startYear)}" th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span><span th:text="${theme.config.basic.title ?: site.title}">博客</span><span>版权所有</span><th:block th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}"><span class="footer-legal-separator">|</span><a th:if="${theme.config.footer.showPrivacy == true}" href="javascript:void(0)" class="footer-legal-link" onclick="openLegalModal('privacy')">隐私政策</a><span th:if="${theme.config.footer.showPrivacy == true && theme.config.footer.showTerms == true}" class="footer-legal-separator">|</span><a th:if="${theme.config.footer.showTerms == true}" href="javascript:void(0)" class="footer-legal-link" onclick="openLegalModal('terms')">服务条款</a></th:block></div><div class="footer-beian" th:if="${(theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp)) || (theme.config.footer != null && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord))}"><a th:if="${theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp)}" th:href="${theme.config.footer.icpUrl ?: 'https://beian.miit.gov.cn/'}" target="_blank" rel="noopener" class="footer-beian-link"><img th:src="@{/themes/theme-Serenity/assets/public/icpb.webp}" class="footer-beian-icon" alt="ICP备案" /><span>ICP</span><span th:text="${theme.config.footer.icp}">备案号</span></a><span th:if="${theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp) && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord)}" class="footer-beian-separator">|</span><a th:if="${theme.config.footer != null && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord)}" th:href="${theme.config.footer.policeRecordUrl ?: 'http://www.beian.gov.cn/portal/registerSystemInfo'}" target="_blank" rel="noopener" class="footer-beian-link footer-beian-link-plain"><span th:text="${theme.config.footer.policeRecord}">公安备案号</span></a></div></div><div class="footer-right"><div class="footer-links"><a th:if="${theme.config.footer == null || theme.config.footer.showRss == null || theme.config.footer.showRss}" th:href="@{/rss.xml}" class="footer-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg><span>RSS 订阅</span></a><a th:if="${theme.config.footer == null || theme.config.footer.showPoweredBy == null || theme.config.footer.showPoweredBy}" href="https://halo.run" target="_blank" rel="noopener" class="footer-link"><span>由</span><strong>Halo</strong><span>驱动</span></a><th:block th:if="${theme.config.footer != null && theme.config.footer.showProvider && theme.config.footer.providerLogo != null && !#strings.isEmpty(theme.config.footer.providerLogo)}"><a th:if="${theme.config.footer.providerUrl != null && !#strings.isEmpty(theme.config.footer.providerUrl)}" th:href="${theme.config.footer.providerUrl}" target="_blank" rel="noopener" class="footer-link footer-provider"><span>本站由</span><img th:src="${theme.config.footer.providerLogo}" th:alt="${theme.config.footer.providerName ?: '服务商'}" class="footer-provider-logo" /><span>提供支持</span></a><span th:unless="${theme.config.footer.providerUrl != null && !#strings.isEmpty(theme.config.footer.providerUrl)}" class="footer-link footer-provider"><span>本站由</span><img th:src="${theme.config.footer.providerLogo}" th:alt="${theme.config.footer.providerName ?: '服务商'}" class="footer-provider-logo" /><span>提供支持</span></span></th:block></div></div></div><div class="footer-runtime" th:if="${theme.config.footer != null && theme.config.footer.showRuntime == true}" th:attr="data-start=${theme.config.footer.runtimeStartDate ?: (theme.config.footer.startYear ?: '2024') + '-01-01'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>本站已运行 </span><span class="footer-runtime-value" id="footer-runtime-days">0</span><span> 天 </span><span class="footer-runtime-value" id="footer-runtime-hours">0</span><span> 小时 </span><span class="footer-runtime-value" id="footer-runtime-mins">0</span><span> 分钟 </span><span class="footer-runtime-value" id="footer-runtime-secs">0</span><span> 秒</span></div></div></footer> <script>(function(){var el=document.querySelector('.footer-runtime');if(!el)return;var start=new Date(el.getAttribute('data-start')).getTime();if(isNaN(start))return;var d=document.getElementById('footer-runtime-days');var h=document.getElementById('footer-runtime-hours');var m=document.getElementById('footer-runtime-mins');var s=document.getElementById('footer-runtime-secs');function tick(){var diff=Math.floor((Date.now()-start)/ 1000);if(diff<0)diff=0;d.textContent=Math.floor(diff / 86400);h.textContent=Math.floor((diff % 86400)/ 3600);m.textContent=Math.floor((diff % 3600)/ 60);s.textContent=diff % 60;}tick();setInterval(tick,1000);})();</script> <div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()"><div class="legal-modal-content"><button class="legal-modal-close" onclick="closeLegalModal()">&times;</button><div id="legalModalBody" class="legal-modal-body markdown-content" data-lenis-prevent> 内容 </div></div></div><div id="privacyContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyContent)}" th:text="${theme.config.footer.privacyContent}"></div><div id="termsContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.termsContent != null && !#strings.isEmpty(theme.config.footer.termsContent)}" th:text="${theme.config.footer.termsContent}"></div> <script th:src="@{/assets/js/marked.min.js}"></script> <script>function openLegalModal(type){var modal=document.getElementById('legalModal');var body=document.getElementById('legalModalBody');var content='';if(type==='privacy'){var el=document.getElementById('privacyContent');content=el?el.textContent:'暂无隐私政策内容，请在后台设置。';}else if(type==='terms'){var el=document.getElementById('termsContent');content=el?el.textContent:'暂无服务条款内容，请在后台设置。';}if(typeof marked !=='undefined'&&content){body.innerHTML=marked.parse(content);}else{body.innerHTML='<p>'+(content||'内容加载失败')+'</p>';}modal.classList.add('active');document.body.style.overflow='hidden';}function closeLegalModal(){var modal=document.getElementById('legalModal');modal.classList.remove('active');document.body.style.overflow='';}document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLegalModal();});</script> <link th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}" rel="stylesheet" th:href="@{/assets/css/legal-modal.css}" /></th:block>
+<th:block xmlns:th="https://www.thymeleaf.org">
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="footer-copyright">
+          <span class="footer-copyright-icon">©</span>
+          <span th:if="${theme.config.footer != null && theme.config.footer.startYear != null && !#strings.isEmpty(theme.config.footer.startYear)}" 
+                th:text="${theme.config.footer.startYear + (#temporals.format(#temporals.createNow(), 'yyyy') != theme.config.footer.startYear ? ' - ' + #temporals.format(#temporals.createNow(), 'yyyy') : '')}">2024</span>
+          <span th:unless="${theme.config.footer != null && theme.config.footer.startYear != null && !#strings.isEmpty(theme.config.footer.startYear)}" 
+                th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span>
+          <span th:text="${theme.config.basic.title ?: site.title}">博客</span>
+          <span>版权所有</span>
+          <th:block th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}">
+            <span class="footer-legal-separator">|</span>
+            <a th:if="${theme.config.footer.showPrivacy == true}" href="javascript:void(0)" class="footer-legal-link" onclick="openLegalModal('privacy')">隐私政策</a>
+            <span th:if="${theme.config.footer.showPrivacy == true && theme.config.footer.showTerms == true}" class="footer-legal-separator">|</span>
+            <a th:if="${theme.config.footer.showTerms == true}" href="javascript:void(0)" class="footer-legal-link" onclick="openLegalModal('terms')">服务条款</a>
+          </th:block>
+        </div>
+        
+        <div class="footer-beian" th:if="${(theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp)) || (theme.config.footer != null && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord))}">
+          <a th:if="${theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp)}" 
+             th:href="${theme.config.footer.icpUrl ?: 'https://beian.miit.gov.cn/'}" 
+             target="_blank" 
+             rel="noopener"
+             class="footer-beian-link">
+            <img th:src="@{/themes/theme-Serenity/assets/public/icpb.webp}" class="footer-beian-icon" alt="ICP备案" />
+            <span>ICP</span>
+            <span th:text="${theme.config.footer.icp}">备案号</span>
+          </a>
+          
+          <span th:if="${theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp) && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord)}" class="footer-beian-separator">|</span>
+          
+          <a th:if="${theme.config.footer != null && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord)}" 
+             th:href="${theme.config.footer.policeRecordUrl ?: 'http://www.beian.gov.cn/portal/registerSystemInfo'}" 
+             target="_blank" 
+             rel="noopener"
+             class="footer-beian-link footer-beian-link-plain">
+            <span th:text="${theme.config.footer.policeRecord}">公安备案号</span>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-right">
+        <div class="footer-links">
+          <a th:if="${theme.config.footer == null || theme.config.footer.showRss == null || theme.config.footer.showRss}" 
+             th:href="@{/rss.xml}" 
+             class="footer-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M4 11a9 9 0 0 1 9 9"/>
+              <path d="M4 4a16 16 0 0 1 16 16"/>
+              <circle cx="5" cy="19" r="1"/>
+            </svg>
+            <span>RSS 订阅</span>
+          </a>
+          <a th:if="${theme.config.footer == null || theme.config.footer.showPoweredBy == null || theme.config.footer.showPoweredBy}" 
+             href="https://halo.run" 
+             target="_blank" 
+             rel="noopener"
+             class="footer-link">
+            <span>由</span>
+            <strong>Halo</strong>
+            <span>驱动</span>
+          </a>
+          <th:block th:if="${theme.config.footer != null && theme.config.footer.showProvider && theme.config.footer.providerLogo != null && !#strings.isEmpty(theme.config.footer.providerLogo)}">
+            <a th:if="${theme.config.footer.providerUrl != null && !#strings.isEmpty(theme.config.footer.providerUrl)}"
+               th:href="${theme.config.footer.providerUrl}"
+               target="_blank"
+               rel="noopener"
+               class="footer-link footer-provider">
+              <span>本站由</span>
+              <img th:src="${theme.config.footer.providerLogo}" 
+                   th:alt="${theme.config.footer.providerName ?: '服务商'}" 
+                   class="footer-provider-logo" />
+              <span>提供支持</span>
+            </a>
+            <span th:unless="${theme.config.footer.providerUrl != null && !#strings.isEmpty(theme.config.footer.providerUrl)}"
+                  class="footer-link footer-provider">
+              <span>本站由</span>
+              <img th:src="${theme.config.footer.providerLogo}" 
+                   th:alt="${theme.config.footer.providerName ?: '服务商'}" 
+                   class="footer-provider-logo" />
+              <span>提供支持</span>
+            </span>
+          </th:block>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-runtime" 
+         th:if="${theme.config.footer != null && theme.config.footer.showRuntime == true}"
+         th:attr="data-start=${theme.config.footer.runtimeStartDate ?: (theme.config.footer.startYear ?: '2024') + '-01-01'}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span>本站已运行 </span>
+      <span class="footer-runtime-value" id="footer-runtime-days">0</span><span> 天 </span>
+      <span class="footer-runtime-value" id="footer-runtime-hours">0</span><span> 小时 </span>
+      <span class="footer-runtime-value" id="footer-runtime-mins">0</span><span> 分钟 </span>
+      <span class="footer-runtime-value" id="footer-runtime-secs">0</span><span> 秒</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var el = document.querySelector('.footer-runtime');
+  if (!el) return;
+  var start = new Date(el.getAttribute('data-start')).getTime();
+  if (isNaN(start)) return;
+  var d = document.getElementById('footer-runtime-days');
+  var h = document.getElementById('footer-runtime-hours');
+  var m = document.getElementById('footer-runtime-mins');
+  var s = document.getElementById('footer-runtime-secs');
+  function tick() {
+    var diff = Math.floor((Date.now() - start) / 1000);
+    if (diff < 0) diff = 0;
+    d.textContent = Math.floor(diff / 86400);
+    h.textContent = Math.floor((diff % 86400) / 3600);
+    m.textContent = Math.floor((diff % 3600) / 60);
+    s.textContent = diff % 60;
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+<div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()">
+  <div class="legal-modal-content">
+    <button class="legal-modal-close" onclick="closeLegalModal()">&times;</button>
+    <div id="legalModalBody" class="legal-modal-body markdown-content" data-lenis-prevent>
+      内容
+    </div>
+  </div>
+</div>
+
+<div id="privacyContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyContent)}" th:text="${theme.config.footer.privacyContent}"></div>
+
+<div id="termsContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.termsContent != null && !#strings.isEmpty(theme.config.footer.termsContent)}" th:text="${theme.config.footer.termsContent}"></div>
+
+<script th:src="@{/assets/js/marked.min.js}"></script>
+<script>
+function openLegalModal(type) {
+  var modal = document.getElementById('legalModal');
+  var body = document.getElementById('legalModalBody');
+  var content = '';
+  
+  if (type === 'privacy') {
+    var el = document.getElementById('privacyContent');
+    content = el ? el.textContent : '暂无隐私政策内容，请在后台设置。';
+  } else if (type === 'terms') {
+    var el = document.getElementById('termsContent');
+    content = el ? el.textContent : '暂无服务条款内容，请在后台设置。';
+  }
+  
+  if (typeof marked !== 'undefined' && content) {
+    body.innerHTML = marked.parse(content);
+  } else {
+    body.innerHTML = '<p>' + (content || '内容加载失败') + '</p>';
+  }
+  
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLegalModal() {
+  var modal = document.getElementById('legalModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLegalModal();
+});
+</script>
+
+<link th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}" rel="stylesheet" th:href="@{/assets/css/legal-modal.css}" />
+</th:block>

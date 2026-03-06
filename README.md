@@ -31,6 +31,7 @@
 | 站点 | 链接 |
 |------|------|
 | 空白 Blog | [www.guaike.top](https://www.guaike.top/) |
+| Sopify Blog | [www.lunarmc.cn](https://www.lunarmc.cn/) |
 
 > 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可。
 
@@ -99,7 +100,7 @@
 | [瞬间](https://www.halo.run/store/apps/app-SnwWD) | 碎碎念页面数据源 | ✅ |
 | [链接管理](https://www.halo.run/store/apps/app-hfbQg) | 友链页面数据源 | ✅ |
 | [图库管理](https://halo.run/store/apps/app-BmQJW) | 图库页面数据源 | ✅ |
-| [友链自助提交](https://www.halo.run/store/apps/app-hfbQg) | 友链申请功能 | 推荐 |
+| [友链自助提交](https://www.halo.run/store/apps/app-glejqzwk) | 友链申请功能 | 推荐 |
 | [朋友圈](https://docs.kunkunyu.com/docs/plugin-friends) | 朋友圈聚合页面 | 推荐 |
 | [爱发电](https://blog.xindu.site/docs/plugin-afdian) | 关于页面赞助展示 | 可选 |
 | [Dicebear 头像](https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar) | 评论随机头像 | 可选 |

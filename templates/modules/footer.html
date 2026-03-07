@@ -9,7 +9,12 @@
                 th:text="${theme.config.footer.startYear + (#temporals.format(#temporals.createNow(), 'yyyy') != theme.config.footer.startYear ? ' - ' + #temporals.format(#temporals.createNow(), 'yyyy') : '')}">2024</span>
           <span th:unless="${theme.config.footer != null && theme.config.footer.startYear != null && !#strings.isEmpty(theme.config.footer.startYear)}" 
                 th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span>
-          <span th:text="${theme.config.basic.title ?: site.title}">博客</span>
+          <!-- 如果存在站点 URL，则显示为链接；否则仅显示文本 -->
+          <a th:if="${site.url != null}" 
+             th:href="${site.url}" 
+             th:text="${theme.config.basic.title ?: site.title}">博客</a>
+          <span th:unless="${site.url != null}" 
+                th:text="${theme.config.basic.title ?: site.title}">博客</span>
           <span>版权所有</span>
           <th:block th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}">
             <span class="footer-legal-separator">|</span>

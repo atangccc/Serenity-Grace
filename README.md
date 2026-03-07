@@ -32,7 +32,7 @@
 |------|------|
 | 空白 Blog | [www.guaike.top](https://www.guaike.top/) |
 | Sopify Blog | [www.lunarmc.cn](https://www.lunarmc.cn/) |
-
+| Fry酥条の博客 | [blog.fryfries13.cn](https://blog.fryfries13.cn/) |
 > 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可。
 
 ## 预览

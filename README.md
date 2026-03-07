@@ -133,6 +133,11 @@
 
 ---
 
+## 交流群
+欢迎加入 Serenity-Grace 主题交流群：**QQ 群：`1079644597`** 👏
+
+--- 
+
 ## License
 
 [GPL-3.0](LICENSE) © Serenity

@@ -127,14 +127,16 @@
   setInterval(tick, 1000);
 })();
 </script>
-<div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()">
+  
+<!-- 不确定是否为最优修改方法uwu Issue#15 -->
+<!-- <div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()">
   <div class="legal-modal-content">
     <button class="legal-modal-close" onclick="closeLegalModal()">&times;</button>
     <div id="legalModalBody" class="legal-modal-body markdown-content" data-lenis-prevent>
       内容
     </div>
   </div>
-</div>
+</div>  -->
 
 <div id="privacyContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyContent)}" th:text="${theme.config.footer.privacyContent}"></div>
 

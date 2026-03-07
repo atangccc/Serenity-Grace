@@ -1017,7 +1017,7 @@ spec:
           help: 在页面左下角显示一个迷你音乐播放器。注意：为防止发生不必要的冲突，只配置其一即可。
         - $formkit: text
           name: playlistId
-          label: 网易于官方接口（歌单 ID）
+          label: 网易云官方接口（歌单 ID）
           placeholder: "12345678"
           help: 网易云音乐歌单 ID，从歌单页面 URL 中获取。
         - $formkit: text

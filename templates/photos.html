@@ -3,8 +3,13 @@
       th:replace="~{modules/layout :: html(title = ${singlePage != null ? singlePage.spec.title : '图库集'}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/photos.css}" />
-  <script th:src="@{/assets/js/lightbox.js}"></script>
-  <script th:src="@{/assets/js/photos.js}"></script>
+  <script th:src="@{/assets/js/lightbox.js}" defer></script>
+  <script th:src="@{/assets/js/photos.js}" defer></script>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" th:content="${singlePage != null ? singlePage.spec.title : '图库集'}" />
+  <meta property="og:description" th:content="${singlePage != null && singlePage.status.excerpt != null ? singlePage.status.excerpt : (theme.config.basic.description ?: site.subtitle)}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" th:content="${singlePage != null ? singlePage.spec.title : '图库集'}" />
 </th:block>
 <th:block th:fragment="content">
   <main class="main">

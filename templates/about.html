@@ -3,7 +3,7 @@
       th:replace="~{modules/layout :: html(title = ${singlePage.spec.title}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/about.css}" />
-  <link th:if="${theme.config.about != null && theme.config.about['showSteam'] == true}" rel="stylesheet" th:href="@{/assets/css/steam.css}" />
+  <link th:if="${theme.config.about != null && theme.config.about.showSteam}" rel="stylesheet" th:href="@{/assets/css/steam.css}" />
   <meta property="og:type" content="profile" />
   <meta property="og:title" th:content="${(singlePage.spec.title ?: '关于') + ' - ' + (theme.config.basic.title ?: site.title)}" />
   <meta property="og:description" th:content="${theme.config.basic.description ?: site.subtitle}" />
@@ -24,8 +24,8 @@
   }
   </script>
   <script th:src="@{/assets/js/iconify.min.js}" defer></script>
-  <script th:if="${theme.config.about.showForeverBlog}" th:src="@{/assets/js/about.js}" defer></script>
-  <script th:if="${theme.config.about != null && theme.config.about['showSteam'] == true && steamFinder != null}" th:src="@{/assets/js/steam.js}" defer></script>
+  <script th:if="${theme.config.about != null && theme.config.about.showForeverBlog}" th:src="@{/assets/js/about.js}" defer></script>
+  <script th:if="${theme.config.about != null && theme.config.about.showSteam}" th:src="@{/assets/js/steam.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
   <div class="container">
@@ -78,7 +78,7 @@
         关于本站
       </h2>
       <div class="about-content">
-        <div class="about-text" style="white-space: pre-line;" th:text="${theme.config.about.aboutSite}">
+        <div class="about-text" style="white-space: pre-line;" th:text="${theme.config.about != null ? theme.config.about.aboutSite : ''}">
           <p>嗨，欢迎来到我的小站。这里是我记录技术探索、分享生活感悟的地方。</p>
           <p>作为一名前端开发者，我热衷于探索新技术，追求简洁优雅的代码。工作之余，我喜欢折腾各种有趣的项目，也会在这里分享一些心得。</p>
         </div>
@@ -108,7 +108,7 @@
         技能
       </h2>
       <div class="skills-grid">
-        <div class="skill-card" th:each="skill : ${theme.config.about.skills}">
+        <div class="skill-card" th:each="skill : ${theme.config.about != null ? theme.config.about.skills : {}}">
           <!-- 自定义图标图片（优先级最高） -->
           <div th:if="${skill.customIcon != null && !#strings.isEmpty(skill.customIcon)}" class="skill-icon skill-icon-custom" th:style="${skill.iconColor != null && !#strings.isEmpty(skill.iconColor) ? 'background:' + skill.iconColor : ''}">
             <img th:src="${skill.customIcon}" th:alt="${skill.name}" />
@@ -143,7 +143,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         建站历程
       </h2>
-      <div class="about-history" style="white-space: pre-line;" th:text="${theme.config.about.siteHistory}">
+      <div class="about-history" style="white-space: pre-line;" th:text="${theme.config.about != null ? theme.config.about.siteHistory : ''}">
         <p>始建于<span class="highlight">2024年</span>，纯个人兴趣建站，记录技术与生活。</p>
         <p>最初使用 Hexo 搭建，后迁移至 <span class="highlight">Halo</span>，体验更现代化的博客系统。</p>
         <p>记录生活中的点滴，分享技术探索的心得，收藏有趣的发现，顺便当做备忘录。</p>
@@ -153,134 +153,22 @@
       </div>
     </div>
 
-    <!-- Steam 游戏卡片 -->
-    <div th:if="${theme.config.about != null && theme.config.about['showSteam'] == true}" class="about-card glass-card" data-aos="fade-up" data-aos-delay="350">
+    <!-- Steam 个人资料卡片 -->
+    <div th:if="${theme.config.about != null && theme.config.about.showSteam}" class="about-card glass-card" data-aos="fade-up" data-aos-delay="350">
       <div class="card-decoration card-decoration-1"></div>
       <h2 class="about-section-title">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015z"/></svg>
         Steam 游戏
       </h2>
-
-      <!-- 插件未安装提示 -->
-      <th:block th:if="${steamFinder == null}">
-        <div class="steam-error steam-plugin-missing">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="width:48px;height:48px;opacity:0.6;margin-bottom:16px"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015z"/></svg>
-          <p style="font-size:14px;margin-bottom:6px">请先安装并启用 <strong>Steam 信息展示</strong> 插件</p>
-          <p style="font-size:12px;opacity:0.5">前往 Halo 应用市场搜索「Steam 信息展示」</p>
-        </div>
-      </th:block>
-
-      <!-- 插件已安装，正常渲染 -->
-      <th:block th:if="${steamFinder != null}" th:with="profile=${steamFinder.getProfile()}, stats=${steamFinder.getStats()}, badges=${steamFinder.getBadges()}, recentGames=${steamFinder.getRecentGames(3)}">
-        <!-- 数据加载成功 -->
-        <th:block th:if="${profile != null}">
-          <div class="steam-card-header">
-            <img class="steam-avatar" th:src="${profile.summary?.avatarFull}" alt="Steam Avatar" />
-            <div class="steam-user-info">
-              <div class="steam-username">
-                <span th:text="${profile.summary?.personaName}">用户名</span>
-                <span class="steam-status"
-                      th:classappend="${profile.summary?.personaState == 1 ? ' steam-status--online' : (profile.summary?.gameExtraInfo != null ? ' steam-status--ingame' : ' steam-status--offline')}">
-                  <span class="steam-status-dot"></span>
-                  <span th:text="${profile.statusText}">在线</span>
-                </span>
-              </div>
-              <div class="steam-level-badge" th:if="${badges != null}">
-                <span class="steam-level-num" th:text="${badges.playerLevel}">0</span>
-                <span th:text="|${badges.totalBadges} 个徽章|">0 个徽章</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="steam-stats-bar">
-            <div class="steam-stat-item" th:if="${stats != null}">
-              <span class="steam-stat-num" th:text="${stats.totalGames}">0</span>
-              <span class="steam-stat-label">游戏</span>
-            </div>
-            <div class="steam-stat-item" th:if="${stats != null}">
-              <span class="steam-stat-num" th:text="${stats.totalPlaytimeFormatted}">0h</span>
-              <span class="steam-stat-label">总时长</span>
-            </div>
-            <div class="steam-stat-item" th:if="${stats != null}">
-              <span class="steam-stat-num" th:text="${stats.perfectGames != null ? stats.perfectGames : '-'}">-</span>
-              <span class="steam-stat-label">完美通关</span>
-            </div>
-          </div>
-
-          <div th:if="${recentGames != null && !recentGames.isEmpty()}">
-            <div class="steam-recent-title">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              最近在玩
-            </div>
-            <div class="steam-recent-list">
-              <div class="steam-game-item" th:each="game : ${recentGames}">
-                <img class="steam-game-img" th:src="${game.headerImageUrl}" th:alt="${game.name}" loading="lazy" />
-                <div class="steam-game-info">
-                  <div class="steam-game-name" th:text="${game.name}">游戏名</div>
-                  <div class="steam-game-time" th:text="${game.playtime2WeeksFormatted}">0 小时</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button class="steam-more-btn" onclick="openSteamModal()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            查看更多
-          </button>
-        </th:block>
-
-        <!-- 数据加载失败 -->
-        <th:block th:if="${profile == null}">
-          <div class="steam-error">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:48px;height:48px;opacity:0.4;margin-bottom:16px"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015z"/></svg>
-            <p>Steam 数据暂时无法加载，请检查插件是否已正确配置 Steam API Key 和 Steam ID</p>
-          </div>
-        </th:block>
-      </th:block><!-- /steamFinder != null -->
-    </div>
-
-    <!-- Steam 详情对话框 -->
-    <div th:if="${theme.config.about != null && theme.config.about['showSteam'] == true && steamFinder != null}" id="steamModal" class="steam-modal" onclick="if(event.target===this)closeSteamModal()">
-      <div class="steam-modal-content">
-        <button class="steam-modal-close" onclick="closeSteamModal()">&times;</button>
-        <div class="steam-modal-body" data-lenis-prevent>
-          <div class="steam-tabs">
-            <button class="steam-tab active" data-tab="heatmap" onclick="switchTab('heatmap')">🔥 游玩热力图</button>
-            <button class="steam-tab" data-tab="games" onclick="switchTab('games')">🎮 游戏库</button>
-          </div>
-
-          <!-- 热力图面板 -->
-          <div id="steamPanel-heatmap" class="steam-tab-panel active">
-            <div class="steam-heatmap-wrapper">
-              <div class="steam-heatmap-header">
-                <span class="steam-heatmap-title">过去一年的游玩记录</span>
-                <div class="steam-heatmap-legend">
-                  <span>少</span>
-                  <span class="steam-heatmap-legend-block" style="background:rgba(var(--steam-accent-rgb,245,150,170),0.25)"></span>
-                  <span class="steam-heatmap-legend-block" style="background:rgba(var(--steam-accent-rgb,245,150,170),0.5)"></span>
-                  <span class="steam-heatmap-legend-block" style="background:rgba(var(--steam-accent-rgb,245,150,170),0.75)"></span>
-                  <span class="steam-heatmap-legend-block" style="background:var(--color-accent)"></span>
-                  <span>多</span>
-                </div>
-              </div>
-              <div class="steam-heatmap-months" id="steamHeatmapMonths"></div>
-              <div class="steam-heatmap-container">
-                <div class="steam-heatmap" id="steamHeatmapGrid"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 游戏库面板 -->
-          <div id="steamPanel-games" class="steam-tab-panel">
-            <div class="steam-games-grid" id="steamGamesGrid"></div>
-            <button class="steam-load-more" id="steamLoadMore" onclick="loadMoreGames()">加载更多</button>
-          </div>
+      <div id="steamProfileCard" class="steam-profile-card">
+        <div class="steam-loading">
+          <div class="steam-loading-spinner"></div>
+          <span>加载 Steam 资料中...</span>
         </div>
       </div>
-      <div class="steam-heatmap-tooltip" id="steamHeatmapTooltip"></div>
     </div>
 
-    <div th:if="${theme.config.about.showForeverBlog}" class="about-card glass-card forever-blog-card" data-aos="fade-up" data-aos-delay="400">
+    <div th:if="${theme.config.about != null && theme.config.about.showForeverBlog}" class="about-card glass-card forever-blog-card" data-aos="fade-up" data-aos-delay="400">
       <div class="card-decoration card-decoration-1"></div>
       <div class="forever-blog-header">
         <a href="https://www.foreverblog.cn/" target="_blank" rel="noopener noreferrer" class="forever-blog-logo">
@@ -305,7 +193,7 @@
     </div>
 
     <!-- 爱发电赞助者 -->
-    <div th:if="${theme.config.about.showAfdian}" class="about-card glass-card afdian-card" data-aos="fade-up" data-aos-delay="450" th:with="sponsorData = ${afdianFinder != null ? afdianFinder.listAllSponsor() : null}">
+    <div th:if="${theme.config.about != null && theme.config.about.showAfdian}" class="about-card glass-card afdian-card" data-aos="fade-up" data-aos-delay="450" th:with="sponsorData = ${afdianFinder != null ? afdianFinder.listAllSponsor() : null}">
       <div class="card-decoration card-decoration-2"></div>
       <h2 class="about-section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -382,8 +270,8 @@
     </div>
   </div>
 
-  <script th:if="${theme.config.about.showForeverBlog}" th:inline="javascript">
-    window.FOREVER_BLOG_START_DATE = /*[[${theme.config.about.foreverBlogStartDate}]]*/ '2024-01-01';
+  <script th:if="${theme.config.about != null && theme.config.about.showForeverBlog}" th:inline="javascript">
+    window.FOREVER_BLOG_START_DATE = /*[[${theme.config.about.foreverBlogStartDate ?: '2024-01-01'}]]*/ '2024-01-01';
   </script>
 </th:block>
 </html>

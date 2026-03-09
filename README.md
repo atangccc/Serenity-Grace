@@ -31,7 +31,8 @@
 | 站点 | 链接 |
 |------|------|
 | 空白 Blog | [www.guaike.top](https://www.guaike.top/) |
-
+| Sopify Blog | [www.lunarmc.cn](https://www.lunarmc.cn/) |
+| Fry酥条の博客 | [blog.fryfries13.cn](https://blog.fryfries13.cn/) |
 > 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可。
 
 ## 预览
@@ -79,14 +80,14 @@
 - **基本设置** — 站点标题、作者、描述、Logo、Favicon、默认主题模式、自定义 Head/Script 代码注入
 - **首页头部** — 头像、名称、标语、个人简介、打字机文字、背景壁纸（图片/视频）
 - **欢迎页** — 启用开关、吉祥物图片（暗色/亮色各一张）、自定义语录、来源链接
-- **社交链接** — GitHub、Twitter/X、Email、微博、B站、知乎等，支持自定义图标
+- **社交链接** — GitHub、Twitter/X、Email、微博、B站、知乎等，支持自定义图标、RSS 订阅开关、赞助功能
 - **风向标** — 首页快速导航区域，可配置图标和链接
 - **天气时钟** — 集成心知天气 API，显示实时天气和时间
 - **侧边栏** — 一言 API、热门文章数量、最新评论数量、标签云开关
 - **文章页面** — 版权信息、分享按钮、侧边栏组件配置
 - **关于页面** — 技能列表、建站历程、十年之约目标日期
 - **项目展示** — GitHub Token 配置、项目归属类型（我的/收藏）
-- **页脚** — 备案号（ICP/公安）、建站年份、RSS 订阅、自定义链接
+- **页脚** — 备案号（ICP/公安）、建站年份、RSS 订阅开关、隐私政策、服务条款、Powered by 显示开关、服务商信息
 - **SEO** — 关键词、JSON-LD 结构化数据、站点验证码
 - **水印** — 全局水印文字配置
 
@@ -99,7 +100,7 @@
 | [瞬间](https://www.halo.run/store/apps/app-SnwWD) | 碎碎念页面数据源 | ✅ |
 | [链接管理](https://www.halo.run/store/apps/app-hfbQg) | 友链页面数据源 | ✅ |
 | [图库管理](https://halo.run/store/apps/app-BmQJW) | 图库页面数据源 | ✅ |
-| [友链自助提交](https://www.halo.run/store/apps/app-hfbQg) | 友链申请功能 | 推荐 |
+| [友链自助提交](https://www.halo.run/store/apps/app-glejqzwk) | 友链申请功能 | 推荐 |
 | [朋友圈](https://docs.kunkunyu.com/docs/plugin-friends) | 朋友圈聚合页面 | 推荐 |
 | [爱发电](https://blog.xindu.site/docs/plugin-afdian) | 关于页面赞助展示 | 可选 |
 | [Dicebear 头像](https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar) | 评论随机头像 | 可选 |

@@ -3,6 +3,11 @@
       th:replace="~{modules/layout :: html(title = ${singlePage.spec.title}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/post-page.css}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" th:content="${singlePage.spec.title}" />
+  <meta property="og:description" th:content="${singlePage.status.excerpt ?: (theme.config.basic.description ?: site.subtitle)}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" th:content="${singlePage.spec.title}" />
 </th:block>
 <th:block th:fragment="content">
   <article class="post">

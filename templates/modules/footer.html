@@ -9,7 +9,11 @@
                 th:text="${theme.config.footer.startYear + (#temporals.format(#temporals.createNow(), 'yyyy') != theme.config.footer.startYear ? ' - ' + #temporals.format(#temporals.createNow(), 'yyyy') : '')}">2024</span>
           <span th:unless="${theme.config.footer != null && theme.config.footer.startYear != null && !#strings.isEmpty(theme.config.footer.startYear)}" 
                 th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2026</span>
-          <span th:text="${theme.config.basic.title ?: site.title}">博客</span>
+             <a th:if="${site.url != null}" 
+                th:href="${site.url}" 
+                th:text="${theme.config.basic.title ?: site.title}">博客</a>
+             <span th:unless="${site.url != null}" 
+                   th:text="${theme.config.basic.title ?: site.title}">博客</span>
           <span>版权所有</span>
           <th:block th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}">
             <span class="footer-legal-separator">|</span>
@@ -25,8 +29,8 @@
              target="_blank" 
              rel="noopener"
              class="footer-beian-link">
+             <!-- 下方img标签根据喜好注释 -->
             <img th:src="@{/themes/theme-Serenity/assets/public/icpb.webp}" class="footer-beian-icon" alt="ICP备案" />
-            <span>ICP</span>
             <span th:text="${theme.config.footer.icp}">备案号</span>
           </a>
           
@@ -126,54 +130,56 @@
   setInterval(tick, 1000);
 })();
 </script>
-<div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()">
-  <div class="legal-modal-content">
-    <button class="legal-modal-close" onclick="closeLegalModal()">&times;</button>
-    <div id="legalModalBody" class="legal-modal-body markdown-content" data-lenis-prevent>
-      内容
+<th:block th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}">
+  <div id="legalModal" class="legal-modal" onclick="if(event.target === this) closeLegalModal()">
+    <div class="legal-modal-content">
+      <button class="legal-modal-close" onclick="closeLegalModal()" aria-label="关闭">&times;</button>
+      <div id="legalModalBody" class="legal-modal-body markdown-content" data-lenis-prevent>
+        内容
+      </div>
     </div>
   </div>
-</div>
 
-<div id="privacyContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyContent)}" th:text="${theme.config.footer.privacyContent}"></div>
+  <div id="privacyContent" style="display:none;" th:if="${theme.config.footer.privacyContent != null && !#strings.isEmpty(theme.config.footer.privacyContent)}" th:text="${theme.config.footer.privacyContent}"></div>
 
-<div id="termsContent" style="display:none;" th:if="${theme.config.footer != null && theme.config.footer.termsContent != null && !#strings.isEmpty(theme.config.footer.termsContent)}" th:text="${theme.config.footer.termsContent}"></div>
+  <div id="termsContent" style="display:none;" th:if="${theme.config.footer.termsContent != null && !#strings.isEmpty(theme.config.footer.termsContent)}" th:text="${theme.config.footer.termsContent}"></div>
 
-<script th:src="@{/assets/js/marked.min.js}"></script>
-<script>
-function openLegalModal(type) {
-  var modal = document.getElementById('legalModal');
-  var body = document.getElementById('legalModalBody');
-  var content = '';
-  
-  if (type === 'privacy') {
-    var el = document.getElementById('privacyContent');
-    content = el ? el.textContent : '暂无隐私政策内容，请在后台设置。';
-  } else if (type === 'terms') {
-    var el = document.getElementById('termsContent');
-    content = el ? el.textContent : '暂无服务条款内容，请在后台设置。';
+  <script th:src="@{/assets/js/marked.min.js}"></script>
+  <script>
+  function openLegalModal(type) {
+    var modal = document.getElementById('legalModal');
+    var body = document.getElementById('legalModalBody');
+    var content = '';
+    
+    if (type === 'privacy') {
+      var el = document.getElementById('privacyContent');
+      content = el ? el.textContent : '暂无隐私政策内容,请在后台设置。';
+    } else if (type === 'terms') {
+      var el = document.getElementById('termsContent');
+      content = el ? el.textContent : '暂无服务条款内容，请在后台设置。';
+    }
+    
+    if (typeof marked !== 'undefined' && content) {
+      body.innerHTML = marked.parse(content);
+    } else {
+      body.innerHTML = '<p>' + (content || '内容加载失败') + '</p>';
+    }
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
   }
-  
-  if (typeof marked !== 'undefined' && content) {
-    body.innerHTML = marked.parse(content);
-  } else {
-    body.innerHTML = '<p>' + (content || '内容加载失败') + '</p>';
+
+  function closeLegalModal() {
+    var modal = document.getElementById('legalModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
   }
-  
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
 
-function closeLegalModal() {
-  var modal = document.getElementById('legalModal');
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeLegalModal();
-});
-</script>
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLegalModal();
+  });
+  </script>
+</th:block>
 
 <link th:if="${theme.config.footer != null && (theme.config.footer.showPrivacy == true || theme.config.footer.showTerms == true)}" rel="stylesheet" th:href="@{/assets/css/legal-modal.css}" />
 </th:block>

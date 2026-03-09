@@ -150,7 +150,7 @@
         </div>
         
         <div class="pagination-controls">
-          <a th:if="${posts.hasPrevious()}" class="pagination-arrow" th:href="@{${category.status.permalink} + '/page/' + ${posts.page - 1}}" title="上一页">
+          <a th:if="${posts.hasPrevious()}" class="pagination-arrow" th:href="@{${category.status.permalink} + '/page/' + ${posts.page - 1}}" title="上一页" aria-label="上一页">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M15 18l-6-6 6-6"/>
             </svg>
@@ -165,7 +165,7 @@
             <span th:text="${posts.page}">1</span> / <span th:text="${posts.totalPages}">1</span>
           </span>
           
-          <a th:if="${posts.hasNext()}" class="pagination-arrow" th:href="@{${category.status.permalink} + '/page/' + ${posts.page + 1}}" title="下一页">
+          <a th:if="${posts.hasNext()}" class="pagination-arrow" th:href="@{${category.status.permalink} + '/page/' + ${posts.page + 1}}" title="下一页" aria-label="下一页">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M9 18l6-6-6-6"/>
             </svg>

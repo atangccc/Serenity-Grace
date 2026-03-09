@@ -281,6 +281,11 @@ spec:
               placeholder: "mdi:github"
               help: "从 Iconify 图标库输入图标名称（如 mdi:github、ri:twitter-x-fill），可在 https://icon-sets.iconify.design 查找。优先级高于内置图标，留空则使用上方内置图标"
         - $formkit: checkbox
+          name: showRss
+          label: 显示 RSS 订阅
+          value: true
+          help: 在首页社交图标区域显示 RSS 订阅图标
+        - $formkit: checkbox
           name: enableSponsor
           label: 启用赞助功能
           value: false
@@ -814,7 +819,7 @@ spec:
           name: showSteam
           label: 显示 Steam 游戏
           value: false
-          help: 是否在关于页面显示 Steam 游戏组件（需要安装 Steam 插件）
+          help: 是否在关于页面显示 Steam 个人资料卡片（需安装 plugin-steam 插件并在插件设置中配置 API Key 等信息）
         - $formkit: checkbox
           name: showAfdian
           label: 显示爱发电赞助
@@ -1017,7 +1022,7 @@ spec:
           help: 在页面左下角显示一个迷你音乐播放器。注意：为防止发生不必要的冲突，只配置其一即可。
         - $formkit: text
           name: playlistId
-          label: 网易于官方接口（歌单 ID）
+          label: 网易云官方接口（歌单 ID）
           placeholder: "12345678"
           help: 网易云音乐歌单 ID，从歌单页面 URL 中获取。
         - $formkit: text
@@ -1030,7 +1035,7 @@ spec:
             类型 type: song(单曲)、playlist(歌单)、albumlist(专辑列表)、search(搜索)
             类型 ID: 单曲/歌单 ID，搜索状态填 0
             搜索关键词 keyword（仅 search）: 如 泡沫、邓紫棋
-            最高音质 br（仅 song/url）: 纯数字如 300
+            最高音质 br（仅 song/url）: 纯数字如 128标准音质 (MP3)、320极高音质 (MP3)、380无损音质 (Flac)、400Hi-Res (Flac)
         - $formkit: checkbox
           name: autoPlay
           label: 自动播放

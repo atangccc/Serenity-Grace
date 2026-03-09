@@ -10,7 +10,7 @@
       </a>
       
       <nav class="nav-left" id="nav">
-        <a th:href="@{/}" class="nav-btn" title="首页">
+        <a th:href="@{/}" class="nav-btn" title="首页" aria-label="首页">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="7" height="7" rx="1"/>
             <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -54,7 +54,7 @@
 
     <div class="header-right">
       <nav class="nav-right">
-        <a href="/console" class="nav-btn" title="登录">
+        <a href="/console" class="nav-btn" title="登录" aria-label="登录">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="8" r="4"/>
             <path d="M20 21a8 8 0 1 0-16 0"/>
@@ -63,7 +63,7 @@
       </nav>
       
       <!-- 搜索框 - 自定义搜索 -->
-      <div class="search-box" id="search-box">
+      <div class="search-box" id="search-box" role="button" aria-label="搜索文章">
         <svg class="search-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
           <path d="M21 21l-4.35-4.35"/>

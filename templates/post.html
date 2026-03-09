@@ -28,10 +28,6 @@
   <meta name="twitter:title" th:content="${post.spec.title}" />
   <meta name="twitter:description" th:content="${post.status.excerpt ?: (theme.config.basic.description ?: site.subtitle)}" />
   <meta name="twitter:image" th:if="${post.spec.cover != null && !#strings.isEmpty(post.spec.cover)}" th:content="${post.spec.cover}" />
-  <script th:src="@{/assets/js/lightbox.js}" defer></script>
-  <script th:src="@{/assets/js/post.js}" defer></script>
-</th:block>
-<head>
   <script th:if="${theme.config.seo != null && (theme.config.seo.enableJsonLd == null || theme.config.seo.enableJsonLd)}" type="application/ld+json" th:inline="javascript">
   {
     "@context": "https://schema.org",
@@ -79,7 +75,9 @@
     ]
   }
   </script>
-</head>
+  <script th:src="@{/assets/js/lightbox.js}" defer></script>
+  <script th:src="@{/assets/js/post.js}" defer></script>
+</th:block>
 <th:block th:fragment="content">
   <!-- 阅读进度条 -->
   <div class="reading-progress-bar" id="reading-progress-bar"></div>
@@ -205,7 +203,7 @@
             <div class="copyright-content">
               <div class="copyright-header">
                 <span class="copyright-badge">原创</span>
-                <h3 class="copyright-title" th:text="${post.spec.title}">探索 Next.js 14 的新特性与最佳实践</h3>
+                <h2 class="copyright-title" th:text="${post.spec.title}">探索 Next.js 14 的新特性与最佳实践</h2>
               </div>
               <div class="copyright-meta">
                 <span class="copyright-label">本文链接：</span>
@@ -216,7 +214,7 @@
                 <a th:href="@{${post.status.permalink}}" class="copyright-link" th:text="${post.spec.title}">探索 Next.js 14 的新特性与最佳实践</a>
               </div>
               <p class="copyright-text" th:utext="${theme.config.post != null && theme.config.post.copyrightText != null ? theme.config.post.copyrightText : '本文采用 &lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot; target=&quot;_blank&quot; class=&quot;copyright-license&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt; 协议，转载请注明出处。'}">
-                本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" class="copyright-license">CC BY-NC-SA 4.0</a> 协议，转载请注明出处。
+                本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" class="copyright-license">CC BY-NC-SA 4.0</a> 协议，转载请注明出处。
               </p>
             </div>
             <div class="copyright-logo">
@@ -233,14 +231,14 @@
                th:data-url="${post.status.permalink}">
             <span class="share-label">分享：</span>
             <div class="share-buttons">
-              <button class="share-btn share-copy" data-action="copy" title="复制链接">
+              <button class="share-btn share-copy" data-action="copy" title="复制链接" aria-label="复制链接">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
                 </svg>
                 <span class="share-copy-bubble">复制成功</span>
               </button>
-              <button class="share-btn share-wechat" data-action="wechat" title="微信扫码分享">
+              <button class="share-btn share-wechat" data-action="wechat" title="微信扫码分享" aria-label="微信扫码分享">
                 <svg viewBox="0 0 16 16" fill="currentColor">
                   <path d="M11.176 14.429c-2.665 0-4.826-1.8-4.826-4.018 0-2.22 2.159-4.02 4.824-4.02S16 8.191 16 10.411c0 1.21-.65 2.301-1.666 3.036a.32.32 0 0 0-.12.366l.218.81a.6.6 0 0 1 .029.117.166.166 0 0 1-.162.162.2.2 0 0 1-.092-.03l-1.057-.61a.5.5 0 0 0-.256-.074.5.5 0 0 0-.142.021 5.7 5.7 0 0 1-1.576.22M9.064 9.542a.647.647 0 1 0 .557-1 .645.645 0 0 0-.646.647.6.6 0 0 0 .09.353Zm3.232.001a.646.646 0 1 0 .546-1 .645.645 0 0 0-.644.644.63.63 0 0 0 .098.356"/>
                   <path d="M0 6.826c0 1.455.781 2.765 2.001 3.656a.385.385 0 0 1 .143.439l-.161.6-.1.373a.5.5 0 0 0-.032.14.19.19 0 0 0 .193.193q.06 0 .111-.029l1.268-.733a.6.6 0 0 1 .308-.088q.088 0 .171.025a6.8 6.8 0 0 0 1.625.26 4.5 4.5 0 0 1-.177-1.251c0-2.936 2.785-5.02 5.824-5.02l.15.002C10.587 3.429 8.392 2 5.796 2 2.596 2 0 4.16 0 6.826m4.632-1.555a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0m3.875 0a.77.77 0 1 1-1.54 0 .77.77 0 0 1 1.54 0"/>
@@ -254,13 +252,13 @@
                   </div>
                 </div>
               </button>
-              <button class="share-btn share-weibo" data-action="weibo" title="分享到微博">
+              <button class="share-btn share-weibo" data-action="weibo" title="分享到微博" aria-label="分享到微博">
                 <svg viewBox="0 0 16 16" fill="currentColor">
                   <path d="M10.878 1.093a4.23 4.23 0 0 1 4.031 1.305 4.22 4.22 0 0 1 .886 4.14v.001a.612.612 0 0 1-1.166-.377 3.01 3.01 0 0 0-3.495-3.873.611.611 0 1 1-.256-1.196M3.753 9.465c.548-1.11 1.972-1.74 3.233-1.411 1.304.338 1.971 1.568 1.437 2.764-.541 1.221-2.095 1.875-3.416 1.449-1.271-.411-1.812-1.67-1.254-2.802m2.658.567c.16.066.365-.009.458-.168.088-.16.03-.34-.129-.397-.156-.062-.353.013-.446.168-.09.154-.041.333.117.397m-1.607 1.314c.413.188.963.009 1.219-.4.252-.413.12-.883-.296-1.062-.41-.172-.94.005-1.194.402-.256.4-.135.874.271 1.06"/>
                   <path d="m12.014 7.238.005.001c.919.285 1.941.974 1.939 2.188 0 2.007-2.895 4.535-7.246 4.535C3.393 13.962 0 12.352 0 9.708c0-1.385.876-2.985 2.384-4.493C4.4 3.199 6.751 2.28 7.634 3.165c.39.392.427 1.065.177 1.87-.132.405.38.182.38.182 1.63-.682 3.051-.722 3.57.02.278.397.252.951-.004 1.594-.116.293.035.34.257.407m-10.4 3.101c.172 1.738 2.46 2.936 5.109 2.674 2.647-.26 4.656-1.883 4.482-3.623-.17-1.738-2.458-2.937-5.107-2.674-2.647.263-4.656 1.883-4.484 3.623m11.681-6.484a2.06 2.06 0 0 0-1.962-.634.526.526 0 1 0 .219 1.031 1.008 1.008 0 0 1 1.17 1.296.528.528 0 0 0 1.005.325 2.06 2.06 0 0 0-.432-2.018"/>
                 </svg>
               </button>
-              <button class="share-btn share-qq" data-action="qq" title="分享到QQ">
+              <button class="share-btn share-qq" data-action="qq" title="分享到QQ" aria-label="分享到QQ">
                 <svg viewBox="0 0 16 16" fill="currentColor">
                   <path d="M6.048 3.323c.022.277-.13.523-.338.55-.21.026-.397-.176-.419-.453s.13-.523.338-.55c.21-.026.397.176.42.453Zm2.265-.24c-.603-.146-.894.256-.936.333-.027.048-.008.117.037.15.045.035.092.025.119-.003.361-.39.751-.172.829-.129l.011.007c.053.024.147.028.193-.098.023-.063.017-.11-.006-.142-.016-.023-.089-.08-.247-.118"/>
                   <path d="M11.727 6.719c0-.022.01-.375.01-.557 0-3.07-1.45-6.156-5.015-6.156S1.708 3.092 1.708 6.162c0 .182.01.535.01.557l-.72 1.795a26 26 0 0 0-.534 1.508c-.68 2.187-.46 3.093-.292 3.113.36.044 1.401-1.647 1.401-1.647 0 .979.504 2.256 1.594 3.179-.408.126-.907.319-1.228.556-.29.213-.253.43-.201.518.228.386 3.92.246 4.985.126 1.065.12 4.756.26 4.984-.126.052-.088.088-.305-.2-.518-.322-.237-.822-.43-1.23-.557 1.09-.922 1.594-2.2 1.594-3.178 0 0 1.041 1.69 1.401 1.647.168-.02.388-.926-.292-3.113a26 26 0 0 0-.534-1.508l-.72-1.795ZM9.773 5.53a.1.1 0 0 1-.009.096c-.109.159-1.554.943-3.033.943h-.017c-1.48 0-2.925-.784-3.034-.943a.1.1 0 0 1-.018-.055q0-.022.01-.04c.13-.287 1.43-.606 3.042-.606h.017c1.611 0 2.912.319 3.042.605m-4.32-.989c-.483.022-.896-.529-.922-1.229s.344-1.286.828-1.308c.483-.022.896.529.922 1.23.027.7-.344 1.286-.827 1.307Zm2.538 0c-.484-.022-.854-.607-.828-1.308.027-.7.44-1.25.923-1.23.483.023.853.608.827 1.309-.026.7-.439 1.251-.922 1.23ZM2.928 8.99q.32.063.639.117v2.336s1.104.222 2.21.068V9.363q.49.027.937.023h.017c1.117.013 2.474-.136 3.786-.396.097.622.151 1.386.097 2.284-.146 2.45-1.6 3.99-3.846 4.012h-.091c-2.245-.023-3.7-1.562-3.846-4.011-.054-.9 0-1.663.097-2.285"/>
@@ -274,7 +272,7 @@
               <img th:src="${theme.config.post.rewardQrCode}" alt="打赏二维码" loading="lazy" />
             </div>
             <div class="reward-content">
-              <h3 class="reward-title" th:text="${theme.config.post.rewardTitle ?: '赞赏支持'}">赞赏支持</h3>
+              <h2 class="reward-title" th:text="${theme.config.post.rewardTitle ?: '赞赏支持'}">赞赏支持</h2>
               <p class="reward-text" th:text="${theme.config.post.rewardText ?: '如果觉得文章对你有帮助，可以请作者喝杯咖啡 ☕'}">如果觉得文章对你有帮助，可以请作者喝杯咖啡 ☕</p>
               <div class="reward-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -344,7 +342,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
               </svg>
-              <h3 class="comments-title">评论交流</h3>
+              <h2 class="comments-title">评论交流</h2>
               <span class="comments-subtitle">欢迎留下你的想法</span>
             </div>
             <halo:comment group="content.halo.run" kind="Post" th:attr="name=${post.metadata.name}" colorScheme="auto" />

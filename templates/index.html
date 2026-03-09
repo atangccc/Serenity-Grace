@@ -187,7 +187,10 @@
                     </div>
                   </div>
                 </div>
-                <a th:href="@{/rss.xml}" class="social-link" title="RSS">
+                <a th:if="${theme.config.social == null || theme.config.social.showRss == null || theme.config.social.showRss}" 
+                   th:href="@{/rss.xml}" 
+                   class="social-link" 
+                   title="RSS">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
                 </a>
               </div>
@@ -570,8 +573,8 @@
             <div class="block-head">
               <h2 class="block-label">随想碎片</h2>
               <div class="memo-nav">
-                <button class="memo-nav-btn memo-swiper-prev">&lt;</button>
-                <button class="memo-nav-btn memo-swiper-next">&gt;</button>
+                <button class="memo-nav-btn memo-swiper-prev" aria-label="上一张">&lt;</button>
+                <button class="memo-nav-btn memo-swiper-next" aria-label="下一张">&gt;</button>
               </div>
             </div>
             <div class="swiper memo-swiper">

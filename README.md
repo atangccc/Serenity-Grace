@@ -132,7 +132,9 @@
 4. 发布页面后即可通过对应路径访问
 
 ## 交流群
-![微信](screenshots/7.jpg) | ![QQ](screenshots/8.jpg)
+| 微信 | QQ |
+|:---:|:---:|
+| ![微信](screenshots/7.jpg) | ![QQ](screenshots/8.jpg) |
 
 ---
 

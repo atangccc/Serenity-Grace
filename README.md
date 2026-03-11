@@ -131,6 +131,9 @@
 3. 设置页面别名（slug）为上表中的访问路径
 4. 发布页面后即可通过对应路径访问
 
+## 交流群
+![微信](screenshots/7.jpg) | ![QQ](screenshots/8.jpg)
+
 ---
 
 ## License

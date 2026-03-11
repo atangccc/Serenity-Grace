@@ -185,7 +185,7 @@
           <!-- 模糊背景容器 - 放在 article 内部 -->
           <div class="wallpaper-bg-container" th:if="${theme.config.post != null && theme.config.post.enableBackground}"></div>
           <!-- 文章过期提示 -->
-          <div class="post-outdated-notice" id="post-outdated-notice" th:data-publish-time="${post.spec.publishTime}" style="display: none;">
+          <div class="post-outdated-notice" id="post-outdated-notice" th:if="${theme.config.post == null || theme.config.post.showOutdatedNotice == null || theme.config.post.showOutdatedNotice}" th:data-publish-time="${post.spec.publishTime}" style="display: none;">
             <svg class="notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <line x1="12" y1="8" x2="12" y2="12"/>

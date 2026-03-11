@@ -478,6 +478,11 @@ spec:
           value: false
           help: 在文章详情页右侧显示一个跟随主题色的细滚动条，默认隐藏
         - $formkit: checkbox
+          name: showOutdatedNotice
+          label: 显示文章过期提示
+          value: true
+          help: 文章发布超过一定天数后，在文章顶部显示"本文发布于 X 天前"的时效性提示
+        - $formkit: checkbox
           name: enableBackground
           label: 启用背景壁纸
           value: false

@@ -761,24 +761,28 @@ spec:
               name: icon
               label: 内置图标（兜底）
               options:
-                - label: 无（使用上方自定义图标）
-                  value: none
-                - label: JavaScript
-                  value: js
-                - label: TypeScript
-                  value: ts
-                - label: React
-                  value: react
-                - label: Vue
-                  value: vue
-                - label: Node.js
-                  value: node
-                - label: CSS
-                  value: css
-                - label: HTML
-                  value: html
-                - label: Python
-                  value: python
+              - label: 无（使用上方自定义图标）
+                value: none
+              - label: JavaScript
+                value: js
+              - label: React
+                value: react
+              - label: Vue
+                value: vue
+              - label: Node.js
+                value: node
+              - label: CSS
+                value: css
+              - label: HTML
+                value: html
+              - label: Python
+                value: python
+              - label: C++
+                value: cpp
+              - label: C
+                value: c
+              - label: C#
+                value: cs
               help: 当自定义图片和 Iconify 图标都为空时，使用此内置图标
             - $formkit: text
               name: iconColor

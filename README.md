@@ -21,13 +21,19 @@
 
 <br/>
 
-[🖼️ 预览截图](#-预览) · [✨ 功能特性](#-功能特性) · [📦 安装使用](#-安装使用) · [⚙️ 页面配置](#%EF%B8%8F-页面配置) · [📝 更新日志](https://github.com/atangccc/Serenity-Grace/releases)
+[🖼️ 预览截图](#-预览) · [✨ 功能特性](#-功能特性) · [📦 安装使用](#-安装使用) · [⚙️ 页面配置](#%EF%B8%8F-页面配置) · [� 食用指南](https://www.lunarmc.cn/docs/Serenity/description/) · [📝 更新日志](https://github.com/atangccc/Serenity-Grace/releases)
 
 <br/>
 
 </div>
 
 ---
+
+## � 食用指南
+
+> 由社区小伙伴 Sopify 编写的详细使用教程，涵盖主题安装、配置、页面创建等完整流程：
+>
+> 🔗 **[Serenity 主题食用指南 — Sopify's Blog](https://www.lunarmc.cn/docs/Serenity/description/)**
 
 ## 🔗 作者站点
 

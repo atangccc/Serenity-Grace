@@ -1,4 +1,10 @@
 <div align="center">
+
+<img src="https://raw.githubusercontent.com/atangccc/Serenity-Grace/main/screenshots/1.png" alt="Serenity-Grace Banner" width="800" />
+
+<br/>
+<br/>
+
 # 🌸 Serenity-Grace
 
 **简约优雅的 Halo 2.x 博客主题**
@@ -29,9 +35,7 @@
 >
 > 🔗 **[Serenity 主题食用指南 — Sopify's Blog](https://www.lunarmc.cn/docs/Serenity/description/)**
 
-## 🔗 作者站点
 
-> **在线演示：** [serenity.aobp.cn](https://serenity.aobp.cn/)
 
 ## 🤝 小伙伴站点
 

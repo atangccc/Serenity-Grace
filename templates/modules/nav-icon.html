@@ -94,8 +94,17 @@
     </svg>
   </th:block>
 
+  <!-- 便签墙 -->
+  <th:block th:if="${#strings.contains(href, '/wishes')}">
+    <i th:if="${(bs != null and bs.iconWishes != null and !#strings.isEmpty(bs.iconWishes)) or !#strings.isEmpty(ac)}"
+       th:classappend="${(bs != null and bs.iconWishes != null and !#strings.isEmpty(bs.iconWishes)) ? bs.iconWishes : ac}" class="nav-custom-icon"></i>
+    <svg th:if="${(bs == null or bs.iconWishes == null or #strings.isEmpty(bs.iconWishes)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M14 3v4a2 2 0 0 0 2 2h4"/><path d="M8 13h8"/><path d="M8 17h8"/>
+    </svg>
+  </th:block>
+
   <!-- 未匹配已知路径：annotation fallback -->
-  <th:block th:if="${!#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle')}">
+  <th:block th:if="${!#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle') and !#strings.contains(href, '/wishes')}">
     <i th:if="${!#strings.isEmpty(ac)}" th:classappend="${ac}" class="nav-custom-icon"></i>
     <svg th:if="${#strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>

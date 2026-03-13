@@ -17,7 +17,7 @@ spec:
       url: https://github.com/atangccc/Serenity-Grace/blob/main/LICENSE
   settingName: theme-Serenity-setting
   configMapName: theme-Serenity-configmap
-  version: 1.4.3
+  version: 1.4.4
   requires: ">=2.0.0"
   customTemplates:
     page:
@@ -53,6 +53,10 @@ spec:
         description: 图库
         screenshot: 
         file: photos.html
+      - name: wishes
+        description: 便签墙
+        screenshot: 
+        file: wishes.html
     post:
       - name: default
         description: 默认文章

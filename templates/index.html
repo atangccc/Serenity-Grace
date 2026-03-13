@@ -132,7 +132,7 @@
               <h1 class="hero-name" th:if="${theme.config.hero.enableTypewriter == true}"
                   th:classappend="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? ' hero-name-custom' : ''}"
                   th:style="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? 'background:' + theme.config.hero.nameColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : ''}">
-                <span class="typewriter-text" th:attr="data-text=${theme.config.hero.name ?: site.title}">Serenity</span>
+                <span class="typewriter-text" th:attr="data-text=${theme.config.hero.name ?: site.title},data-backspace=${theme.config.hero.enableTypewriterBackspace == true ? 'true' : 'false'}">Serenity</span>
                 <span class="typewriter-cursor"
                       th:classappend="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? ' typewriter-cursor-custom' : ''}"
                       th:style="${theme.config.hero.nameColor != null and !#strings.isEmpty(theme.config.hero.nameColor) ? 'background:' + theme.config.hero.nameColor : ''}"></span>
@@ -230,7 +230,8 @@
                     (#strings.contains(mHref, '/guestbook') and theme.config.compass.showGuestbook) or
                     (#strings.contains(mHref, '/projects') and theme.config.compass.showProjects) or
                     (#strings.contains(mHref, '/photos') and theme.config.compass.showPhotos) or
-                    (#strings.contains(mHref, '/friends-circle') and theme.config.compass.showFriendsCircle)
+                    (#strings.contains(mHref, '/friends-circle') and theme.config.compass.showFriendsCircle) or
+                    (#strings.contains(mHref, '/wishes') and (theme.config.compass.showWishes ?: true))
                   }"
                      th:href="@{${mHref}}"
                      th:target="${menuItem.spec.target?.value}"
@@ -254,7 +255,8 @@
                     (#strings.contains(cHref, '/guestbook') and theme.config.compass.showGuestbook) or
                     (#strings.contains(cHref, '/projects') and theme.config.compass.showProjects) or
                     (#strings.contains(cHref, '/photos') and theme.config.compass.showPhotos) or
-                    (#strings.contains(cHref, '/friends-circle') and theme.config.compass.showFriendsCircle)
+                    (#strings.contains(cHref, '/friends-circle') and theme.config.compass.showFriendsCircle) or
+                    (#strings.contains(cHref, '/wishes') and (theme.config.compass.showWishes ?: true))
                   }"
                      th:href="@{${cHref}}"
                      th:target="${childMenu.spec.target?.value}"

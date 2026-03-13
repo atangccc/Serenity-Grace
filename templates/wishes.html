@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{modules/layout :: html(title = ${pageTitle ?: '便签墙'}, content = ~{::content}, head = ~{::head})}">
+<th:block th:fragment="head">
+  <link rel="stylesheet" th:href="@{/assets/css/wishes.css}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" th:content="${(pageTitle ?: '便签墙') + ' - ' + (theme.config.basic.title ?: site.title)}" />
+  <meta property="og:description" th:content="${pageSubtitle ?: '写下你的心愿，留下你的故事'}" />
+  <script th:if="${wishFinder != null}" th:inline="javascript">
+    window.__WISH_CONFIG__ = {
+      wishTypes: /*[[${wishFinder.listTypes()}]]*/ [],
+      maxContentLength: /*[[${maxContentLength ?: 200}]]*/ 200,
+      aiEnabled: /*[[${aiEnabled ?: false}]]*/ false
+    };
+  </script>
+  <script th:if="${wishFinder == null}" th:inline="javascript">
+    window.__WISH_CONFIG__ = {
+      wishTypes: [],
+      maxContentLength: /*[[${maxContentLength ?: 200}]]*/ 200,
+      aiEnabled: /*[[${aiEnabled ?: false}]]*/ false
+    };
+  </script>
+  <script th:src="@{/assets/js/wishes.js}" defer></script>
+</th:block>
+<th:block th:fragment="content">
+  <div class="container">
+    <header class="page-header" data-aos="fade-up">
+      <h1 class="page-title" th:text="${pageTitle ?: '便签墙'}">便签墙</h1>
+      <p class="page-desc" th:text="${pageSubtitle ?: '写下你的心愿，留下你的故事'}">写下你的心愿，留下你的故事</p>
+    </header>
+
+    <!-- Days counter -->
+    <div class="wish-days-badge" id="daysBadge"
+         th:if="${showDaysCounter}"
+         th:attr="data-date=${anniversaryDate},data-name-a=${partnerNameA},data-name-b=${partnerNameB}"
+         data-aos="fade-up" data-aos-delay="50"
+         style="visibility:hidden">
+      <span id="daysContent"></span>
+    </div>
+
+    <!-- 未安装插件提示 -->
+    <div th:if="${wishFinder == null}" class="wish-empty-page" data-aos="fade-up">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+      <p>请先安装并启用「心愿便签」插件</p>
+    </div>
+
+    <!-- 插件已安装时的正常内容 -->
+    <th:block th:if="${wishFinder != null}">
+      <!-- Filter tabs (Finder API) -->
+      <th:block th:with="types=${wishFinder.listTypes()}">
+        <div class="wish-tabs" id="wishTabs" data-aos="fade-up" data-aos-delay="100">
+          <button class="wish-tab active" data-filter="all">全部</button>
+          <button class="wish-tab" th:each="type : ${types}"
+                  th:data-filter="${type.spec.slug}"
+                  th:text="${type.spec.displayName}">类型</button>
+        </div>
+      </th:block>
+
+      <!-- Board (Finder API 服务端渲染便签卡片) -->
+      <th:block th:with="wishes=${wishFinder.listApproved()}, typeMap=${wishFinder.getTypeMap()}">
+        <div class="wish-board" id="wishBoard" data-aos="fade-up" data-aos-delay="150">
+          <div class="wish-empty" id="wishEmpty" th:if="${#lists.isEmpty(wishes)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+            <p>还没有便签，来贴第一张吧</p>
+          </div>
+          <div class="wish-card" th:each="wish : ${wishes}"
+               th:data-type="${wish.spec.type}"
+               th:data-color="${wish.spec.color ?: 'green'}">
+            <div class="wish-card-header">
+              <div class="wish-dots">
+                <span class="wish-dot red"></span>
+                <span class="wish-dot yellow"></span>
+                <span class="wish-dot green"></span>
+              </div>
+              <span class="wish-card-label" th:text="${typeMap[wish.spec.type] ?: wish.spec.type}">类型</span>
+            </div>
+            <div th:if="${wish.spec.type == 'wish' and wish.spec.status == 'pending'}" class="wish-status-badge pending">心愿中</div>
+            <div th:if="${wish.spec.type == 'wish' and wish.spec.status == 'doing'}" class="wish-status-badge doing">进行中</div>
+            <div th:if="${wish.spec.type == 'wish' and wish.spec.status == 'done'}" class="wish-status-badge done">已达成</div>
+            <div class="wish-card-body" th:text="${wish.spec.content}">内容</div>
+            <div th:if="${wish.spec.doneNote}" class="wish-card-done-note" th:text="${wish.spec.doneNote}"></div>
+            <img th:if="${wish.spec.doneImage != null and wish.spec.status == 'done'}"
+                 class="wish-card-done-img" th:src="${wish.spec.doneImage}" alt="" loading="lazy" />
+            <div th:if="${wish.spec.aiReply}" class="wish-card-ai" th:text="${wish.spec.aiReply}"></div>
+            <div class="wish-card-footer">
+              <span class="wish-card-nick" th:text="${wish.spec.anonymous ? '匿名' : (wish.spec.nickname ?: '匿名')}">昵称</span>
+              <span th:text="${#temporals.format(wish.spec.createdAt, 'yyyy/M/d')}"></span>
+            </div>
+          </div>
+        </div>
+      </th:block>
+
+      <!-- Input bar -->
+      <th:block th:if="${enableSubmit ?: true}" th:with="types=${wishFinder.listTypes()}">
+        <div class="wish-input-bar" id="wishInputBar">
+          <input type="text" class="wish-input-nick" id="wishNick" placeholder="昵称" maxlength="20" />
+          <input type="text" class="wish-input-content" id="wishContent" placeholder="写下你想说的话..."
+                 th:maxlength="${maxContentLength ?: 200}" />
+          <span class="wish-char-counter" id="wishCharCounter"></span>
+          <div class="wish-colors" id="wishColorPicker">
+            <span class="wish-color-dot active" data-color="green"  style="background:#c8e6c9"></span>
+            <span class="wish-color-dot" data-color="yellow" style="background:#fff9c4"></span>
+            <span class="wish-color-dot" data-color="purple" style="background:#e1bee7"></span>
+            <span class="wish-color-dot" data-color="pink"   style="background:#ffcdd2"></span>
+            <span class="wish-color-dot" data-color="blue"   style="background:#bbdefb"></span>
+            <span class="wish-color-dot" data-color="orange" style="background:#ffe0b2"></span>
+          </div>
+          <button class="wish-type-btn" id="wishTypeToggle" title="切换类型"
+                  th:text="${#lists.isEmpty(types) ? '树洞' : types[0].spec.displayName}">树洞</button>
+          <button class="wish-btn wish-btn-polish" id="wishPolishBtn"
+                  th:style="${(aiEnabled ?: false) ? '' : 'display:none'}">润色</button>
+          <button class="wish-btn wish-btn-submit" id="wishSubmitBtn">发布</button>
+        </div>
+      </th:block>
+    </th:block>
+  </div>
+
+  <!-- Toast -->
+  <div class="wish-toast" id="wishToast"></div>
+</th:block>
+</html>

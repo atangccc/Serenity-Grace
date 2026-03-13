@@ -105,6 +105,12 @@ spec:
               value: "fa-solid fa-camera"
               placeholder: "fa-solid fa-camera"
               help: 朋友圈页面图标
+            - $formkit: text
+              name: iconWishes
+              label: 便签墙图标
+              value: "fa-solid fa-note-sticky"
+              placeholder: "fa-solid fa-note-sticky"
+              help: 便签墙页面图标
         - $formkit: repeater
           name: categoryIcons
           label: 分类图标列表
@@ -152,6 +158,11 @@ spec:
           label: 启用打字机效果
           value: true
           help: 为首页大标题添加打字机动画效果
+        - $formkit: checkbox
+          name: enableTypewriterBackspace
+          label: 启用打字机回退效果
+          value: false
+          help: 打字完成后逐字回退再重新打字，形成循环动画。关闭则打完即停
         - $formkit: text
           name: tagline
           label: 个性标语
@@ -360,6 +371,10 @@ spec:
         - $formkit: checkbox
           name: showFriendsCircle
           label: 显示朋友圈链接
+          value: true
+        - $formkit: checkbox
+          name: showWishes
+          label: 显示便签墙链接
           value: true
 
     - group: home

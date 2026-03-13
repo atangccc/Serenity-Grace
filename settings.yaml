@@ -1015,6 +1015,27 @@ spec:
           label: 显示申请友链按钮
           value: true
           help: 是否在友链申请区域显示"申请友链 ›"按钮
+        - $formkit: number
+          name: cardAnimationSpeed
+          label: 友链卡片悬停动画速度
+          value: 300
+          min: 1
+          max: 10000
+          step: 20
+          help: 友链卡片悬停时的动画速度，单位毫秒
+        # - $formkit: number
+        #   name: backgroundBlur
+        #   label: 背景模糊程度
+        #   value: 3
+        #   min: 0
+        #   max: 20
+        #   step: 1
+        #   help: 背景图片的模糊程度，数值越大越模糊，0 为不模糊
+        - $formkit: checkbox
+          name: enableHoverEffect
+          label: 启用悬停特效
+          value: true
+          help: 是否启用友链卡片悬停特效
         - $formkit: text
           name: offlineLabel
           label: 失联友链标签

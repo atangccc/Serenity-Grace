@@ -553,6 +553,19 @@ spec:
           value: "https://beian.miit.gov.cn/"
           help: ICP 备案号的跳转链接，默认为工信部备案查询页面
         - $formkit: text
+          name: icpLogoUrl
+          label: ICP 备案 Logo 链接
+          value: ""
+          help: ICP 备案 Logo 的显示链接，留空则显示默认
+        - $formkit: number
+          name: icpLogoSize
+          label: ICP 备案 Logo 大小
+          value: 20
+          min: 16
+          max: 40
+          step: 1
+          help: ICP 备案 Logo 的显示长宽大小，单位为像素
+        - $formkit: text
           name: policeRecord
           label: 公安备案号
           value: ""

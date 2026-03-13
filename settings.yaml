@@ -105,12 +105,6 @@ spec:
               value: "fa-solid fa-camera"
               placeholder: "fa-solid fa-camera"
               help: 朋友圈页面图标
-            - $formkit: text
-              name: iconWishes
-              label: 便签墙图标
-              value: "fa-solid fa-note-sticky"
-              placeholder: "fa-solid fa-note-sticky"
-              help: 便签墙页面图标
         - $formkit: repeater
           name: categoryIcons
           label: 分类图标列表
@@ -158,11 +152,6 @@ spec:
           label: 启用打字机效果
           value: true
           help: 为首页大标题添加打字机动画效果
-        - $formkit: checkbox
-          name: enableTypewriterBackspace
-          label: 启用打字机回退效果
-          value: false
-          help: 打字完成后逐字回退再重新打字，形成循环动画。关闭则打完即停
         - $formkit: text
           name: tagline
           label: 个性标语
@@ -372,10 +361,6 @@ spec:
           name: showFriendsCircle
           label: 显示朋友圈链接
           value: true
-        - $formkit: checkbox
-          name: showWishes
-          label: 显示便签墙链接
-          value: true
 
     - group: home
       label: 首页内容
@@ -567,6 +552,19 @@ spec:
           label: ICP 备案链接
           value: "https://beian.miit.gov.cn/"
           help: ICP 备案号的跳转链接，默认为工信部备案查询页面
+        - $formkit: text
+          name: icpLogoUrl
+          label: ICP 备案 Logo 链接
+          value: ""
+          help: ICP 备案 Logo 的显示链接，留空则显示默认
+        - $formkit: number
+          name: icpLogoSize
+          label: ICP 备案 Logo 大小
+          value: 20
+          min: 16
+          max: 40
+          step: 1
+          help: ICP 备案 Logo 的显示长宽大小，单位为像素
         - $formkit: text
           name: policeRecord
           label: 公安备案号
@@ -776,24 +774,28 @@ spec:
               name: icon
               label: 内置图标（兜底）
               options:
-                - label: 无（使用上方自定义图标）
-                  value: none
-                - label: JavaScript
-                  value: js
-                - label: TypeScript
-                  value: ts
-                - label: React
-                  value: react
-                - label: Vue
-                  value: vue
-                - label: Node.js
-                  value: node
-                - label: CSS
-                  value: css
-                - label: HTML
-                  value: html
-                - label: Python
-                  value: python
+              - label: 无（使用上方自定义图标）
+                value: none
+              - label: JavaScript
+                value: js
+              - label: React
+                value: react
+              - label: Vue
+                value: vue
+              - label: Node.js
+                value: node
+              - label: CSS
+                value: css
+              - label: HTML
+                value: html
+              - label: Python
+                value: python
+              - label: C++
+                value: cpp
+              - label: C
+                value: c
+              - label: C#
+                value: cs
               help: 当自定义图片和 Iconify 图标都为空时，使用此内置图标
             - $formkit: text
               name: iconColor
@@ -1026,6 +1028,27 @@ spec:
           label: 显示申请友链按钮
           value: true
           help: 是否在友链申请区域显示"申请友链 ›"按钮
+        - $formkit: number
+          name: cardAnimationSpeed
+          label: 友链卡片悬停动画速度
+          value: 300
+          min: 1
+          max: 10000
+          step: 20
+          help: 友链卡片悬停时的动画速度，单位毫秒
+        # - $formkit: number
+        #   name: backgroundBlur
+        #   label: 背景模糊程度
+        #   value: 3
+        #   min: 0
+        #   max: 20
+        #   step: 1
+        #   help: 背景图片的模糊程度，数值越大越模糊，0 为不模糊
+        - $formkit: checkbox
+          name: enableHoverEffect
+          label: 启用悬停特效
+          value: true
+          help: 是否启用友链卡片悬停特效
         - $formkit: text
           name: offlineLabel
           label: 失联友链标签

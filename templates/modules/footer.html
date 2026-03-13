@@ -30,8 +30,13 @@
              rel="noopener"
              class="footer-beian-link">
              <!-- 下方img标签根据喜好注释 -->
-            <img th:src="@{/themes/theme-Serenity/assets/public/icpb.webp}" class="footer-beian-icon" alt="ICP备案" />
-            <span th:text="${theme.config.footer.icp}">备案号</span>
+             <img th:with="customLogo = ${theme.config.footer.icpLogoUrl},
+              logoSize = ${theme.config.footer.icpLogoSize} ?: 16"
+     th:src="${not #strings.isEmpty(customLogo) ? customLogo : '/themes/theme-Serenity/assets/public/icpb.webp'}" 
+     class="footer-beian-icon" 
+     alt="ICP备案"
+     th:style="'width: ' + ${logoSize} + 'px; height: ' + ${logoSize} + 'px; object-fit: contain; flex-shrink: 0; display: inline-block; vertical-align: middle;'" />
+     <span th:text="${theme.config.footer.icp}">备案号</span>
           </a>
           
           <span th:if="${theme.config.footer != null && theme.config.footer.icp != null && !#strings.isEmpty(theme.config.footer.icp) && theme.config.footer.policeRecord != null && !#strings.isEmpty(theme.config.footer.policeRecord)}" class="footer-beian-separator">|</span>

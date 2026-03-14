@@ -895,6 +895,20 @@ spec:
               step: 0.01
               validation: required
 
+    - group: equipments
+      label: 装备页面
+      formSchema:
+        - $formkit: text
+          name: title
+          label: 装备页面标题
+          help: 装备页面显示的标题
+          value: "装备"
+        - $formkit: text
+          name: subtitle
+          label: 装备页面副标题
+          help: 装备页面显示的副标题
+          value: "工欲善其事，必先利其器"
+
     - group: seo
       label: SEO 优化
       formSchema:

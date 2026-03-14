@@ -53,6 +53,10 @@ spec:
         description: 图库
         screenshot: 
         file: photos.html
+      - name: equipments
+        description: 装备
+        screenshot: 
+        file: equipments.html
       - name: wishes
         description: 便签墙
         screenshot: 

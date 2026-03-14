@@ -867,6 +867,33 @@ spec:
           label: 爱发电链接
           value: ""
           help: 你的爱发电主页链接，如 https://afdian.net/a/username，留空则不显示"成为赞助者"按钮
+        - $formkit: repeater
+          name: manuallyAddedSponsors
+          label: 手动添加的赞助者
+          help: 手动添加非爱发电的赞助者
+          value: []
+          children:
+            - $formkit: text
+              name: name
+              label: 赞助者名称
+              validation: required
+            - $formkit: attachment
+              name: avatar
+              label: 赞助者头像（!可选）
+              accepts:
+                - "image/"
+              value: ""
+              validation: required
+            - $formkit: date
+              name: date
+              label: 赞助日期
+              validation: required
+            - $formkit: number
+              name: number
+              label: 赞助金额
+              min: 0
+              step: 0.01
+              validation: required
 
     - group: seo
       label: SEO 优化

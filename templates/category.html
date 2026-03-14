@@ -92,55 +92,10 @@
         </th:block>
         
         <th:block th:if="${#lists.isEmpty(posts.items)}">
-          <a href="post.html" class="archive-card">
-            <div class="archive-card-cover">
-              <img src="https://picsum.photos/seed/tech1/300/200" alt="" />
-            </div>
-            <div class="archive-card-content">
-              <h2 class="archive-card-title">探索 Next.js 14 的新特性与最佳实践</h2>
-              <p class="archive-card-desc">深入了解 Next.js 14 带来的革命性变化...</p>
-              <div class="archive-card-meta">
-                <div class="archive-card-tags">
-                  <span class="archive-tag">Next.js</span>
-                  <span class="archive-tag">React</span>
-                </div>
-                <time class="archive-card-date">01-15</time>
-              </div>
-            </div>
-            <th:block th:replace="~{modules/watermark :: watermark('archive-card-watermark')}" />
-          </a>
-          <a href="post.html" class="archive-card">
-            <div class="archive-card-cover">
-              <img src="https://picsum.photos/seed/tech2/300/200" alt="" />
-            </div>
-            <div class="archive-card-content">
-              <h2 class="archive-card-title">使用 Tailwind CSS 构建现代化 UI 组件</h2>
-              <p class="archive-card-desc">从零开始学习 Tailwind CSS 的实用技巧...</p>
-              <div class="archive-card-meta">
-                <div class="archive-card-tags">
-                  <span class="archive-tag">CSS</span>
-                </div>
-                <time class="archive-card-date">01-14</time>
-              </div>
-            </div>
-            <th:block th:replace="~{modules/watermark :: watermark('archive-card-watermark')}" />
-          </a>
-          <a href="post.html" class="archive-card">
-            <div class="archive-card-cover">
-              <img src="https://picsum.photos/seed/tech3/300/200" alt="" />
-            </div>
-            <div class="archive-card-content">
-              <h2 class="archive-card-title">TypeScript 5.0 新特性详解</h2>
-              <p class="archive-card-desc">TypeScript 5.0 带来了哪些新功能？</p>
-              <div class="archive-card-meta">
-                <div class="archive-card-tags">
-                  <span class="archive-tag">TypeScript</span>
-                </div>
-                <time class="archive-card-date">01-12</time>
-              </div>
-            </div>
-            <th:block th:replace="~{modules/watermark :: watermark('archive-card-watermark')}" />
-          </a>
+          <div class="empty-state" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <p style="font-size:1.1rem;">该分类下暂无文章</p>
+          </div>
         </th:block>
       </div>
 

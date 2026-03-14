@@ -308,83 +308,11 @@
                   </th:block>
                   
                   <th:block th:if="${#lists.isEmpty(postFinder.list(1, 8).items)}">
-                    <li class="article-row">
-                      <a href="#" class="article-link">
-                        <span class="article-index">01</span>
-                        <div class="article-cover">
-                          <img src="https://picsum.photos/seed/post1/120/80" alt="" />
-                        </div>
-                        <div class="article-detail">
-                          <h3 class="article-name">探索 Next.js 14 的新特性与最佳实践</h3>
-                          <p class="article-desc">3天前 · 深入了解 Next.js 14 带来的革命性变化...</p>
-                        </div>
-                        <span class="article-views">阅读量 1.2k</span>
-                      </a>
-                    </li>
-                    <li class="article-row">
-                      <a href="#" class="article-link">
-                        <span class="article-index">02</span>
-                        <div class="article-cover">
-                          <img src="https://picsum.photos/seed/post2/120/80" alt="" />
-                        </div>
-                        <div class="article-detail">
-                          <h3 class="article-name">使用 Tailwind CSS 构建现代化 UI 组件</h3>
-                          <p class="article-desc">4天前 · 从零开始学习 Tailwind 的实用技巧...</p>
-                        </div>
-                        <span class="article-views">阅读量 856</span>
-                      </a>
-                    </li>
-                    <li class="article-row">
-                      <a href="#" class="article-link">
-                        <span class="article-index">03</span>
-                        <div class="article-cover">
-                          <img src="https://picsum.photos/seed/post3/120/80" alt="" />
-                        </div>
-                        <div class="article-detail">
-                          <h3 class="article-name">TypeScript 5.0 新特性详解</h3>
-                          <p class="article-desc">6天前 · TypeScript 5.0 带来了哪些新功能...</p>
-                        </div>
-                        <span class="article-views">阅读量 2.3k</span>
-                      </a>
-                    </li>
-                    <li class="article-row">
-                      <a href="#" class="article-link">
-                        <span class="article-index">04</span>
-                        <div class="article-cover">
-                          <img src="https://picsum.photos/seed/post4/120/80" alt="" />
-                        </div>
-                        <div class="article-detail">
-                          <h3 class="article-name">React Server Components 深入理解</h3>
-                          <p class="article-desc">8天前 · RSC 的工作原理和最佳实践...</p>
-                        </div>
-                        <span class="article-views">阅读量 1.8k</span>
-                      </a>
-                    </li>
-                    <li class="article-row">
-                      <a href="#" class="article-link">
-                        <span class="article-index">05</span>
-                        <div class="article-cover">
-                          <img src="https://picsum.photos/seed/post5/120/80" alt="" />
-                        </div>
-                        <div class="article-detail">
-                          <h3 class="article-name">2026 年前端技术趋势展望</h3>
-                          <p class="article-desc">10天前 · 新的一年前端会有哪些变化...</p>
-                        </div>
-                        <span class="article-views">阅读量 3.1k</span>
-                      </a>
-                    </li>
-                    <li class="article-row">
-                      <a href="#" class="article-link">
-                        <span class="article-index">06</span>
-                        <div class="article-cover">
-                          <img src="https://picsum.photos/seed/post6/120/80" alt="" />
-                        </div>
-                        <div class="article-detail">
-                          <h3 class="article-name">从零搭建个人博客系统</h3>
-                          <p class="article-desc">12天前 · 手把手教你搭建属于自己的博客...</p>
-                        </div>
-                        <span class="article-views">阅读量 945</span>
-                      </a>
+                    <li class="article-row" style="justify-content:center;padding:2rem 1rem;">
+                      <div style="text-align:center;color:var(--color-text-muted);opacity:0.6;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36" style="margin:0 auto 0.5rem;display:block;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <p style="font-size:0.85rem;">暂无文章</p>
+                      </div>
                     </li>
                   </th:block>
                 </ul>
@@ -473,97 +401,11 @@
                   </th:block>
                   
                   <th:block th:if="${#lists.isEmpty(recentPosts) && (recentMomentsResult == null || recentMomentsResult.items == null || recentMomentsResult.items.isEmpty()) && (photoGroups == null || photoGroups.isEmpty())}">
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">发布了文章</span>
-                        <a href="#" class="stream-object">探索 Next.js 14 的新特性</a>
+                    <li class="stream-row" style="justify-content:center;padding:2rem 1rem;">
+                      <div style="text-align:center;color:var(--color-text-muted);opacity:0.6;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="margin:0 auto 0.5rem;display:block;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <p style="font-size:0.85rem;">暂无动态</p>
                       </div>
-                      <span class="stream-time">2小时前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">收到了来自</span>
-                        <span class="stream-actor">
-                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="" />
-                          小明
-                        </span>
-                        <span class="stream-verb">的评论</span>
-                      </div>
-                      <span class="stream-time">5小时前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">更新了手记</span>
-                        <a href="#" class="stream-object">今天天气真好</a>
-                      </div>
-                      <span class="stream-time">昨天</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">添加了友链</span>
-                        <a href="#" class="stream-object">某某的博客</a>
-                      </div>
-                      <span class="stream-time">昨天</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">发布了文章</span>
-                        <a href="#" class="stream-object">Tailwind CSS 最佳实践</a>
-                      </div>
-                      <span class="stream-time">2天前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">收到了来自</span>
-                        <span class="stream-actor">
-                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user2" alt="" />
-                          小红
-                        </span>
-                        <span class="stream-verb">的点赞</span>
-                      </div>
-                      <span class="stream-time">2天前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">发布了文章</span>
-                        <a href="#" class="stream-object">Vue 3 组合式 API 实战</a>
-                      </div>
-                      <span class="stream-time">3天前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">收到了来自</span>
-                        <span class="stream-actor">
-                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user3" alt="" />
-                          小李
-                        </span>
-                        <span class="stream-verb">的评论</span>
-                      </div>
-                      <span class="stream-time">4天前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">更新了手记</span>
-                        <a href="#" class="stream-object">周末去爬山了</a>
-                      </div>
-                      <span class="stream-time">5天前</span>
-                    </li>
-                    <li class="stream-row">
-                      <span class="stream-marker"></span>
-                      <div class="stream-body">
-                        <span class="stream-verb">发布了文章</span>
-                        <a href="#" class="stream-object">Docker 容器化部署指南</a>
-                      </div>
-                      <span class="stream-time">1周前</span>
                     </li>
                   </th:block>
                 </ul>
@@ -600,23 +442,11 @@
                 
                 <!-- 未安装插件或无数据时的占位 -->
                 <th:block th:if="${photoGroups == null || photoGroups.isEmpty()}">
-                  <div class="swiper-slide memo-card photo-card">
-                    <img class="photo-img" src="https://picsum.photos/seed/photo1/300/200" alt="示例图片" />
-                    <span class="photo-time">01-15</span>
-                    <span class="photo-name">美丽风景</span>
-                    <span class="photo-group-tag">风景</span>
-                  </div>
-                  <div class="swiper-slide memo-card photo-card">
-                    <img class="photo-img" src="https://picsum.photos/seed/photo2/300/200" alt="示例图片" />
-                    <span class="photo-time">01-14</span>
-                    <span class="photo-name">城市夜景</span>
-                    <span class="photo-group-tag">城市</span>
-                  </div>
-                  <div class="swiper-slide memo-card photo-card">
-                    <img class="photo-img" src="https://picsum.photos/seed/photo3/300/200" alt="示例图片" />
-                    <span class="photo-time">01-13</span>
-                    <span class="photo-name">自然风光</span>
-                    <span class="photo-group-tag">自然</span>
+                  <div class="swiper-slide memo-card photo-card" style="display:flex;align-items:center;justify-content:center;min-height:160px;">
+                    <div style="text-align:center;color:var(--color-text-muted);opacity:0.6;">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="margin:0 auto 0.5rem;display:block;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      <p style="font-size:0.8rem;">暂无照片</p>
+                    </div>
                   </div>
                 </th:block>
               </div>
@@ -651,46 +481,12 @@
                 </th:block>
                 
                 <th:block th:if="${momentsResult == null || momentsResult.items == null || momentsResult.items.isEmpty()}">
-                  <a href="#" class="swiper-slide life-card">
-                    <img src="https://picsum.photos/seed/life1/400/250" alt="" />
-                    <span class="life-date">2026-01-10</span>
-                    <div class="life-overlay">
-                      <span class="life-title">周末露营记</span>
-                      <span class="life-desc">和朋友们一起去郊外露营，星空很美</span>
+                  <div class="swiper-slide life-card" style="display:flex;align-items:center;justify-content:center;min-height:200px;background:var(--color-bg-soft);border-radius:12px;">
+                    <div style="text-align:center;color:var(--color-text-muted);opacity:0.6;">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="margin:0 auto 0.5rem;display:block;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      <p style="font-size:0.8rem;">暂无动态</p>
                     </div>
-                  </a>
-                  <a href="#" class="swiper-slide life-card">
-                    <img src="https://picsum.photos/seed/life2/400/250" alt="" />
-                    <span class="life-date">2026-01-08</span>
-                    <div class="life-overlay">
-                      <span class="life-title">城市夜景</span>
-                      <span class="life-desc">登上高楼俯瞰城市的璀璨灯火</span>
-                    </div>
-                  </a>
-                  <a href="#" class="swiper-slide life-card">
-                    <img src="https://picsum.photos/seed/life3/400/250" alt="" />
-                    <span class="life-date">2026-01-05</span>
-                    <div class="life-overlay">
-                      <span class="life-title">咖啡时光</span>
-                      <span class="life-desc">午后的咖啡馆，享受慢生活</span>
-                    </div>
-                  </a>
-                  <a href="#" class="swiper-slide life-card">
-                    <img src="https://picsum.photos/seed/life4/400/250" alt="" />
-                    <span class="life-date">2026-01-02</span>
-                    <div class="life-overlay">
-                      <span class="life-title">山间徒步</span>
-                      <span class="life-desc">新年第一次户外徒步，空气清新</span>
-                    </div>
-                  </a>
-                  <a href="#" class="swiper-slide life-card">
-                    <img src="https://picsum.photos/seed/life5/400/250" alt="" />
-                    <span class="life-date">2026-01-01</span>
-                    <div class="life-overlay">
-                      <span class="life-title">新年烟火</span>
-                      <span class="life-desc">跨年夜的烟火，迎接2026</span>
-                    </div>
-                  </a>
+                  </div>
                 </th:block>
               </div>
             </div>

@@ -129,9 +129,7 @@
               </li>
             </th:block>
             <th:block th:if="${#lists.isEmpty(postFinder.list(1, hotPostsCount).items)}">
-              <li><a href="#">探索 Next.js 14 的新特性</a></li>
-              <li><a href="#">Tailwind CSS 构建 UI 组件</a></li>
-              <li><a href="#">TypeScript 5.0 新特性详解</a></li>
+              <li style="text-align:center;padding:1rem 0;color:var(--color-text-muted);opacity:0.6;font-size:0.85rem;">暂无文章</li>
             </th:block>
           </ul>
         </div>
@@ -161,13 +159,7 @@
                  th:text="${tag.spec.displayName}">标签</a>
             </th:block>
             <th:block th:if="${#lists.isEmpty(tagFinder.listAll())}">
-              <a href="#" class="widget-tag">JavaScript</a>
-              <a href="#" class="widget-tag">React</a>
-              <a href="#" class="widget-tag">Vue</a>
-              <a href="#" class="widget-tag">TypeScript</a>
-              <a href="#" class="widget-tag">CSS</a>
-              <a href="#" class="widget-tag">Node.js</a>
-              <a href="#" class="widget-tag">前端</a>
+              <span class="widget-tag" style="opacity:0.5;cursor:default;">暂无标签</span>
             </th:block>
           </div>
           <a th:if="${#lists.size(tagFinder.listAll()) > 6}" th:href="@{/tags}" class="widget-tags-more">

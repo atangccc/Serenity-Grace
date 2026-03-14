@@ -206,6 +206,24 @@
           </th:block>
         </div>
       </div>
+<<<<<<< HEAD
+=======
+      <!-- 右下角分类和标签 -->
+      <div class="post-hero-tags">
+        <a class="post-hero-category-link" th:if="${post.categories != null and not #lists.isEmpty(post.categories)}" 
+           th:href="${post.categories[0].status.permalink}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span th:text="${post.categories[0].spec.displayName}">分类</span>
+        </a>
+        <th:block th:if="${post.tags != null and not #lists.isEmpty(post.tags)}">
+          <a class="post-hero-tag-link" th:each="tag : ${post.tags}" th:href="@{${tag.status.permalink}}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span th:text="${tag.spec.displayName}">标签</span>
+          </a>
+        </th:block>
+      </div>
+    </div>
+>>>>>>> ae9f49b05e1bc03320cdb89cbaec2847c6a7cac6
 
       <div class="post-layout"
         th:classappend="${theme.config.post != null && theme.config.post.enableBackground} ? 'has-bg-wallpaper' : ''">
@@ -519,12 +537,7 @@
                         th:text="${tag.spec.displayName}">标签</a>
                     </th:block>
                     <th:block th:if="${#lists.isEmpty(tagFinder.listAll())}">
-                      <a href="#" class="widget-tag">JavaScript</a>
-                      <a href="#" class="widget-tag">React</a>
-                      <a href="#" class="widget-tag">Vue</a>
-                      <a href="#" class="widget-tag">TypeScript</a>
-                      <a href="#" class="widget-tag">CSS</a>
-                      <a href="#" class="widget-tag">Node.js</a>
+                      <span class="widget-tag" style="opacity:0.5;cursor:default;">暂无标签</span>
                     </th:block>
                   </div>
                   <a th:if="${#lists.size(tagFinder.listAll()) > 6}" th:href="@{/tags}" class="widget-tags-more">
@@ -645,12 +658,7 @@
                       th:text="${tag.spec.displayName}">标签</a>
                   </th:block>
                   <th:block th:if="${#lists.isEmpty(tagFinder.listAll())}">
-                    <a href="#" class="widget-tag">JavaScript</a>
-                    <a href="#" class="widget-tag">React</a>
-                    <a href="#" class="widget-tag">Vue</a>
-                    <a href="#" class="widget-tag">TypeScript</a>
-                    <a href="#" class="widget-tag">CSS</a>
-                    <a href="#" class="widget-tag">Node.js</a>
+                    <span class="widget-tag" style="opacity:0.5;cursor:default;">暂无标签</span>
                   </th:block>
                 </div>
                 <a th:if="${#lists.size(tagFinder.listAll()) > 6}" th:href="@{/tags}" class="widget-tags-more">

@@ -63,25 +63,11 @@
         
         <!-- 无数据占位 -->
         <th:block th:if="${photoGroups == null || photoGroups.isEmpty()}">
-          <div class="photos-masonry" id="photos-masonry">
-            <div class="photo-item" data-group="demo">
-              <div class="photo-wrapper">
-                <img src="https://picsum.photos/seed/p1/400/600" alt="示例图片" />
-                <div class="photo-overlay">
-                  <span class="photo-name">风景照片</span>
-                  <span class="photo-group">风景</span>
-                </div>
-              </div>
-            </div>
-            <div class="photo-item" data-group="demo">
-              <div class="photo-wrapper">
-                <img src="https://picsum.photos/seed/p2/400/300" alt="示例图片" />
-                <div class="photo-overlay">
-                  <span class="photo-name">城市夜景</span>
-                  <span class="photo-group">城市</span>
-                </div>
-              </div>
-            </div>
+          <div class="photos-empty" data-aos="fade-up" style="text-align:center;padding:4rem 1rem;color:var(--color-text-muted);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 1rem;display:block;opacity:0.5;">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <p style="font-size:1.1rem;">暂无照片</p>
           </div>
         </th:block>
         

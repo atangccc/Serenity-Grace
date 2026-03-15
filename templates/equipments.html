@@ -1,79 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-	th:replace="~{modules/layout :: html(title = ${theme.config.equipments.title ?: '我的装备'}, content = ~{::content}, head = ~{::head})}">
+	th:replace="~{modules/layout :: html(title = ${theme.config.watermark.equipmentsTitle ?: '装备'}, content = ~{::content}, head = ~{::head})}">
 
 	<th:block th:fragment="head">
 		<link rel="stylesheet" th:href="@{/assets/css/equipments.css}">
-		<script th:src="@{/assets/js/equipments.js}" defer></script>
+		<meta property="og:type" content="website" />
+		<meta property="og:title"
+			th:content="${(theme.config.watermark.equipmentsTitle ?: '装备') + ' - ' + (theme.config.basic.title ?: site.title)}" />
+		<meta property="og:description" th:content="${theme.config.watermark.equipmentsSubtitle ?: '工欲善其事，必先利其器'}" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title"
+			th:content="${(theme.config.watermark.equipmentsTitle ?: '装备') + ' - ' + (theme.config.basic.title ?: site.title)}" />
 	</th:block>
 
 	<th:block th:fragment="content">
-		<main class="main">
-			<div class="container">
-				<section class="equipments-page">
-					<div class="equipments-header" data-aos="fade-up">
-						<h1 class="equipments-title" th:text="${theme.config.equipments.title ?: '我的装备'}">我的装备</h1>
-						<p class="equipments-subtitle" th:text="${theme.config.equipments.subtitle ?: '好物分享 · 分享我日常使用的硬件与软件'}">分享好物
-						</p>
+		<div class="container">
+			<header class="page-header" data-aos="fade-up">
+				<h1 class="page-title" th:text="${theme.config.watermark.equipmentsTitle ?: '装备'}">装备</h1>
+				<p class="page-desc" th:text="${theme.config.watermark.equipmentsSubtitle ?: '工欲善其事，必先利其器'}">工欲善其事，必先利其器</p>
+			</header>
 
-						<div class="equipments-badge" th:if="${equipments.total > 0}">
-							<span th:text="${equipments.total} + ' ITEMS'">0 ITEMS</span>
-						</div>
-					</div>
-
-					<div class="equipments-content">
-						<th:block th:each="group : ${groups}">
-							<div class="group-section" data-aos="fade-up">
-								<div class="group-header">
-									<span class="group-icon">#</span>
-									<h2 class="group-title" th:text="${group.spec.displayName}">分组名称</h2>
-									<span class="group-count" th:text="${group.status.equipmentCount}">0</span>
-								</div>
-
-								<div class="equipment-grid">
-									<a th:href="${item.spec.url}" target="_blank" class="equipment-item"
-										th:each="item : ${group.equipments}">
-										<span class="tech-corner top-left"></span>
-										<span class="tech-corner top-right"></span>
-										<span class="tech-corner bottom-left"></span>
-										<span class="tech-corner bottom-right"></span>
-
-										<div class="item-meta-header">
-											<span class="meta-label">PRODUCT_OVERVIEW</span>
-											<span class="meta-status">核心设备</span>
-										</div>
-
-										<h3 class="item-title" th:text="${item.spec.displayName}">设备名称</h3>
-
-										<div class="item-specification" th:if="${not #strings.isEmpty(item.spec.specification)}"
-											th:text="${item.spec.specification}">
-											规格参数
-										</div>
-
-										<div class="item-image-box">
-											<img th:src="${item.spec.cover}" th:alt="${item.spec.displayName}" loading="lazy">
-										</div>
-
-										<p class="item-desc" th:text="${item.spec.description}">描述信息</p>
-
-										<div class="item-meta-footer">
-											<span th:text="'ID. ' + ${#strings.toUpperCase(#strings.substring(item.metadata.name, 10, 16))}">
-												ID. HQH7FY
-											</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</th:block>
-					</div>
-
-					<div class="equipments-empty" th:if="${#lists.isEmpty(groups)}">
-						<p>还没有添加任何装备哦~</p>
-					</div>
-
-				</section>
+			<!-- 未安装插件提示 -->
+			<div th:if="${groups == null}" class="equipments-empty" data-aos="fade-up">
+				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+					stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+					<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+					<polyline points="16 7 16 2 8 2 8 7"></polyline>
+				</svg>
+				<p>请先安装并启用「装备管理」插件</p>
 			</div>
-		</main>
+
+			<!-- 插件已安装时的正常内容 -->
+			<th:block th:if="${groups != null}">
+				<div class="equipments-content" th:if="${!#lists.isEmpty(groups)}">
+					<th:block th:each="group : ${groups}">
+						<div class="group-section" data-aos="fade-up">
+							<div class="group-header">
+								<span class="group-icon">#</span>
+								<h2 class="group-title" th:text="${group.spec.displayName}">分组名称</h2>
+								<span class="group-count" th:text="${group.status != null ? group.status.equipmentCount : 0}">0</span>
+							</div>
+
+							<div class="equipment-grid" th:if="${group.equipments != null and !#lists.isEmpty(group.equipments)}">
+								<a th:href="${item.spec.url ?: 'javascript:void(0)'}"
+									th:target="${item.spec.url != null and !#strings.isEmpty(item.spec.url)} ? '_blank' : '_self'"
+									class="equipment-item" th:each="item : ${group.equipments}">
+									<span class="tech-corner top-left"></span>
+									<span class="tech-corner top-right"></span>
+									<span class="tech-corner bottom-left"></span>
+									<span class="tech-corner bottom-right"></span>
+
+									<div class="item-meta-header">
+										<span class="meta-label">PRODUCT_OVERVIEW</span>
+										<span class="meta-status">核心设备</span>
+									</div>
+
+									<h3 class="item-title" th:text="${item.spec.displayName}">设备名称</h3>
+
+									<div class="item-specification" th:if="${!#strings.isEmpty(item.spec.specification)}"
+										th:text="${item.spec.specification}">
+										规格参数
+									</div>
+
+									<div class="item-image-box" th:if="${!#strings.isEmpty(item.spec.cover)}">
+										<img th:src="${item.spec.cover}" th:alt="${item.spec.displayName}" loading="lazy">
+									</div>
+
+									<p class="item-desc" th:if="${!#strings.isEmpty(item.spec.description)}"
+										th:text="${item.spec.description}">描述信息</p>
+
+									<div class="item-meta-footer">
+										<span th:if="${#strings.length(item.metadata.name) >= 16}"
+											th:text="'ID. ' + ${#strings.toUpperCase(#strings.substring(item.metadata.name, 10, 16))}">
+											ID. HQH7FY
+										</span>
+										<span th:unless="${#strings.length(item.metadata.name) >= 16}"
+											th:text="'ID. ' + ${#strings.toUpperCase(item.metadata.name)}">
+											ID. XXXXXX
+										</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</th:block>
+				</div>
+
+				<div class="equipments-empty" th:if="${#lists.isEmpty(groups)}" data-aos="fade-up">
+					<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+						<polyline points="16 7 16 2 8 2 8 7"></polyline>
+					</svg>
+					<p>还没有添加任何装备哦~</p>
+				</div>
+			</th:block>
+		</div>
 	</th:block>
 
 </html>

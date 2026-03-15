@@ -6,15 +6,13 @@
   
   <style th:inline="css">
     :root {
-      /* 从后台配置读取毫秒数，默认 300ms */
+      /* 卡片动画速度配置 */
       --link-speed: [(${theme.config.links.cardAnimationSpeed + 'ms' ?: '300ms'})];
-      /* 采用标准丝滑贝塞尔曲线 */
       --link-curve: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* 只有开启特效时才应用以下样式 */
+    /* --- 核心融合：卡片悬停特效 --- */
     [# th:if="${theme.config.links.enableHoverEffect}"]
-    
     .link-card {
       position: relative;
       display: flex;
@@ -25,12 +23,12 @@
         box-shadow var(--link-speed) var(--link-curve),
         border-color var(--link-speed) var(--link-curve) !important;
       overflow: hidden;
-      min-height: 90px; /* 设定基础高度防止极端情况抖动 */
+      min-height: 90px;
     }
 
-    /* 1. 头像：解决“即刻消失”和“直接宽过来” */
+    /* 头像收缩动画 */
     .link-avatar-wrap {
-      width: 65px; /* 设定明确的初始宽度 */
+      width: 65px; 
       height: 65px;
       margin-right: var(--space-3);
       flex-shrink: 0;
@@ -38,7 +36,6 @@
       align-items: center;
       justify-content: center;
       opacity: 1;
-      /* 必须在基础类写 transition 才能实现缓慢消失 */
       transition: 
         width var(--link-speed) var(--link-curve),
         margin var(--link-speed) var(--link-curve),
@@ -48,44 +45,31 @@
     }
 
     .link-card:hover .link-avatar-wrap {
-      width: 0 !important;   /* 宽度归零，挤压右侧文字产生滑动感 */
+      width: 0 !important;
       margin-right: 0 !important;
       opacity: 0 !important;
-      transform: scale(0) translateX(-20px); /* 缩小并向左飘移 */
+      transform: scale(0) translateX(-20px);
     }
 
-    /* 2. 信息区：解决“位移生硬” */
-    .link-info {
-      flex: 1;
-      min-width: 0;
-      transition: all var(--link-speed) var(--link-curve) !important;
-    }
-
-    .link-name {
-      transition: color var(--link-speed) var(--link-curve) !important;
-    }
-
-    /* 3. 描述区：解决“高度跳动” */
+    /* 描述文字展开动画 */
     .link-desc {
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1; /* 初始一行 */
+      -webkit-line-clamp: 1;
       line-height: 1.5;
-      max-height: 1.5em;    /* 初始高度 */
-      white-space: normal !important; /* 必须是 normal 才能动画化 */
+      max-height: 1.5em;
+      white-space: normal !important;
       overflow: hidden;
-      transition: 
-        max-height var(--link-speed) var(--link-curve),
-        color var(--link-speed) var(--link-curve) !important;
+      transition: max-height var(--link-speed) var(--link-curve), color var(--link-speed) var(--link-curve) !important;
     }
 
     .link-card:hover .link-desc {
-      -webkit-line-clamp: 2; /* 悬停显示两行 */
-      max-height: 3.2em;    /* 足够容纳两行的高度，实现平滑撑开 */
+      -webkit-line-clamp: 2;
+      max-height: 3.2em;
       color: rgba(255, 255, 255, 0.9) !important;
     }
 
-    /* 悬停视觉增强 */
+    /* 整体卡片变色 */
     .link-card:hover {
       background-color: var(--color-accent) !important;
       border-color: var(--color-accent) !important;
@@ -93,15 +77,7 @@
       box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
     }
 
-    .link-card:hover .link-name {
-      color: #fff !important;
-    }
-
-    /* 水印背景 */
-    .link-group-tag {
-      transition: all var(--link-speed) var(--link-curve) !important;
-    }
-
+    .link-card:hover .link-name { color: #fff !important; }
     .link-card:hover .link-group-tag {
       color: rgba(255, 255, 255, 0.1) !important;
       -webkit-text-stroke: 0 !important;
@@ -112,45 +88,39 @@
 
   <script>
     window.LINK_CONFIG = {
-      offlineLabel: '[[${theme.config.links != null && theme.config.links.offlineLabel != null ? theme.config.links.offlineLabel : "失联咯~"}]]'
+      offlineLabel: '[[${theme.config.links?.offlineLabel ?: "失联咯~"}]]'
     };
   </script>
   <script th:src="@{/assets/js/links.js}" defer></script>
-  <script th:if="${pluginFinder.available('link-submit')}" th:src="@{/assets/js/links-submit.js}" defer></script>
 </th:block>
 
 <th:block th:fragment="content">
   <main class="main">
     <div class="container">
       <section class="links-hero" data-aos="fade-up">
-        <h1 class="links-hero-title" th:text="${singlePage != null ? singlePage.spec.title : '朋友们'}">朋友们</h1>
+        <h1 class="links-hero-title" th:text="${singlePage?.spec?.title ?: '朋友们'}">朋友们</h1>
         <p class="links-hero-desc">海内存知己，天涯若比邻</p>
-        <div class="links-hero-stats" th:with="totalLinks = ${#lists.isEmpty(groups) ? 0 : #aggregates.sum(groups.![links.size()])}">
-          <span class="links-count">已收录 <strong th:text="${totalLinks}">0</strong> 位朋友</span>
-          <button class="links-random-btn" onclick="visitRandomLink()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
-            随机访问
-          </button>
+        <div class="links-hero-stats">
+            <span class="links-count">已收录 <strong th:text="${#lists.isEmpty(groups) ? 0 : #aggregates.sum(groups.![links.size()])}">0</strong> 位朋友</span>
+            <button class="links-random-btn" onclick="visitRandomLink()">随机访问</button>
         </div>
       </section>
 
-      <section class="link-section" data-aos="fade-up" data-aos-delay="100">
-        <div class="link-grid" th:if="${groups != null && !#lists.isEmpty(groups)}">
-          <th:block th:each="group, groupStat : ${groups}">
-            <a th:each="link, linkStat : ${group.links}" 
+      <section class="link-section" data-aos="fade-up">
+        <div class="link-grid">
+          <th:block th:each="group : ${groups}">
+            <a th:each="link : ${group.links}" 
                th:href="${link.spec.url}" 
                class="link-card" 
-               target="_blank" 
-               rel="noopener"
-               data-aos="zoom-in"
-               th:attr="data-aos-delay=${150 + groupStat.index * 50 + linkStat.index * 30}">
+               data-link 
+               target="_blank">
               <div class="link-avatar-wrap">
-                <img th:if="${link.spec.logo}" class="link-avatar" th:src="${link.spec.logo}" th:alt="${link.spec.displayName}" loading="lazy" />
+                <img th:if="${link.spec.logo}" class="link-avatar" th:src="${link.spec.logo}" loading="lazy" />
                 <div th:unless="${link.spec.logo}" class="link-avatar-placeholder" th:text="${#strings.substring(link.spec.displayName, 0, 1)}">L</div>
               </div>
               <div class="link-info">
-                <span class="link-name" th:text="${link.spec.displayName}">链接名称</span>
-                <span class="link-desc" th:text="${link.spec.description}">链接描述</span>
+                <span class="link-name" th:text="${link.spec.displayName}">名称</span>
+                <span class="link-desc" th:text="${link.spec.description}">描述</span>
               </div>
               <span class="link-group-tag" th:text="${group.spec.displayName}">分组</span>
             </a>
@@ -158,40 +128,26 @@
         </div>
       </section>
 
-      <div class="link-apply" data-aos="fade-up">
-        <h2 class="link-apply-title">申请友链</h2>
-        <p class="link-apply-desc">欢迎交换友链，请提交你的站点信息</p>
-        <div class="link-apply-info">
-          <span class="link-apply-item" onclick="copyApplyInfo(this)">
-            <span class="label">名称：</span>
-            <span class="link-apply-value" th:text="${theme.config.links.ownerName ?: theme.config.basic.title}">站点名称</span>
-          </span>
-          <span class="link-apply-item" onclick="copyApplyInfo(this)">
-            <span class="label">链接：</span>
-            <span class="link-apply-value" th:text="${theme.config.links.ownerUrl ?: site.url}">站点链接</span>
-          </span>
-          <span class="link-apply-item" onclick="copyApplyInfo(this)">
-            <span class="label">描述：</span>
-            <span class="link-apply-value" th:text="${theme.config.links.ownerDescription ?: theme.config.basic.description}">站点描述</span>
-          </span>
-          <a th:if="${pluginFinder.available('link-submit') and theme.config.links.showApplyButton}" 
-             href="javascript:void(0)" onclick="openLinkSubmitModal()" class="link-submit-text link-apply-item">申请友链 ›</a>
+      </div>
+  </main>
+
+  <div id="linkConfirmModal" class="link-confirm-modal">
+    <div class="link-confirm-content">
+      <div class="link-confirm-header">
+        <span>即将访问：<strong class="link-target-name"></strong></span>
+        <button class="link-confirm-close" onclick="closeLinkConfirm()">×</button>
+      </div>
+      <div class="link-confirm-body">
+        <p class="link-warning-text">请注意甄别外部链接信息真伪</p>
+        <div class="link-slider-container">
+          <div class="link-slider-bg"></div>
+          <div class="link-slider-track">
+            <div class="link-slider-text">拖动滑块验证</div>
+            <div class="link-slider-button">›</div>
+          </div>
         </div>
       </div>
     </div>
-  </main>
-
-  <div id="customToast" class="custom-toast">...</div>
-  
-  <script>
-    function copyApplyInfo(el) {
-      const value = el.querySelector('.link-apply-value')?.textContent?.trim();
-      if (!value) return;
-      navigator.clipboard.writeText(value).then(() => {
-        el.classList.add('copied');
-        setTimeout(() => el.classList.remove('copied'), 1500);
-      });
-    }
-  </script>
+  </div>
 </th:block>
 </html>

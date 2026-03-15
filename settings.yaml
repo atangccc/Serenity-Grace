@@ -981,7 +981,7 @@ spec:
     - group: projects
       label: 项目展示
       formSchema:
-        - $formkit: text
+        - $formkit: password
           name: githubToken
           label: GitHub Token (可选)
           placeholder: ghp_xxxxxxxxxxxx

@@ -67,7 +67,6 @@
     var GITHUB_PROJECTS_RAW = /*[[${theme.config.projects?.githubRepos}]]*/ [];
     var CUSTOM_PROJECTS_RAW = /*[[${theme.config.projects?.customProjects}]]*/ [];
     var GITHUB_TOKEN = /*[[${theme.config.projects?.githubToken}]]*/ '';
-    
     window.GITHUB_PROJECTS = Array.isArray(GITHUB_PROJECTS_RAW) 
       ? GITHUB_PROJECTS_RAW.map(item => {
           if (typeof item === 'string') return { url: item, ownerType: 'mine' };

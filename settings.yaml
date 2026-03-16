@@ -896,16 +896,39 @@ spec:
           label: 显示 Steam 游戏
           value: false
           help: 是否在关于页面显示 Steam 个人资料卡片（需安装 plugin-steam 插件并在插件设置中配置 API Key 等信息）
-        - $formkit: checkbox
-          name: showAfdian
-          label: 显示爱发电赞助
-          value: false
-          help: 是否在关于页面显示爱发电赞助者组件（需要安装爱发电插件）
-        - $formkit: text
-          name: afdianUrl
-          label: 爱发电链接
-          value: ""
-          help: 你的爱发电主页链接，如 https://afdian.net/a/username，留空则不显示"成为赞助者"按钮
+        - $formkit: group
+          name: afdianSettings
+          label: 爱发电设置
+          value:
+            showAfdian: false
+            afdianUrl: ""
+            showPlans: true
+            showProducts: true
+          children:
+            - $formkit: switch
+              id: afdian_show
+              name: showAfdian
+              label: 显示爱发电组件
+              help: 是否在关于页面显示爱发电组件（需要安装爱发电插件）
+              value: false
+            - $formkit: text
+              name: afdianUrl
+              if: $get(afdian_show).value
+              label: 爱发电链接
+              value: ""
+              help: 你的爱发电主页链接，如 https://afdian.com/a/username，留空则不显示"成为赞助者"按钮
+            - $formkit: switch
+              name: showPlans
+              if: $get(afdian_show).value
+              label: 显示发电方案
+              value: true
+              help: 是否显示发电方案（折叠面板，点击展开）
+            - $formkit: switch
+              name: showProducts
+              if: $get(afdian_show).value
+              label: 显示电铺商品
+              value: true
+              help: 是否显示电铺商品（折叠面板，点击展开）
 
     - group: seo
       label: SEO 优化

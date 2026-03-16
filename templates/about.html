@@ -26,6 +26,7 @@
   <script th:src="@{/assets/js/iconify.min.js}" defer></script>
   <script th:if="${theme.config.about != null && theme.config.about.showForeverBlog}" th:src="@{/assets/js/about.js}" defer></script>
   <script th:if="${theme.config.about != null && theme.config.about.showSteam}" th:src="@{/assets/js/steam.js}" defer></script>
+  <script th:if="${theme.config.about != null && theme.config.about.afdianSettings != null && theme.config.about.afdianSettings.showAfdian}" th:src="@{/assets/js/about-afdian.js}"></script>
 </th:block>
 <th:block th:fragment="content">
   <div class="container">
@@ -192,42 +193,143 @@
       </div>
     </div>
 
-    <!-- 爱发电赞助者 -->
-    <div th:if="${theme.config.about != null && theme.config.about.showAfdian}" class="about-card glass-card afdian-card" data-aos="fade-up" data-aos-delay="450" th:with="sponsorData = ${afdianFinder != null ? afdianFinder.listAllSponsor() : null}">
+    <!-- 爱发电 -->
+    <div th:if="${theme.config.about != null && theme.config.about.afdianSettings != null && theme.config.about.afdianSettings.showAfdian}" class="about-card glass-card afdian-card" data-aos="fade-up" data-aos-delay="450"
+         th:with="afdianCfg = ${theme.config.about.afdianSettings}, sponsorData = ${afdianFinder != null ? afdianFinder.listAllSponsor() : null}, planData = ${afdianFinder != null ? afdianFinder.listAllPlan() : null}, productData = ${afdianFinder != null ? afdianFinder.listAllProduct() : null}">
       <div class="card-decoration card-decoration-2"></div>
       <h2 class="about-section-title">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        感谢赞助
+        爱发电
       </h2>
-      <div class="afdian-sponsors">
-        <th:block th:if="${sponsorData != null && sponsorData.data != null && sponsorData.data.list != null && !sponsorData.data.list.isEmpty()}">
-          <div class="sponsor-item" th:each="sponsor : ${sponsorData.data.list}">
-            <div class="sponsor-avatar">
-              <img th:src="${sponsor.user.avatar}" th:alt="${sponsor.user.name}" loading="lazy" />
+      <!-- 赞助者（直接展示） -->
+        <div class="afdian-sponsors">
+          <th:block th:if="${sponsorData != null && sponsorData.data != null && sponsorData.data.list != null && !sponsorData.data.list.isEmpty()}">
+            <div class="sponsor-item" th:each="sponsor : ${sponsorData.data.list}">
+              <div class="sponsor-avatar">
+                <img th:src="${sponsor.user.avatar}" th:alt="${sponsor.user.name}" loading="lazy" />
+              </div>
+              <div class="sponsor-info">
+                <span class="sponsor-name" th:title="${sponsor.user.name}" th:text="${sponsor.user.name}">用户名</span>
+                <div class="sponsor-meta">
+                  <span class="sponsor-amount" th:text="|¥${sponsor.all_sum_amount}|">¥0</span>
+                  <span class="sponsor-time" th:text="${afdianFinder.parseTime(sponsor.last_pay_time)}">2024-01-01</span>
+                </div>
+              </div>
             </div>
-            <div class="sponsor-info">
-              <span class="sponsor-name" th:title="${sponsor.user.name}" th:text="${sponsor.user.name}">用户名</span>
-              <div class="sponsor-meta">
-                <span class="sponsor-amount" th:text="|¥${sponsor.all_sum_amount}|">¥0</span>
-                <span class="sponsor-time" th:text="${afdianFinder.parseTime(sponsor.last_pay_time)}">2024-01-01</span>
+          </th:block>
+          <th:block th:if="${sponsorData == null || sponsorData.data == null || sponsorData.data.list == null || sponsorData.data.list.isEmpty()}">
+            <div class="afdian-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <p>暂无赞助者，成为第一个吧~</p>
+            </div>
+          </th:block>
+        </div>
+      <!-- 发电方案（折叠面板） -->
+      <th:block th:if="${afdianCfg.showPlans != null && afdianCfg.showPlans}">
+        <button class="afdian-toggle-btn" data-afdian-toggle="afdian-plans-panel" onclick="toggleAfdianPanel('afdian-plans-panel')">
+          <span class="afdian-section-title">发电方案</span>
+          <svg class="afdian-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="afdian-plans-panel" class="afdian-collapse-panel">
+          <div th:if="${planData != null && planData.data != null && planData.data.list != null && !planData.data.list.isEmpty()}" class="afdian-plan-grid">
+            <div class="afdian-plan-item"
+                 th:each="plan : ${planData.data.list}"
+                 th:data-plan-id="${plan.plan_id}"
+                 th:data-product-type="${plan.product_type}"
+                 th:data-pay-month="${plan.pay_month ?: 1}"
+                 th:data-plan-name="${plan.name}"
+                 th:data-plan-price="${plan.price ?: plan.show_price}"
+                 th:data-plan-desc="${plan.desc ?: ''}"
+                 onclick="var d=this.dataset;showAfdianModal({name:d.planName,price:d.planPrice,desc:d.planDesc,planId:d.planId,productType:d.productType,month:parseInt(d.payMonth)||1,showMonths:true})">
+              <div class="afdian-plan-top">
+                <span class="afdian-plan-name" th:text="${plan.name}">方案名</span>
+                <span class="afdian-plan-price" th:text="|¥${plan.price ?: plan.show_price}|">¥0</span>
+              </div>
+              <div th:if="${plan.desc != null && !#strings.isEmpty(plan.desc)}" class="afdian-plan-desc" th:text="${plan.desc}">描述</div>
+              <span class="afdian-plan-action">查看详情 ></span>
+            </div>
+          </div>
+          <div th:if="${planData == null || planData.data == null || planData.data.list == null || planData.data.list.isEmpty()}" class="afdian-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <p>暂无发电方案</p>
+          </div>
+        </div>
+      </th:block>
+      <!-- 电铺商品（折叠面板） -->
+      <th:block th:if="${afdianCfg.showProducts != null && afdianCfg.showProducts}">
+        <button class="afdian-toggle-btn" data-afdian-toggle="afdian-products-panel" onclick="toggleAfdianPanel('afdian-products-panel')">
+          <span class="afdian-section-title">电铺商品</span>
+          <svg class="afdian-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="afdian-products-panel" class="afdian-collapse-panel">
+          <div th:if="${productData != null && productData.data != null && productData.data.list != null && !productData.data.list.isEmpty()}" class="afdian-shop-grid">
+            <div class="afdian-shop-item"
+                 th:each="product : ${productData.data.list}"
+                 th:data-plan-id="${product.plan_id}"
+                 th:data-product-type="${product.product_type}"
+                 th:data-product-name="${product.name}"
+                 th:data-product-price="${product.price ?: product.show_price}"
+                 th:data-product-desc="${product.desc ?: ''}"
+                 th:data-product-pic="${product.pic ?: ''}"
+                 onclick="var d=this.dataset;showAfdianModal({name:d.productName,price:d.productPrice,desc:d.productDesc,pic:d.productPic,planId:d.planId,productType:d.productType,showMonths:false})">
+              <div th:if="${product.pic != null && !#strings.isEmpty(product.pic)}" class="afdian-shop-pic">
+                <img th:src="${product.pic}" th:alt="${product.name}" loading="lazy" />
+              </div>
+              <div class="afdian-shop-info">
+                <span class="afdian-shop-name" th:text="${product.name}">商品名</span>
+                <span class="afdian-shop-price" th:text="|¥${product.price ?: product.show_price}|">¥0</span>
               </div>
             </div>
           </div>
-        </th:block>
-        <th:block th:if="${sponsorData == null || sponsorData.data == null || sponsorData.data.list == null || sponsorData.data.list.isEmpty()}">
-          <div class="afdian-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <p>暂无赞助者，成为第一个吧~</p>
+          <div th:if="${productData == null || productData.data == null || productData.data.list == null || productData.data.list.isEmpty()}" class="afdian-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <p>暂无电铺商品</p>
           </div>
-        </th:block>
-      </div>
-      <div class="afdian-footer" th:if="${theme.config.about != null && theme.config.about.afdianUrl != null && !#strings.isEmpty(theme.config.about.afdianUrl)}">
-        <a th:href="${theme.config.about.afdianUrl}" class="afdian-btn" target="_blank" rel="noopener">
+        </div>
+      </th:block>
+      <!-- 底部按钮 -->
+      <div class="afdian-footer" th:if="${afdianCfg.afdianUrl != null && !#strings.isEmpty(afdianCfg.afdianUrl)}">
+        <a th:href="${afdianCfg.afdianUrl}" class="afdian-btn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           成为赞助者
         </a>
+      </div>
+    </div>
+    <!-- 爱发电弹窗 -->
+    <div th:if="${theme.config.about != null && theme.config.about.afdianSettings != null && theme.config.about.afdianSettings.showAfdian}" id="afdian-modal" class="afdian-modal-overlay" onclick="if(event.target===this)closeAfdianModal()">
+      <div class="afdian-modal">
+        <div class="afdian-modal-header">
+          <span class="afdian-modal-title">订单详情</span>
+          <button class="afdian-modal-close" onclick="closeAfdianModal()">×</button>
+        </div>
+        <div class="afdian-modal-body">
+          <div class="afdian-modal-pic" style="display:none"><img src="" alt="" /></div>
+          <div class="afdian-modal-info">
+            <span class="afdian-modal-name"></span>
+            <span class="afdian-modal-price"></span>
+          </div>
+          <div class="afdian-modal-desc"></div>
+          <div class="afdian-modal-months">
+            <div class="afdian-modal-label">订阅时长</div>
+            <div class="afdian-month-grid">
+              <div class="afdian-month-opt" data-month="1" onclick="selectAfdianMonth(1)">1 个月</div>
+              <div class="afdian-month-opt" data-month="3" onclick="selectAfdianMonth(3)">3 个月</div>
+              <div class="afdian-month-opt" data-month="6" onclick="selectAfdianMonth(6)">6 个月</div>
+              <div class="afdian-month-opt" data-month="12" onclick="selectAfdianMonth(12)">12 个月</div>
+            </div>
+          </div>
+          <div class="afdian-modal-field">
+            <div class="afdian-modal-label">留言 / 备注（可选）</div>
+            <textarea class="afdian-modal-remark" rows="2" placeholder="给创作者留言..."></textarea>
+          </div>
+        </div>
+        <div class="afdian-modal-footer">
+          <button class="afdian-modal-btn" onclick="closeAfdianModal()">取消</button>
+          <button class="afdian-modal-btn afdian-modal-btn-primary" onclick="confirmAfdianOrder()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            前往爱发电支付
+          </button>
+        </div>
       </div>
     </div>
 

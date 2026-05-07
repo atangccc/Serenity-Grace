@@ -39,29 +39,6 @@
 ---
 
 
-## 🤝 小伙伴站点
-
-<table>
-  <tr>
-    <td align="center" width="200">
-      <strong>🏠 空白 Blog</strong><br/>
-      <a href="https://www.guaike.top/">www.guaike.top</a>
-    </td>
-    <td align="center" width="200">
-      <strong>🏠 Sopify Blog</strong><br/>
-      <a href="https://www.lunarmc.cn/">www.lunarmc.cn</a>
-    </td>
-    <td align="center" width="200">
-      <strong>🏠 Fry酥条の博客</strong><br/>
-      <a href="https://blog.fryfries13.cn/">blog.fryfries13.cn</a>
-    </td>
-    <td align="center" width="200">
-      <strong>🏠 Zyx_2012</strong><br/>
-      <a href="https://blog.zyx-2012.cn/">blog.zyx-2012.cn</a>
-    </td>
-  </tr>
-</table>
-
 > 💡 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可~
 
 ## 👑 特别鸣谢

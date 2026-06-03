@@ -42,6 +42,16 @@ spec:
             - label: 跟随系统
               value: auto
           help: 用户首次访问时的默认主题
+        - $formkit: color
+          name: lightColor
+          label: 亮色模式主题色
+          value: '#7DCDE8'
+          help: 亮色模式下的主题主色调。留空则使用默认湖水蓝
+        - $formkit: color
+          name: darkColor
+          label: 暗色模式主题色
+          value: '#E87D98'
+          help: 暗色模式下的主题主色调。留空则使用默认樱花粉
         - $formkit: group
           name: typographyConfig
           label: 全站文字样式
@@ -146,7 +156,6 @@ spec:
             iconPhotos: "fa-solid fa-images"
             iconFriendsCircle: "fa-solid fa-camera"
             iconWishes: "fa-solid fa-note-sticky"
-            iconEquipments: "fa-solid fa-toolbox"
           children:
             - $formkit: text
               name: iconArchives
@@ -214,25 +223,19 @@ spec:
               value: "fa-solid fa-note-sticky"
               placeholder: "fa-solid fa-note-sticky"
               help: 便签墙页面图标
-            - $formkit: text
-              name: iconEquipments
-              label: 装备图标
-              value: "fa-solid fa-toolbox"
-              placeholder: "fa-solid fa-toolbox"
-              help: 装备页面图标
         - $formkit: group
           name: loadingConfig
           label: 页面过渡动画
           value:
-            enableLoading: false
+            enableLoading: true
             loadingGif: ""
           children:
             - $formkit: switch
               id: loading_enabled
               name: enableLoading
               label: 启用页面过渡动画
-              value: false
-              help: 开启后，点击站内链接跳转时会显示自定义 GIF 加载动画
+              value: true
+              help: 开启后，首次访问和站内跳转都会显示加载遮罩，等所有资源就绪后自动淡出
             - $formkit: attachment
               name: loadingGif
               label: 加载动画 GIF
@@ -549,7 +552,6 @@ spec:
             showPhotos: true
             showFriendsCircle: true
             showWishes: true
-            showEquipments: true
           children:
             - $formkit: switch
               id: compass_enabled
@@ -620,11 +622,6 @@ spec:
             - $formkit: switch
               name: showWishes
               label: 显示便签墙链接
-              value: true
-              if: $get(compass_enabled).value
-            - $formkit: switch
-              name: showEquipments
-              label: 显示装备链接
               value: true
               if: $get(compass_enabled).value
 
@@ -1909,18 +1906,6 @@ spec:
               value: ""
               placeholder: "例如：一个技术博客"
               help: 友链申请区域显示的站点描述，留空则使用基本设置中的站点描述
-            - $formkit: checkbox
-              name: showApplyButton
-              if: $get(links_enabled).value
-              label: 显示申请友链按钮
-              value: true
-              help: 是否在友链申请区域显示"申请友链 ›"按钮
-            - $formkit: text
-              name: offlineLabel
-              if: $get(links_enabled).value
-              label: 失联友链标签
-              value: "失联咯~"
-              help: 失效友链卡片右上角显示的标签文字，需要安装「友链自助提交」插件并在插件中配置无效友链分组后才会生效
 
     - group: music
       label: 音乐播放器

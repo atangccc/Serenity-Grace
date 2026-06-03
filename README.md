@@ -1,5 +1,8 @@
 <div align="center">
 
+<img src="https://raw.githubusercontent.com/atangccc/Serenity-Grace/main/screenshots/1.png" alt="Serenity-Grace Banner" width="800" />
+
+<br/>
 <br/>
 
 # 🌸 Serenity-Grace
@@ -18,7 +21,7 @@
 
 <br/>
 
-[🖼️ 预览截图](#-预览) · [✨ 功能特性](#-功能特性) · [📦 安装使用](#-安装使用) · [⚙️ 页面配置](#%EF%B8%8F-页面配置) · [📖 使用文档](https://serenity.lunarmc.cn/) · [📝 更新日志](https://github.com/atangccc/Serenity-Grace/releases)
+[🖼️ 预览截图](#-预览) · [✨ 功能特性](#-功能特性) · [📦 安装使用](#-安装使用) · [⚙️ 页面配置](#%EF%B8%8F-页面配置) · [� 食用指南](https://www.lunarmc.cn/docs/Serenity/description/) · [📝 更新日志](https://github.com/atangccc/Serenity-Grace/releases)
 
 <br/>
 
@@ -26,72 +29,46 @@
 
 ---
 
-## 🌐 在线预览
+## � 食用指南
 
-<div align="center">
+> 由社区小伙伴 Sopify 编写的详细使用教程，涵盖主题安装、配置、页面创建等完整流程：
+>
+> 🔗 **[Serenity 主题食用指南 — Sopify's Blog](https://www.lunarmc.cn/docs/Serenity/description/)**
 
-[![在线预览](https://img.shields.io/badge/🌐_www.aobp.cn-点击访问-F596AA?style=for-the-badge&logoColor=white)](https://www.aobp.cn/)
+## 🔗 作者站点
 
-> 💡 建议使用无痕浏览模式访问，体验完整的欢迎页和首次访问效果
+> **在线演示：** [serenity.aobp.cn](https://serenity.aobp.cn/)
 
-</div>
+## 🤝 小伙伴站点
 
----
-
+| 站点 | 链接 |
+|:-----|:-----|
+| 🏠 空白 Blog | [www.guaike.top](https://www.guaike.top/) |
+| 🏠 Sopify Blog | [www.lunarmc.cn](https://www.lunarmc.cn/) |
+| 🏠 Fry酥条の博客 | [blog.fryfries13.cn](https://blog.fryfries13.cn/) |
 
 > 💡 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可~
 
-## 👑 特别鸣谢
-
-<div align="center">
-
-<a href="https://github.com/7ooki">
-  <img src="https://avatars.githubusercontent.com/7ooki" width="120" height="120" style="border-radius:50%" alt="Sopify" />
-</a>
-
-### [Sopify](https://github.com/7ooki)
-
-[![GitHub](https://img.shields.io/badge/GitHub-7ooki-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/7ooki)
-&nbsp;
-[![Blog](https://img.shields.io/badge/Blog-www.lunarmc.cn-F596AA?style=for-the-badge&logo=safari&logoColor=white)](https://www.lunarmc.cn/)
-&nbsp;
-[![Docs](https://img.shields.io/badge/主题文档-serenity.lunarmc.cn-33A6B8?style=for-the-badge&logo=readthedocs&logoColor=white)](https://serenity.lunarmc.cn/)
-
-> 📖 Serenity 主题 [使用文档](https://serenity.lunarmc.cn/) 由 Sopify 编写，比作者写的还详细（没错，作者懒得写文档 🫠）
->
-> 💡 主题活跃贡献者，持续提供功能建议与代码 PR，堪称编外产品经理 🧑‍💼
-
-<a href="https://serenity.lunarmc.cn/">
-  <img src="screenshots/10.png" alt="Serenity 主题文档" width="600" />
-</a>
-
-</div>
-
----
-
 ## 🖼️ 预览
 
-<div align="center">
-
-### 🌙 暗色模式
-
-<img src="screenshots/暗色1.png" alt="暗色模式 · 首页" width="90%" />
-<br/><br/>
-<img src="screenshots/暗色2.png" alt="暗色模式 · 内容" width="90%" />
-<br/><br/>
-<img src="screenshots/暗色3.png" alt="暗色模式 · 更多" width="90%" />
-
-<br/>
-
-### ☀️ 亮色模式
-
-<img src="screenshots/亮色1.png" alt="亮色模式 · 首页" width="90%" />
-<br/><br/>
-<img src="screenshots/亮色2.png" alt="亮色模式 · 内容" width="90%" />
-<br/><br/>
-<img src="screenshots/亮色3.png" alt="亮色模式 · 更多" width="90%" />
-
-</div>
+<table>
+  <tr>
+    <td align="center"><strong>🌙 暗色模式</strong></td>
+    <td align="center"><strong>☀️ 亮色模式</strong></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/1.png" alt="暗色模式首页" /></td>
+    <td><img src="screenshots/3.png" alt="亮色模式首页" /></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/2.png" alt="暗色模式内容" /></td>
+    <td><img src="screenshots/4.png" alt="亮色模式文章" /></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/5.webp" alt="标签页" /></td>
+    <td><img src="screenshots/6.webp" alt="更多页面" /></td>
+  </tr>
+</table>
 
 ---
 
@@ -99,32 +76,15 @@
 
 ### 🎨 视觉与交互
 
-<table>
-  <tr>
-    <td align="center" width="80">🌓</td>
-    <td><strong>双色模式</strong> — 暗色 / 亮色自由切换，支持跟随系统偏好，切换时带圆形扩散动画（View Transition API）</td>
-  </tr>
-  <tr>
-    <td align="center">📱</td>
-    <td><strong>全端适配</strong> — 响应式布局，桌面端、平板、手机全面适配，移动端各页面独立优化</td>
-  </tr>
-  <tr>
-    <td align="center">🧈</td>
-    <td><strong>丝滑滚动</strong> — Lenis 全局惯性缓动，锚点跳转和返回顶部均为平滑滚动</td>
-  </tr>
-  <tr>
-    <td align="center">🎬</td>
-    <td><strong>入场动画</strong> — AOS 滚动入场动画 + 纯 CSS 交错入场，元素随滚动渐入视野</td>
-  </tr>
-  <tr>
-    <td align="center">👋</td>
-    <td><strong>欢迎页</strong> — 首次访问全屏欢迎页，可配置吉祥物形象和自定义语录</td>
-  </tr>
-  <tr>
-    <td align="center">✨</td>
-    <td><strong>过渡动画</strong> — PJAX 无刷新导航，页面切换淡入淡出，浏览体验流畅自然</td>
-  </tr>
-</table>
+
+| 特性 | 描述 |
+|:-----|:-----|
+| 🌓 双色模式 | 暗色 / 亮色自由切换，支持跟随系统偏好，切换时带圆形扩散动画（View Transition API） |
+| 📱 全端适配 | 响应式布局，桌面端、平板、手机全面适配，移动端各页面独立优化 |
+| 🧈 丝滑滚动 | Lenis 全局惯性缓动，锚点跳转和返回顶部均为平滑滚动 |
+| 🎬 入场动画 | AOS 滚动入场动画，元素随滚动渐入视野 |
+| 👋 欢迎页 | 首次访问全屏欢迎页，可配置吉祥物形象和自定义语录 |
+| ✨ 过渡动画 | 页面切换淡入淡出效果，浏览体验流畅自然 |
 
 ### 📄 页面模板
 
@@ -191,7 +151,6 @@
   </tr>
 </table>
 
-
 ### ⚙️ 后台配置一览
 
 主题提供完善的后台设置面板，所有内容均可在 Halo Console 中可视化配置：
@@ -211,10 +170,10 @@
 | 🏠 首页内容 | 背景壁纸（图片/视频/API）· 主题装饰图片 · 天气时钟 · 近期笔记 · 站点动态 · 随想碎片 · 生活回想 |
 | 📖 文章页面 | 侧边栏组件排序 · 相关文章数量 · 滚动条 · 过期提示 · 背景壁纸 · 版权信息 · 分享按钮 · 打赏组件 |
 | 📊 侧边栏 | 一言 API · 标签云 · 热门文章数量 · 最新评论数量 |
-| 👤 关于页面 | 个性标签 · 技能列表（支持 Iconify 图标）· 关于本站 · 建站历程 · 十年之约 · 吉祥物 · Steam 游戏 · 爱发电赞助 |
+| 👤 关于页面 | 个性标签 · 技能列表（支持 Iconify 图标）· 关于本站 · 建站历程 · 十年之约 · 吉祥物 · Steam 游戏 · 爱发电赞助 · 联系组件显示开关 |
 | 🚀 项目展示 | GitHub Token · GitHub 项目列表 · 自定义项目列表 · 项目归属类型 |
 | 🔗 友链页面 | 站点信息 · 友链申请配置 |
-| 🦶 页脚 | ICP/公安备案（支持自定义 Logo）· 建站年份 · 运行时间 · RSS · Powered by · 服务商标识 · 隐私政策 · 服务条款 |
+| 🦶 页脚 | ICP/公安备案 · 建站年份 · 运行时间 · 在线状态栏（依赖 online-user 插件，展示连接状态 / 在线人数 / 活跃页面数）· RSS · Powered by · 服务商标识 · 隐私政策 · 服务条款 |
 | 🔍 SEO 优化 | 关键词 · JSON-LD 结构化数据 · 百度/Google 站点验证 |
 | 💧 水印设置 | 启用开关 · 水印文字 · 透明度 |
 
@@ -224,80 +183,21 @@
 
 ## 🧩 插件适配
 
-<table>
-  <tr>
-    <th width="60" align="center">状态</th>
-    <th width="200">插件</th>
-    <th>用途</th>
-  </tr>
-  <tr>
-    <td align="center">✅</td>
-    <td><a href="https://www.halo.run/store/apps/app-YXyaD">评论组件</a></td>
-    <td>文章评论、留言板评论</td>
-  </tr>
-  <tr>
-    <td align="center">✅</td>
-    <td><a href="https://www.halo.run/store/apps/app-SnwWD">瞬间</a></td>
-    <td>碎碎念页面数据源</td>
-  </tr>
-  <tr>
-    <td align="center">✅</td>
-    <td><a href="https://www.halo.run/store/apps/app-hfbQg">链接管理</a></td>
-    <td>友链页面数据源</td>
-  </tr>
-  <tr>
-    <td align="center">✅</td>
-    <td><a href="https://halo.run/store/apps/app-BmQJW">图库管理</a></td>
-    <td>图库页面数据源</td>
-  </tr>
-  <tr>
-    <td align="center">💡</td>
-    <td><a href="https://www.halo.run/store/apps/app-glejqzwk">友链自助提交</a></td>
-    <td>友链申请功能</td>
-  </tr>
-  <tr>
-    <td align="center">💡</td>
-    <td><a href="https://docs.kunkunyu.com/docs/plugin-friends">朋友圈</a></td>
-    <td>朋友圈聚合页面</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td><a href="https://blog.xindu.site/docs/plugin-afdian">爱发电</a></td>
-    <td>关于页面赞助展示</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td><a href="https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar">Dicebear 头像</a></td>
-    <td>评论随机头像</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td>Passkey 通行密钥</td>
-    <td>登录页快速关联入口 + 退出页当前设备绑定，适配 Halo Passkey/WebAuthn 插件</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td>在线用户统计</td>
-    <td>依赖 online-user 在线统计插件，在页脚展示连接状态、当前在线人数和活跃页面数；关闭后将隐藏该区域，并停止请求插件公开接口。</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td><a href="https://www.halo.run/store/apps">LightGallery 灯箱</a></td>
-    <td>文章图片灯箱（未安装时使用内置灯箱）</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td>便签墙插件</td>
-    <td>便签墙页面数据源（纪念日倒计时 · 便签卡片）</td>
-  </tr>
-  <tr>
-    <td align="center">🔌</td>
-    <td>Steam 游戏展示</td>
-    <td>关于页面 Steam 游戏卡片数据源</td>
-  </tr>
-</table>
+| 状态 | 插件 | 用途 |
+|:----:|:-----|:-----|
+| ✅ 必需 | [评论组件](https://www.halo.run/store/apps/app-YXyaD) | 文章评论、留言板评论 |
+| ✅ 必需 | [瞬间](https://www.halo.run/store/apps/app-SnwWD) | 碎碎念页面数据源 |
+| ✅ 必需 | [链接管理](https://www.halo.run/store/apps/app-hfbQg) | 友链页面数据源 |
+| ✅ 必需 | [图库管理](https://halo.run/store/apps/app-BmQJW) | 图库页面数据源 |
+| 💡 推荐 | [友链自助提交](https://www.halo.run/store/apps/app-glejqzwk) | 友链申请功能 |
+| 💡 推荐 | [朋友圈](https://docs.kunkunyu.com/docs/plugin-friends) | 朋友圈聚合页面 |
+| 🔌 可选 | [爱发电](https://blog.xindu.site/docs/plugin-afdian) | 关于页面赞助展示 |
+| 🔌 可选 | [Dicebear 头像](https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar) | 评论随机头像 |
+| 🔌 可选 | [LightGallery 灯箱](https://www.halo.run/store/apps) | 文章图片灯箱（未安装时使用内置灯箱） |
+| 🔌 可选 | 便签墙插件 | 便签墙页面数据源（纪念日倒计时 · 便签卡片 · 状态追踪） |
+| 🔌 可选 | Steam 游戏展示 | 关于页面 Steam 游戏卡片数据源 |
 
-> ✅ 必需 &nbsp;&nbsp; 💡 推荐 &nbsp;&nbsp; 🔌 可选 &nbsp;&nbsp;—&nbsp;&nbsp; 所有插件均可在 [Halo 应用市场](https://www.halo.run/store/apps) 中安装
+> 📦 所有插件均可在 [Halo 应用市场](https://www.halo.run/store/apps) 中安装。
 
 ---
 
@@ -350,9 +250,9 @@
 
 <div align="center">
 
-| 微信交流群 | QQ 交流群 |
-|:---:|:---:|
-| <img src="screenshots/7.png" alt="微信交流群" width="280" /> | <img src="screenshots/8.png" alt="QQ交流群" width="280" /> |
+| 微信交流群 |
+|:---:|
+| <img src="screenshots/7.png" alt="微信交流群" width="280" /> |
 
 *扫码加入，一起交流主题使用心得~*
 

@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
 	th:replace="~{modules/layout :: html(title = ${(theme.config.watermark?.equipments?.enabled == true ? theme.config.watermark.equipments.title : null) ?: '装备'}, content = ~{::content}, head = ~{::head})}">
 
@@ -18,7 +26,7 @@
 				<p class="page-desc" th:text="${(theme.config.watermark?.equipments?.enabled == true ? theme.config.watermark.equipments.subtitle : null) ?: '工欲善其事，必先利其器'}">工欲善其事，必先利其器</p>
 			</header>
 
-			<!-- 未安装插件提示 -->
+			<!-- 未安装插件提示-->
 			<div th:if="${groups == null}" class="plugin-notice" data-aos="fade-up">
 				<div class="plugin-notice-icon">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -30,7 +38,7 @@
 				<p class="plugin-notice-desc">请先安装并启用「装备管理」插件</p>
 			</div>
 
-			<!-- 插件已安装时的正常内容 -->
+			<!-- 插件已安装时的正常内容-->
 			<th:block th:if="${groups != null}">
 				<div class="equipments-content" th:if="${!#lists.isEmpty(groups)}">
 					<th:block th:each="group : ${groups}">

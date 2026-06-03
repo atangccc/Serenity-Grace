@@ -1,15 +1,23 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{modules/layout :: html(title = ${singlePage != null ? singlePage.spec.title : '图库集'}, content = ~{::content}, head = ~{::head})}">
+      th:replace="~{modules/layout :: html(title = ${(theme.config.watermark?.photos?.enabled == true ? theme.config.watermark.photos.title : null) ?: (singlePage != null ? singlePage.spec.title : '图库页')}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/photos.css}" />
   <script th:src="@{/assets/js/lightbox.js}" defer></script>
   <script th:src="@{/assets/js/photos.js}" defer></script>
   <meta property="og:type" content="website" />
-  <meta property="og:title" th:content="${singlePage != null ? singlePage.spec.title : '图库集'}" />
+  <meta property="og:title" th:content="${singlePage != null ? singlePage.spec.title : '图库页'}" />
   <meta property="og:description" th:content="${singlePage != null && singlePage.status.excerpt != null ? singlePage.status.excerpt : (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle)}" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" th:content="${singlePage != null ? singlePage.spec.title : '图库集'}" />
+  <meta name="twitter:title" th:content="${singlePage != null ? singlePage.spec.title : '图库页'}" />
 </th:block>
 <th:block th:fragment="content">
   <main class="main">
@@ -17,11 +25,11 @@
       <section class="photos-page" th:with="photoGroups = ${photoFinder != null ? photoFinder.groupBy() : null}">
         
         <div class="photos-header" data-aos="fade-up">
-          <h1 class="photos-title" th:text="${(theme.config.watermark?.photos?.enabled == true ? theme.config.watermark.photos.title : null) ?: (singlePage != null ? singlePage.spec.title : '图库集')}">图库集</h1>
+          <h1 class="photos-title" th:text="${(theme.config.watermark?.photos?.enabled == true ? theme.config.watermark.photos.title : null) ?: (singlePage != null ? singlePage.spec.title : '图库页')}">图库页</h1>
           <p class="photos-subtitle" th:text="${(theme.config.watermark?.photos?.enabled == true ? theme.config.watermark.photos.subtitle : null) ?: '用镜头记录生活的美好瞬间'}">用镜头记录生活的美好瞬间</p>
         </div>
         
-        <!-- 未安装插件提示 -->
+        <!-- 未安装插件提示-->
         <div th:if="${photoFinder == null}" class="plugin-notice" data-aos="fade-up">
           <div class="plugin-notice-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -34,7 +42,7 @@
           <p class="plugin-notice-desc">请先安装并启用「图库」插件</p>
         </div>
         
-        <!-- 分组筛选标签 -->
+        <!-- 分组筛选标志-->
         <div th:if="${photoGroups != null && !photoGroups.isEmpty()}" class="photos-filter" data-aos="fade-up">
           <button class="filter-btn active" data-group="all">全部</button>
           <th:block th:each="group : ${photoGroups}">
@@ -42,7 +50,7 @@
           </th:block>
         </div>
         
-        <!-- 图片瀑布流 -->
+        <!-- 图片瀑布-->
         <th:block th:if="${photoGroups != null && !photoGroups.isEmpty()}">
           <div class="photos-masonry" id="photos-masonry">
             <th:block th:each="group : ${photoGroups}">
@@ -64,7 +72,7 @@
           </div>
         </th:block>
         
-        <!-- 无数据占位 -->
+        <!-- 无数据占位-->
         <th:block th:if="${photoFinder != null && (photoGroups == null || photoGroups.isEmpty())}">
           <div class="plugin-notice" data-aos="fade-up">
             <div class="plugin-notice-icon">

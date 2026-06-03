@@ -1,6 +1,14 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{modules/layout :: html(title = ${singlePage != null ? singlePage.spec.title : '碎碎念'}, content = ~{::content}, head = ~{::head})}">
+      th:replace="~{modules/layout :: html(title = ${(theme.config.watermark?.moments?.enabled == true ? theme.config.watermark.moments.title : null) ?: (singlePage != null ? singlePage.spec.title : '碎碎念')}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/moments.css}" />
   <meta property="og:type" content="website" />
@@ -26,7 +34,7 @@
           </div>
         </div>
         
-        <!-- 未安装插件提示 -->
+        <!-- 未安装插件提示-->
         <div th:if="${momentFinder == null}" class="plugin-notice" data-aos="fade-up">
           <div class="plugin-notice-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -37,7 +45,7 @@
           <p class="plugin-notice-desc">请先安装并启用「瞬间」插件</p>
         </div>
         
-        <!-- 动态列表 -->
+        <!-- 动态列表-->
         <th:block th:if="${momentFinder != null && momentsResult != null}">
           <div class="moments-container">
             <div class="moments-list">
@@ -48,7 +56,7 @@
                      th:with="content = ${moment.spec.content}">
                   <!-- 头像 -->
                   <img class="moment-avatar" 
-                       th:src="${moment.owner != null && moment.owner.avatar != null ? moment.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp')}" 
+                       th:src="${moment.owner != null && moment.owner.avatar != null ? moment.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp')}" 
                        alt="avatar" />
                   
                   <!-- 气泡 -->
@@ -91,7 +99,7 @@
                       <span class="moment-tag" th:each="tag : ${moment.spec.tags}" th:text="'#' + ${tag}">#标签</span>
                     </div>
                     
-                    <!-- 底部操作栏 -->
+                    <!-- 底部操作-->
                     <div class="moment-footer">
                       <button class="moment-action-btn moment-comment-btn"
                               th:attr="data-moment-name=${moment.metadata.name}">
@@ -102,7 +110,7 @@
                       </button>
                     </div>
                     
-                    <!-- 评论区 -->
+                    <!-- 评论区-->
                     <div class="moment-comments" th:id="'comments-' + ${moment.metadata.name}">
                       <halo:comment group="moment.halo.run" 
                                     kind="Moment" 
@@ -119,7 +127,7 @@
               <span class="pagination-info" th:text="|第 ${momentsResult.page} 页 / 共 ${momentsResult.totalPages} 页|">分页信息</span>
             </div>
             
-            <!-- 空状态 -->
+            <!-- 空状态-->
             <div class="plugin-notice" th:if="${#lists.isEmpty(momentsResult.items)}" data-aos="fade-up">
               <div class="plugin-notice-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

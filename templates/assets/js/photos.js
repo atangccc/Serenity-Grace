@@ -1,9 +1,83 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-05-07 12:04:20
- * Fingerprint: a8fd07c3a5b41317
- * Copyright © 2026 Serenity. All rights reserved.
- * Unauthorized copying or distribution is prohibited.
+ * Build: 2026-06-03 10:28:07
+ * Fingerprint: 18f8d0015be24d2b
+ * Copyright (c) 2026 Serenity. All rights reserved.
  */
-function initPhotosPage(){'use strict';if(window.__photosCleanup){window.__photosCleanup();}var filterBtns=document.querySelectorAll('.filter-btn');var photoItems=document.querySelectorAll('.photo-item');var masonry=document.getElementById('photos-masonry');if(!masonry)return;function handleFilter(e){var btn=e.target.closest('.filter-btn');if(!btn)return;var group=btn.dataset.group;filterBtns.forEach(function(b){b.classList.remove('active');});btn.classList.add('active');photoItems.forEach(function(item){if(group==='all'||item.dataset.group===group){item.classList.remove('hidden');}else{item.classList.add('hidden');}});}var filterContainer=document.querySelector('.photos-filter');if(filterContainer){filterContainer.addEventListener('click',handleFilter);}var imgs=masonry.querySelectorAll('.photo-wrapper img');imgs.forEach(function(img){var w=img.closest('.photo-wrapper');if(img.complete&&img.naturalHeight>0){if(w)w.classList.add('img-loaded');}else{img.addEventListener('load',function(){if(w)w.classList.add('img-loaded');});img.addEventListener('error',function(){if(w)w.classList.add('img-loaded');});}});if(!window.__photosLightbox&&typeof SerenityLightbox !=='undefined'){window.__photosLightbox=SerenityLightbox.create({className:'photo-lightbox',delegateSelector:'.photo-wrapper img'});}window.__photosCleanup=function(){if(filterContainer){filterContainer.removeEventListener('click',handleFilter);}window.__photosCleanup=null;};}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initPhotosPage);}else{initPhotosPage();}
+
+// 图库页面 - 筛选、灯箱、加载动画
+
+function initPhotosPage() {
+  'use strict';
+
+  if (window.__photosCleanup) {
+    window.__photosCleanup();
+  }
+
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var photoItems = document.querySelectorAll('.photo-item');
+  var masonry = document.getElementById('photos-masonry');
+
+  if (!masonry) return;
+
+  // ========== 分组筛选 ==========
+  function handleFilter(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    var group = btn.dataset.group;
+    filterBtns.forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    photoItems.forEach(function(item) {
+      if (group === 'all' || item.dataset.group === group) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  }
+
+  var filterContainer = document.querySelector('.photos-filter');
+  if (filterContainer) {
+    filterContainer.addEventListener('click', handleFilter);
+  }
+
+  // ========== 图片加载淡入 ==========
+  var imgs = masonry.querySelectorAll('.photo-wrapper img');
+  imgs.forEach(function(img) {
+    var w = img.closest('.photo-wrapper');
+    if (img.complete && img.naturalHeight > 0) {
+      if (w) w.classList.add('img-loaded');
+    } else {
+      img.addEventListener('load', function() {
+        if (w) w.classList.add('img-loaded');
+      });
+      img.addEventListener('error', function() {
+        if (w) w.classList.add('img-loaded');
+      });
+    }
+  });
+
+  // ========== 灯箱 ==========
+  if (!window.__photosLightbox && typeof SerenityLightbox !== 'undefined') {
+    window.__photosLightbox = SerenityLightbox.create({
+      className: 'photo-lightbox',
+      delegateSelector: '.photo-wrapper img'
+    });
+  }
+
+  // ========== 清理 ==========
+  window.__photosCleanup = function() {
+    if (filterContainer) {
+      filterContainer.removeEventListener('click', handleFilter);
+    }
+    window.__photosCleanup = null;
+  };
+}
+
+// 兼容首次加载和 PJAX
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPhotosPage);
+} else {
+  initPhotosPage();
+}

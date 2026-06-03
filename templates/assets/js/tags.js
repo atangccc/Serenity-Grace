@@ -1,9 +1,206 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-05-07 12:04:20
- * Fingerprint: a8fd07c3a5b41317
- * Copyright © 2026 Serenity. All rights reserved.
- * Unauthorized copying or distribution is prohibited.
+ * Build: 2026-06-03 10:28:07
+ * Fingerprint: 18f8d0015be24d2b
+ * Copyright (c) 2026 Serenity. All rights reserved.
  */
-document.addEventListener('DOMContentLoaded',function(){initRings();initRingTooltips();initBarChart();calcTotal();});function getAllTagsData(){var items=document.querySelectorAll('#tags-data .tag-data-item');var result=[];items.forEach(function(el){result.push({name:el.dataset.name||'',count:parseInt(el.dataset.count)||0,color:el.dataset.color&&el.dataset.color !=='null'?el.dataset.color:null});});return result;}function highlightChip(name){var chip=document.querySelector('.tag-chip[data-name="'+name+'"]');if(chip)chip.classList.add('chip-highlight');}function unhighlightChip(name){var chip=document.querySelector('.tag-chip[data-name="'+name+'"]');if(chip)chip.classList.remove('chip-highlight');}function initRings(){var svg=document.getElementById('rings-svg');if(!svg)return;var allTags=getAllTagsData();if(!allTags.length)return;var sorted=allTags.filter(function(t){return t.count>0;}).sort(function(a,b){return b.count-a.count;});var top4=sorted.slice(0,4);var radii=[90,72,54,36];var ns='http://www.w3.org/2000/svg';var total=0;top4.forEach(function(t){total+=t.count;});if(total===0)total=1;top4.forEach(function(tag,i){var r=radii[i];var color=tag.color||'#ffffff';var circumference=2*Math.PI*r;var ratio=tag.count / total;var fillRatio=Math.max(0.15,Math.min(0.85,ratio));var offset=circumference*(1-fillRatio);var circle=document.createElementNS(ns,'circle');circle.setAttribute('cx','120');circle.setAttribute('cy','120');circle.setAttribute('r',r);circle.setAttribute('class','ring');circle.style.stroke=color;circle.style.strokeDasharray=circumference;circle.style.strokeDashoffset=offset;circle.dataset.name=tag.name;circle.dataset.count=tag.count;circle.dataset.color=color;svg.appendChild(circle);});}function calcTotal(){var el=document.getElementById('rings-total');if(!el)return;var tagCount=getAllTagsData().length;animateNumber(el,0,tagCount,800);}function animateNumber(el,from,to,duration){var start=performance.now();function tick(now){var progress=Math.min((now-start)/ duration,1);var ease=1-Math.pow(1-progress,3);el.textContent=Math.round(from+(to-from)*ease);if(progress<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);}function initRingTooltips(){var rings=document.querySelectorAll('.ring[data-name]');var tooltip=document.getElementById('ring-tooltip');if(!rings.length||!tooltip)return;rings.forEach(function(ring){ring.addEventListener('mouseenter',function(){var name=ring.dataset.name;var count=ring.dataset.count;var color=ring.dataset.color||ring.style.stroke||'#5B8FF9';tooltip.querySelector('.tooltip-dot').style.background=color;tooltip.querySelector('.tooltip-name').textContent=name;tooltip.querySelector('.tooltip-count').textContent=count+' 篇';tooltip.style.opacity='1';tooltip.style.visibility='visible';highlightChip(name);});ring.addEventListener('mouseleave',function(){tooltip.style.opacity='0';tooltip.style.visibility='hidden';unhighlightChip(ring.dataset.name);});});}function initBarChart(){var chartArea=document.getElementById('chart-area');if(!chartArea)return;var cols=Array.from(chartArea.querySelectorAll('.chart-col[data-count]'));if(!cols.length)return;cols.sort(function(a,b){return(parseInt(a.dataset.count)||0)-(parseInt(b.dataset.count)||0);});var tooltip=document.getElementById('chart-tooltip');cols.forEach(function(c){chartArea.insertBefore(c,tooltip);});var max=0;cols.forEach(function(c){var v=parseInt(c.dataset.count)||0;if(v>max)max=v;});if(max===0)return;function animate(){cols.forEach(function(c,i){var count=parseInt(c.dataset.count)||0;var pct=Math.max(8,Math.round((count / max)*100));var fill=c.querySelector('.col-fill');if(fill){fill.style.transitionDelay=(i*80)+'ms';fill.style.height=pct+'%';}});}if('IntersectionObserver' in window){var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){setTimeout(animate,200);observer.disconnect();}});},{threshold:0.2});observer.observe(chartArea);}else{setTimeout(animate,500);}if(!tooltip)return;var nameEl=tooltip.querySelector('.chart-tooltip-name');var countEl=tooltip.querySelector('.chart-tooltip-count');cols.forEach(function(col){col.addEventListener('mouseenter',function(){var name=col.dataset.name||'';var count=col.dataset.count||'0';nameEl.textContent=name;countEl.textContent=count+' 篇';var colRect=col.getBoundingClientRect();var areaRect=chartArea.getBoundingClientRect();var left=colRect.left-areaRect.left+colRect.width / 2;var fill=col.querySelector('.col-fill');var fillH=fill?fill.offsetHeight:0;var barEl=col.querySelector('.col-bar');var barH=barEl?barEl.offsetHeight:160;var top=(barH-fillH)-10;tooltip.style.left=left+'px';tooltip.style.top=top+'px';tooltip.style.opacity='1';tooltip.style.visibility='visible';highlightChip(name);});col.addEventListener('mouseleave',function(){tooltip.style.opacity='0';tooltip.style.visibility='hidden';unhighlightChip(col.dataset.name);});});}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initRings();
+  initRingTooltips();
+  initBarChart();
+  calcTotal();
+});
+
+/* 从隐藏 DOM 读取所有标签数据 */
+function getAllTagsData() {
+  var items = document.querySelectorAll('#tags-data .tag-data-item');
+  var result = [];
+  items.forEach(function(el) {
+    result.push({
+      name: el.dataset.name || '',
+      count: parseInt(el.dataset.count) || 0,
+      color: el.dataset.color && el.dataset.color !== 'null' ? el.dataset.color : null
+    });
+  });
+  return result;
+}
+
+/* 通用：高亮/取消底部标签胶囊 */
+function highlightChip(name) {
+  var chip = document.querySelector('.tag-chip[data-name="' + name + '"]');
+  if (chip) chip.classList.add('chip-highlight');
+}
+function unhighlightChip(name) {
+  var chip = document.querySelector('.tag-chip[data-name="' + name + '"]');
+  if (chip) chip.classList.remove('chip-highlight');
+}
+
+/* 动态生成环形：按 postCount 降序取前4个标签 */
+function initRings() {
+  var svg = document.getElementById('rings-svg');
+  if (!svg) return;
+  var allTags = getAllTagsData();
+  if (!allTags.length) return;
+
+  // 只取 postCount > 0 的标签，按降序排序，取前4
+  var sorted = allTags.filter(function(t) { return t.count > 0; })
+    .sort(function(a, b) { return b.count - a.count; });
+  var top4 = sorted.slice(0, 4);
+
+  var radii = [90, 72, 54, 36];
+  var ns = 'http://www.w3.org/2000/svg';
+
+  var total = 0;
+  top4.forEach(function(t) { total += t.count; });
+  if (total === 0) total = 1;
+
+  top4.forEach(function(tag, i) {
+    var r = radii[i];
+    var color = tag.color || '#ffffff';
+    var circumference = 2 * Math.PI * r;
+    var ratio = tag.count / total;
+    var fillRatio = Math.max(0.15, Math.min(0.85, ratio));
+    var offset = circumference * (1 - fillRatio);
+
+    var circle = document.createElementNS(ns, 'circle');
+    circle.setAttribute('cx', '120');
+    circle.setAttribute('cy', '120');
+    circle.setAttribute('r', r);
+    circle.setAttribute('class', 'ring');
+    circle.style.stroke = color;
+    circle.style.strokeDasharray = circumference;
+    circle.style.strokeDashoffset = offset;
+    circle.dataset.name = tag.name;
+    circle.dataset.count = tag.count;
+    circle.dataset.color = color;
+    svg.appendChild(circle);
+  });
+}
+
+/* 统计标签数量 */
+function calcTotal() {
+  var el = document.getElementById('rings-total');
+  if (!el) return;
+  var tagCount = getAllTagsData().length;
+  animateNumber(el, 0, tagCount, 800);
+}
+
+function animateNumber(el, from, to, duration) {
+  var start = performance.now();
+  function tick(now) {
+    var progress = Math.min((now - start) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (to - from) * ease);
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* 圆环 hover 提示 + 联动底部标签 */
+function initRingTooltips() {
+  var rings = document.querySelectorAll('.ring[data-name]');
+  var tooltip = document.getElementById('ring-tooltip');
+  if (!rings.length || !tooltip) return;
+
+  rings.forEach(function(ring) {
+    ring.addEventListener('mouseenter', function() {
+      var name = ring.dataset.name;
+      var count = ring.dataset.count;
+      var color = ring.dataset.color || ring.style.stroke || '#5B8FF9';
+      tooltip.querySelector('.tooltip-dot').style.background = color;
+      tooltip.querySelector('.tooltip-name').textContent = name;
+      tooltip.querySelector('.tooltip-count').textContent = count + ' 篇';
+      tooltip.style.opacity = '1';
+      tooltip.style.visibility = 'visible';
+      highlightChip(name);
+    });
+    ring.addEventListener('mouseleave', function() {
+      tooltip.style.opacity = '0';
+      tooltip.style.visibility = 'hidden';
+      unhighlightChip(ring.dataset.name);
+    });
+  });
+}
+
+/* 竖柱图 + tooltip + 联动底部标签 */
+function initBarChart() {
+  var chartArea = document.getElementById('chart-area');
+  if (!chartArea) return;
+  var cols = Array.from(chartArea.querySelectorAll('.chart-col[data-count]'));
+  if (!cols.length) return;
+
+  cols.sort(function(a, b) {
+    return (parseInt(a.dataset.count) || 0) - (parseInt(b.dataset.count) || 0);
+  });
+  var tooltip = document.getElementById('chart-tooltip');
+  cols.forEach(function(c) { chartArea.insertBefore(c, tooltip); });
+
+  var max = 0;
+  cols.forEach(function(c) {
+    var v = parseInt(c.dataset.count) || 0;
+    if (v > max) max = v;
+  });
+  if (max === 0) return;
+
+  function animate() {
+    cols.forEach(function(c, i) {
+      var count = parseInt(c.dataset.count) || 0;
+      var pct = Math.max(8, Math.round((count / max) * 100));
+      var fill = c.querySelector('.col-fill');
+      if (fill) {
+        fill.style.transitionDelay = (i * 80) + 'ms';
+        fill.style.height = pct + '%';
+      }
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          setTimeout(animate, 200);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    observer.observe(chartArea);
+  } else {
+    setTimeout(animate, 500);
+  }
+
+  if (!tooltip) return;
+  var nameEl = tooltip.querySelector('.chart-tooltip-name');
+  var countEl = tooltip.querySelector('.chart-tooltip-count');
+
+  cols.forEach(function(col) {
+    col.addEventListener('mouseenter', function() {
+      var name = col.dataset.name || '';
+      var count = col.dataset.count || '0';
+      nameEl.textContent = name;
+      countEl.textContent = count + ' 篇';
+
+      var colRect = col.getBoundingClientRect();
+      var areaRect = chartArea.getBoundingClientRect();
+      var left = colRect.left - areaRect.left + colRect.width / 2;
+      var fill = col.querySelector('.col-fill');
+      var fillH = fill ? fill.offsetHeight : 0;
+      var barEl = col.querySelector('.col-bar');
+      var barH = barEl ? barEl.offsetHeight : 160;
+      var top = (barH - fillH) - 10;
+
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+      tooltip.style.opacity = '1';
+      tooltip.style.visibility = 'visible';
+      highlightChip(name);
+    });
+
+    col.addEventListener('mouseleave', function() {
+      tooltip.style.opacity = '0';
+      tooltip.style.visibility = 'hidden';
+      unhighlightChip(col.dataset.name);
+    });
+  });
+}

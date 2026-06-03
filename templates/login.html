@@ -1,4 +1,12 @@
-﻿<!doctype html>
+<!doctype html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html
     xmlns:th="https://www.thymeleaf.org"
     th:replace="~{gateway_fragments/layout :: layout(title = |登录 - ${site.title}|, head = ~{::head}, body = ~{::body})}"
@@ -6,8 +14,9 @@
     <head>
         <script th:src="@{/assets/js/login.js}" defer></script>
     </head>
-
+    
     <th:block th:fragment="body">
+        <!-- 登录视图 -->
         <div class="gateway-view-panel active" id="view-login">
             <div class="form-header">
                 <h2>登录</h2>
@@ -48,6 +57,7 @@
             </div>
         </div>
 
+        <!-- 忘记密码视图 -->
         <div class="gateway-view-panel" id="view-forgot">
             <button type="button" class="back-to-login" onclick="switchView('login')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
@@ -73,7 +83,7 @@
             </form>
 
             <div class="forgot-tip">
-                <p>提示：如果您在 5 分钟内未收到邮件，请检查垃圾邮箱或稍后重试。</p>
+                <p>提示：如果您在 5 分钟内未收到邮件，请检查您的垃圾邮件文件夹或尝试重新发送。</p>
             </div>
         </div>
     </th:block>

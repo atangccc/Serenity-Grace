@@ -1,15 +1,17 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{modules/layout :: html(title = ${singlePage != null ? singlePage.spec.title : '朋友们'}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/links.css}" />
-  <script th:inline="javascript">
-    window.LINK_CONFIG = {
-      offlineLabel: /*[[${theme.config.links != null && theme.config.links.linksConfig != null && theme.config.links.linksConfig.offlineLabel != null && !#strings.isEmpty(theme.config.links.linksConfig.offlineLabel) ? theme.config.links.linksConfig.offlineLabel : '失联咯~'}]]*/ '失联咯~'
-    };
-  </script>
   <script th:src="@{/assets/js/links.js}" defer></script>
-  <script th:if="${pluginFinder.available('link-submit')}" th:src="@{/assets/js/links-submit.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
   <main class="main">
@@ -77,89 +79,16 @@
 
       <div class="link-apply" data-aos="fade-up" th:if="${theme.config.links == null || theme.config.links.linksConfig == null || theme.config.links.linksConfig.enabled == null || theme.config.links.linksConfig.enabled}">
         <h2 class="link-apply-title">申请友链</h2>
-        <p class="link-apply-desc">欢迎交换友链，请提交你的站点信息</p>
+        <p class="link-apply-desc">友链提交可通过<strong>halo 商城安装 AstraHub 星链插件</strong>注册进行邀请，或直接联系博主。下方是本站信息，点击可一键复制。</p>
         <div class="link-apply-info" th:with="lc=${theme.config.links != null ? theme.config.links.linksConfig : null}">
           <span class="link-apply-item" onclick="copyApplyInfo(this)" title="点击复制"><span class="label">名称：</span><span class="link-apply-value" th:text="${(lc == null or #strings.isEmpty(lc.ownerName)) ? (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title) : lc.ownerName}">站点名称</span><span class="copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></span>
           <span class="link-apply-item" onclick="copyApplyInfo(this)" title="点击复制"><span class="label">链接：</span><span class="link-apply-value" th:text="${(lc == null or #strings.isEmpty(lc.ownerUrl)) ? site.url : lc.ownerUrl}">站点链接</span><span class="copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></span>
           <span class="link-apply-item" th:if="${(lc != null and !#strings.isEmpty(lc.ownerAvatar)) or !#strings.isEmpty(site.logo)}" onclick="copyApplyInfo(this)" title="点击复制"><span class="label">头像：</span><span class="link-apply-value" th:text="${(lc == null or #strings.isEmpty(lc.ownerAvatar)) ? site.logo : lc.ownerAvatar}">头像链接</span><span class="copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></span>
           <span class="link-apply-item" onclick="copyApplyInfo(this)" title="点击复制"><span class="label">描述：</span><span class="link-apply-value" th:text="${(lc == null or #strings.isEmpty(lc.ownerDescription)) ? (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle) : lc.ownerDescription}">站点描述</span><span class="copy-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></span>
-          <a th:if="${pluginFinder.available('link-submit') and (lc == null or lc.showApplyButton == null or lc.showApplyButton)}" href="javascript:void(0)" onclick="openLinkSubmitModal()" class="link-submit-text link-apply-item" title="申请友链">申请友链 ›</a>
         </div>
       </div>
     </div>
   </main>
-
-  <div id="customToast" class="custom-toast">
-    <div class="toast-icon"></div>
-    <div class="toast-content">
-      <div class="toast-title"></div>
-      <div class="toast-message"></div>
-    </div>
-  </div>
-
-  <div id="linkSubmitModal" class="link-submit-modal" th:if="${pluginFinder.available('link-submit')}">
-    <div class="link-submit-overlay" onclick="closeLinkSubmitModal()"></div>
-    <div class="link-submit-dialog" data-lenis-prevent>
-      <div class="link-submit-header">
-        <h2 class="link-submit-title">申请友链</h2>
-        <button class="link-submit-close" onclick="closeLinkSubmitModal()" aria-label="关闭">×</button>
-      </div>
-      <form id="linkSubmitForm" class="link-submit-form" onsubmit="submitLinkForm(event)">
-        <div class="form-group">
-          <label for="displayName">站点名称 <span class="required">*</span></label>
-          <input type="text" id="displayName" name="displayName" required placeholder="请输入站点名称">
-        </div>
-        <div class="form-group">
-          <label for="url">站点链接 <span class="required">*</span></label>
-          <input type="url" id="url" name="url" required placeholder="https://example.com">
-        </div>
-        <div class="form-group">
-          <label for="logo">站点头像 <span class="required">*</span></label>
-          <div class="logo-input-wrapper">
-            <input type="url" id="logo" name="logo" required placeholder="https://example.com/logo.png" oninput="previewLogo(this.value)">
-            <div class="logo-preview" id="logoPreview">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="email">联系邮箱 <span class="required">*</span></label>
-          <input type="email" id="email" name="email" required placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label for="description">站点描述 <span class="required">*</span></label>
-          <textarea id="description" name="description" required placeholder="简单介绍一下你的站点" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="groupName">友链分组 <span class="required">*</span></label>
-          <div class="custom-select" id="customGroupSelect">
-            <div class="custom-select-trigger" onclick="toggleGroupSelect()">
-              <span class="custom-select-value">请选择分组</span>
-              <svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-            <div class="custom-select-dropdown" id="groupSelectDropdown">
-              <div class="custom-select-option" data-value="">请选择分组</div>
-            </div>
-          </div>
-          <input type="hidden" id="groupName" name="groupName" required>
-        </div>
-        <div class="form-group">
-          <label for="rssUrl">RSS 订阅地址</label>
-          <input type="url" id="rssUrl" name="rssUrl" placeholder="https://example.com/rss.xml (可选)">
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn-cancel" onclick="closeLinkSubmitModal()">取消</button>
-          <button type="submit" class="btn-submit">提交申请</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <div id="linkConfirmModal" class="link-confirm-modal">
     <div class="link-confirm-content">

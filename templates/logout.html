@@ -1,4 +1,12 @@
-﻿<!doctype html>
+<!doctype html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html
     xmlns:th="https://www.thymeleaf.org"
     th:replace="~{gateway_fragments/layout :: layout(title = |退出登录 - ${site.title}|, head = ~{::head}, body = ~{::body})}"
@@ -6,7 +14,7 @@
     <head>
         <script th:src="@{/assets/js/passkey.js}" defer></script>
     </head>
-
+    
     <th:block th:fragment="body">
         <div class="gateway-view-panel active" id="view-logout">
             <div class="form-header">
@@ -14,12 +22,12 @@
                 <p>确认离开当前账号</p>
             </div>
 
+            <!-- 用户信息卡片 -->
             <div class="logout-user-card" th:object="${user}">
                 <img th:if="*{spec.avatar}" th:src="*{spec.avatar}" alt="" class="logout-avatar" />
                 <div class="logout-avatar-placeholder" th:unless="*{spec.avatar}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="12" cy="8" r="4"></circle>
-                        <path d="M5 20c0-3.87 3.13-7 7-7s7 3.13 7 7"></path>
+                        <circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.87 3.13-7 7-7s7 3.13 7 7"/>
                     </svg>
                 </div>
                 <div class="logout-user-info">
@@ -28,6 +36,7 @@
                 </div>
             </div>
 
+            <!-- 退出表单 -->
             <section class="passkey-manage-card" id="passkey-register-section" hidden>
                 <div class="passkey-manage-icon" aria-hidden="true">
                     <img src="/plugins/auth-passkey/assets/static/passkey.svg" alt="" />

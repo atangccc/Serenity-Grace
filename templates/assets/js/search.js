@@ -1,9 +1,154 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-05-07 12:04:20
- * Fingerprint: a8fd07c3a5b41317
- * Copyright © 2026 Serenity. All rights reserved.
- * Unauthorized copying or distribution is prohibited.
+ * Build: 2026-06-03 10:28:07
+ * Fingerprint: 18f8d0015be24d2b
+ * Copyright (c) 2026 Serenity. All rights reserved.
  */
-(function(){'use strict';var postsData=[];var searchTimeout=null;var dataLoaded=false;var modalEl,inputEl,resultsEl,searchBoxEl;window.openSearchModal=function(){if(modalEl&&inputEl){modalEl.classList.add('active');document.body.style.overflow='hidden';requestAnimationFrame(function(){inputEl.focus();});if(!dataLoaded){loadPostsData();}}};window.closeSearchModal=function(){if(modalEl&&inputEl&&resultsEl){modalEl.classList.remove('active');document.body.style.overflow='';inputEl.value='';resultsEl.innerHTML='<div class="search-empty">输入关键词开始搜索<\/div>';}};function escapeRegExp(str){return str.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}function escapeHtml(str){if(!str)return '';return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}function highlightKeyword(text,keyword){if(!text||!keyword)return escapeHtml(text)||'';try{var escaped=escapeHtml(text);var regex=new RegExp('('+escapeRegExp(keyword)+')','gi');return escaped.replace(regex,'<mark>$1<\/mark>');}catch(e){return escapeHtml(text);}}function searchPosts(keyword){if(!keyword)return [];var lowerKeyword=keyword.toLowerCase();return postsData.filter(function(post){var title=(post.title||'').toLowerCase();var excerpt=(post.excerpt||'').toLowerCase();return title.includes(lowerKeyword)||excerpt.includes(lowerKeyword);});}function loadPostsData(){fetch('/apis/api.content.halo.run/v1alpha1/posts?page=1&size=100').then(function(response){return response.json();}).then(function(data){if(data&&data.items){postsData=data.items.map(function(post){return{title:post.spec&&post.spec.title||'',excerpt:post.status&&post.status.excerpt||'',url:post.status&&post.status.permalink||'#'};});dataLoaded=true;}}).catch(function(){});}function handleSearch(keyword){if(!keyword){resultsEl.innerHTML='<div class="search-empty">输入关键词开始搜索<\/div>';return;}var matchedPosts=searchPosts(keyword);if(matchedPosts.length===0){resultsEl.innerHTML='<div class="search-empty">未找到相关文章<\/div>';return;}var html=matchedPosts.map(function(post){return '<a href="'+escapeHtml(post.url)+'" class="search-item">'+'<div class="search-item-title">'+highlightKeyword(post.title,keyword)+'<\/div>'+'<div class="search-item-excerpt">'+highlightKeyword(post.excerpt,keyword)+'<\/div>'+'<\/a>';}).join('');resultsEl.innerHTML=html;}function init(){modalEl=document.getElementById('search-modal');inputEl=document.getElementById('search-input');resultsEl=document.getElementById('search-results');searchBoxEl=document.getElementById('search-box');if(searchBoxEl){searchBoxEl.addEventListener('click',openSearchModal);}document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSearchModal();if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openSearchModal();}});if(inputEl){inputEl.addEventListener('input',function(e){clearTimeout(searchTimeout);var keyword=e.target.value.trim();if(!keyword){resultsEl.innerHTML='<div class="search-empty">输入关键词开始搜索<\/div>';return;}resultsEl.innerHTML='<div class="search-loading">搜索中...<\/div>';searchTimeout=setTimeout(function(){handleSearch(keyword);},200);});}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();
+
+(function() {
+  'use strict';
+  
+  var postsData = [];
+  var searchTimeout = null;
+  var dataLoaded = false;
+  
+  // 缓存 DOM 元素
+  var modalEl, inputEl, resultsEl, searchBoxEl;
+  
+  window.openSearchModal = function() {
+    if (modalEl && inputEl) {
+      modalEl.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function() { inputEl.focus(); });
+      // 打开搜索框时加载数据
+      if (!dataLoaded) {
+        loadPostsData();
+      }
+    }
+  };
+  
+  window.closeSearchModal = function() {
+    if (modalEl && inputEl && resultsEl) {
+      modalEl.classList.remove('active');
+      document.body.style.overflow = '';
+      inputEl.value = '';
+      resultsEl.innerHTML = '<div class="search-empty">输入关键词开始搜索<\/div>';
+    }
+  };
+  
+  function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+  
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  
+  function highlightKeyword(text, keyword) {
+    if (!text || !keyword) return escapeHtml(text) || '';
+    try {
+      var escaped = escapeHtml(text);
+      var regex = new RegExp('(' + escapeRegExp(keyword) + ')', 'gi');
+      return escaped.replace(regex, '<mark>$1<\/mark>');
+    } catch (e) {
+      return escapeHtml(text);
+    }
+  }
+  
+  function searchPosts(keyword) {
+    if (!keyword) return [];
+    var lowerKeyword = keyword.toLowerCase();
+    return postsData.filter(function(post) {
+      var title = (post.title || '').toLowerCase();
+      var excerpt = (post.excerpt || '').toLowerCase();
+      return title.includes(lowerKeyword) || excerpt.includes(lowerKeyword);
+    });
+  }
+  
+  function loadPostsData() {
+    fetch('/apis/api.content.halo.run/v1alpha1/posts?page=1&size=100')
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (data && data.items) {
+          postsData = data.items.map(function(post) {
+            return {
+              title: post.spec && post.spec.title || '',
+              excerpt: post.status && post.status.excerpt || '',
+              url: post.status && post.status.permalink || '#'
+            };
+          });
+          dataLoaded = true;
+        }
+      })
+      .catch(function() {});
+  }
+  
+  function handleSearch(keyword) {
+    if (!keyword) {
+      resultsEl.innerHTML = '<div class="search-empty">输入关键词开始搜索<\/div>';
+      return;
+    }
+    
+    var matchedPosts = searchPosts(keyword);
+    
+    if (matchedPosts.length === 0) {
+      resultsEl.innerHTML = '<div class="search-empty">未找到相关文章<\/div>';
+      return;
+    }
+    
+    var html = matchedPosts.map(function(post) {
+      return '<a href="' + escapeHtml(post.url) + '" class="search-item">' +
+        '<div class="search-item-title">' + highlightKeyword(post.title, keyword) + '<\/div>' +
+        '<div class="search-item-excerpt">' + highlightKeyword(post.excerpt, keyword) + '<\/div>' +
+      '<\/a>';
+    }).join('');
+    
+    resultsEl.innerHTML = html;
+  }
+  
+  function init() {
+    // 缓存 DOM 元素
+    modalEl = document.getElementById('search-modal');
+    inputEl = document.getElementById('search-input');
+    resultsEl = document.getElementById('search-results');
+    searchBoxEl = document.getElementById('search-box');
+    
+    if (searchBoxEl) {
+      searchBoxEl.addEventListener('click', openSearchModal);
+    }
+    
+    // 键盘快捷键
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSearchModal();
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearchModal();
+      }
+    });
+    
+    // 搜索输入防抖
+    if (inputEl) {
+      inputEl.addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        var keyword = e.target.value.trim();
+        
+        if (!keyword) {
+          resultsEl.innerHTML = '<div class="search-empty">输入关键词开始搜索<\/div>';
+          return;
+        }
+        
+        resultsEl.innerHTML = '<div class="search-loading">搜索中...<\/div>';
+        searchTimeout = setTimeout(function() { handleSearch(keyword); }, 200);
+      });
+    }
+  }
+  
+  // DOM 加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

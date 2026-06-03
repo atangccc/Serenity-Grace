@@ -1,6 +1,14 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{modules/layout :: html(title = ${singlePage.spec.title}, content = ~{::content}, head = ~{::head})}">
+      th:replace="~{modules/layout :: html(title = ${(theme.config.watermark?.friendsCircle?.enabled == true ? theme.config.watermark.friendsCircle.title : null) ?: (singlePage.spec.title ?: '朋友圈')}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/friends-circle.css}" />
   <meta property="og:type" content="website" />
@@ -19,7 +27,7 @@
           <p class="friends-circle-subtitle" th:text="${(theme.config.watermark?.friendsCircle?.enabled == true ? theme.config.watermark.friendsCircle.subtitle : null) ?: '发现朋友们的精彩内容'}">发现朋友们的精彩内容</p>
         </div>
 
-        <div th:if="${friendFinder == null}" class="plugin-notice" data-aos="fade-up">
+        <div id="pluginNotice" class="plugin-notice" data-aos="fade-up" style="display:none;">
           <div class="plugin-notice-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -27,56 +35,50 @@
             </svg>
           </div>
           <h3 class="plugin-notice-title">朋友圈功能需要安装插件</h3>
-          <p class="plugin-notice-desc">请先安装并启用「朋友圈」插件</p>
+          <p class="plugin-notice-desc">请先安装并启用「链接管理（plugin-links）」插件，并为友链配置 RSS 地址</p>
         </div>
 
-        <th:block th:if="${friendFinder != null}">
-          <div class="friends-circle-grid" id="friendsCircleGrid" data-aos="fade-up" data-aos-delay="100">
-          </div>
+        <div class="friends-circle-grid" id="friendsCircleGrid" data-aos="fade-up" data-aos-delay="100">
+        </div>
 
-          <div id="emptyState" class="friends-circle-empty" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;width:100%;" data-aos="fade-up">
-            <div class="plugin-notice-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        <div id="emptyState" class="friends-circle-empty" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;width:100%;" data-aos="fade-up">
+          <div class="plugin-notice-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="plugin-notice-title">暂无朋友圈内容</h3>
+          <p class="plugin-notice-desc">等待朋友们的更新</p>
+        </div>
+
+        <div id="pagination" class="friends-circle-pagination" style="display: none;" data-aos="fade-up">
+          <div class="pagination-info">
+            <span>共 <strong id="totalCount">0</strong> 篇文章</span>
+          </div>
+          
+          <div class="pagination-controls">
+            <button id="prevBtn" class="pagination-arrow" onclick="prevPage()" title="上一页" aria-label="上一页">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M15 18l-6-6 6-6"/>
               </svg>
-            </div>
-            <h3 class="plugin-notice-title">暂无朋友圈内容</h3>
-            <p class="plugin-notice-desc">等待朋友们的更新</p>
-          </div>
-
-          <div id="pagination" class="friends-circle-pagination" style="display: none;" data-aos="fade-up">
-            <div class="pagination-info">
-              <span>共 <strong id="totalCount">0</strong> 篇文章</span>
-            </div>
+            </button>
             
-            <div class="pagination-controls">
-              <button id="prevBtn" class="pagination-arrow" onclick="prevPage()" title="上一页" aria-label="上一页">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M15 18l-6-6 6-6"/>
-                </svg>
-              </button>
-              
-              <span class="pagination-current">
-                <span id="currentPage">1</span> / <span id="totalPages">1</span>
-              </span>
-              
-              <button id="nextBtn" class="pagination-arrow" onclick="nextPage()" title="下一页" aria-label="下一页">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M9 18l6-6-6-6"/>
-                </svg>
-              </button>
-            </div>
+            <span class="pagination-current">
+              <span id="currentPage">1</span> / <span id="totalPages">1</span>
+            </span>
+            
+            <button id="nextBtn" class="pagination-arrow" onclick="nextPage()" title="下一页" aria-label="下一页">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
           </div>
-        </th:block>
+        </div>
       </section>
     </div>
   </main>
-
-  <script th:if="${friendFinder != null}" th:inline="javascript">
-    window.allFriends = /*[[${friendFinder.listAll()}]]*/ [];
-  </script>
 </th:block>
 </html>

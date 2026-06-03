@@ -1,9 +1,18 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{modules/layout :: html(title = ${singlePage.spec.title}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/about.css}" />
   <link th:if="${theme.config.about != null && theme.config.about.steamConfig != null && theme.config.about.steamConfig.showSteam}" rel="stylesheet" th:href="@{/assets/css/steam.css}" />
+
   <meta property="og:type" content="profile" />
   <meta property="og:title" th:content="${(singlePage.spec.title ?: '关于') + ' - ' + (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title)}" />
   <meta property="og:description" th:content="${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle}" />
@@ -18,7 +27,7 @@
       "@type": "Person",
       "name": /*[[${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.author != null ? theme.config.basic.siteInfo.author : site.title}]]*/ "",
       "description": /*[[${theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle}]]*/ "",
-      "image": /*[[${site.logo != null && !#strings.isEmpty(site.logo) ? site.logo : '/themes/theme-Serenity/assets/public/ics6.webp'}]]*/ "",
+      "image": /*[[${site.logo != null && !#strings.isEmpty(site.logo) ? site.logo : '/themes/theme-Serenity/assets/public/logo.webp'}]]*/ "",
       "url": /*[[${site.url}]]*/ ""
     }
   }
@@ -27,6 +36,7 @@
   <script th:if="${theme.config.about != null && theme.config.about.foreverBlogConfig != null && theme.config.about.foreverBlogConfig.showForeverBlog}" th:src="@{/assets/js/about.js}" defer></script>
   <script th:if="${theme.config.about != null && theme.config.about.steamConfig != null && theme.config.about.steamConfig.showSteam}" th:src="@{/assets/js/steam.js}" defer></script>
   <script th:if="${theme.config.about != null && theme.config.about.afdianSettings != null && theme.config.about.afdianSettings.showAfdian}" th:src="@{/assets/js/about-afdian.js}"></script>
+
 </th:block>
 <th:block th:fragment="content">
   <div class="container">
@@ -45,7 +55,7 @@
             </th:block>
           </div>
           <div class="about-hero-avatar" data-aos="zoom-in" data-aos-delay="200">
-            <img th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp'}" alt="Avatar" />
+            <img th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp'}" alt="Avatar" />
           </div>
           <div class="hero-tags-right" data-aos="fade-left" data-aos-delay="100">
             <th:block th:if="${theme.config.about.tagsConfig.tagsRight != null}">
@@ -60,7 +70,7 @@
           </th:block>
           <th:block th:if="${theme.config.about == null || theme.config.about.tagsConfig == null || (theme.config.about.tagsConfig.showTags != null && !theme.config.about.tagsConfig.showTags)}">
           <div class="about-hero-avatar" data-aos="zoom-in" data-aos-delay="200">
-            <img th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp'}" alt="Avatar" />
+            <img th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp'}" alt="Avatar" />
           </div>
           </th:block>
         </div>
@@ -153,7 +163,7 @@
       </h2>
       <div class="about-history" style="white-space: pre-line;" th:text="${theme.config.about != null && theme.config.about.siteHistoryConfig != null ? theme.config.about.siteHistoryConfig.siteHistory : ''}">
         <p>始建于<span class="highlight">2024年</span>，纯个人兴趣建站，记录技术与生活。</p>
-        <p>最初使用 Hexo 搭建，后迁移至 <span class="highlight">Halo</span>，体验更现代化的博客系统。</p>
+        <p>最初使用 Hexo 搭建，后迁移到 <span class="highlight">Halo</span>，体验更现代化的博客系统。</p>
         <p>记录生活中的点滴，分享技术探索的心得，收藏有趣的发现，顺便当做备忘录。</p>
         <p>经历了多次改版、换主题、折腾服务器，一直靠<span class="highlight">热爱</span>支撑，毕竟它承载着成长和回忆。</p>
         <p>更新随缘，有时勤快有时懒，因为不知道写什么，全看心情。</p>
@@ -195,7 +205,7 @@
         </div>
         <div class="progress-text">
           <span>已坚持 <strong id="progressPercent">0</strong>%</span>
-          <span id="remainingTime" class="remaining-time">0年:0天:00时:00分:00秒</span>
+          <span id="remainingTime" class="remaining-time">0年0月00天00时00分</span>
           <span class="progress-target">目标：10年</span>
         </div>
       </div>

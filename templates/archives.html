@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{modules/layout :: html(title = ${(theme.config.watermark?.archives?.enabled == true ? theme.config.watermark.archives.title : null) ?: '归档'}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">

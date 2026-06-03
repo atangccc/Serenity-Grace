@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org"
       th:replace="~{modules/layout :: html(title = ${post != null and post.spec != null ? post.spec.title : '文章详情'}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
@@ -8,7 +16,7 @@
     document.documentElement.classList.add('show-scrollbar');
   </script>
   <link rel="canonical" th:href="${site.url + post.status.permalink}" />
-  <!-- 文章页 Open Graph 覆盖 -->
+  <!-- 文章的 Open Graph 覆盖 -->
   <meta property="og:type" content="article" />
   <meta property="og:title" th:content="${post.spec.title}" />
   <meta property="og:description" th:content="${post.status.excerpt ?: (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle)}" />
@@ -28,6 +36,9 @@
   <meta name="twitter:title" th:content="${post.spec.title}" />
   <meta name="twitter:description" th:content="${post.status.excerpt ?: (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle)}" />
   <meta name="twitter:image" th:if="${post.spec.cover != null && !#strings.isEmpty(post.spec.cover)}" th:content="${post.spec.cover}" />
+  <script th:src="@{/assets/js/lightbox.js}" defer></script>
+  <script th:inline="javascript">window.__showHeadingIcons = /*[[${theme.config.post != null && theme.config.post.headingIconsConfig != null && theme.config.post.headingIconsConfig.showHeadingIcons != null ? theme.config.post.headingIconsConfig.showHeadingIcons : true}]]*/ true;</script>
+  <script th:src="@{/assets/js/post.js}" defer></script>
   <script th:if="${theme.config.seo != null && theme.config.seo.seoConfig != null && (theme.config.seo.seoConfig.enableJsonLd == null || theme.config.seo.seoConfig.enableJsonLd)}" type="application/ld+json" th:inline="javascript">
   {
     "@context": "https://schema.org",
@@ -51,7 +62,7 @@
       "name": /*[[${site.title}]]*/ "",
       "logo": {
         "@type": "ImageObject",
-        "url": /*[[${site.logo != null && !#strings.isEmpty(site.logo) ? site.logo : '/themes/theme-Serenity/assets/public/ics6.webp'}]]*/ ""
+        "url": /*[[${site.logo != null && !#strings.isEmpty(site.logo) ? site.logo : '/themes/theme-Serenity/assets/public/logo.webp'}]]*/ ""
       }
     }
   }
@@ -75,9 +86,6 @@
     ]
   }
   </script>
-  <script th:src="@{/assets/js/lightbox.js}" defer></script>
-  <script th:inline="javascript">window.__showHeadingIcons = /*[[${theme.config.post != null && theme.config.post.headingIconsConfig != null && theme.config.post.headingIconsConfig.showHeadingIcons != null ? theme.config.post.headingIconsConfig.showHeadingIcons : true}]]*/ true;</script>
-  <script th:src="@{/assets/js/post.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
   <!-- 阅读进度条 -->
@@ -147,7 +155,7 @@
         <h1 class="post-hero-title" th:text="${post.spec.title}">文章标题</h1>
         <div class="post-hero-meta">
           <span class="post-hero-author" th:if="${post.owner != null}">
-            <img th:src="${post.owner.avatar != null && !#strings.isEmpty(post.owner.avatar) ? post.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp')}" alt="" class="post-hero-avatar" />
+            <img th:src="${post.owner.avatar != null && !#strings.isEmpty(post.owner.avatar) ? post.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp')}" alt="" class="post-hero-avatar" />
             <span th:text="${post.owner.displayName ?: (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.author != null ? theme.config.basic.siteInfo.author : 'Author')}">作者</span>
           </span>
           <span class="post-hero-date" th:if="${post.spec.publishTime}">
@@ -214,9 +222,8 @@
                 </svg>
                 <a th:href="@{${post.status.permalink}}" class="copyright-link" th:text="${post.spec.title}">探索 Next.js 14 的新特性与最佳实践</a>
               </div>
-              <p class="copyright-text" th:utext="${theme.config.post != null && theme.config.post.copyrightConfig != null && theme.config.post.copyrightConfig.copyrightText != null ? theme.config.post.copyrightConfig.copyrightText : '本文采用 &lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot; target=&quot;_blank&quot; class=&quot;copyright-license&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt; 协议，转载请注明出处。'}">
-                本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" class="copyright-license">CC BY-NC-SA 4.0</a> 协议，转载请注明出处。
-              </p>
+              <p class="copyright-text" th:utext="${theme.config.post != null && theme.config.post.copyrightConfig != null && theme.config.post.copyrightConfig.copyrightText != null ? theme.config.post.copyrightConfig.copyrightText : '本文采用 &lt;a href=&quot;https://creativecommons.org/licenses/by-nc-sa/4.0/&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot; class=&quot;copyright-license&quot;&gt;CC BY-NC-SA 4.0&lt;/a&gt; 协议，转载请注明出处。'}">
+                本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer" class="copyright-license">CC BY-NC-SA 4.0</a> 协议，转载请注明出处。              </p>
             </div>
             <div class="copyright-logo">
               <svg viewBox="0 0 100 100" fill="none">
@@ -274,7 +281,7 @@
             </div>
             <div class="reward-content">
               <h2 class="reward-title" th:text="${theme.config.post.rewardConfig.rewardTitle ?: '赞赏支持'}">赞赏支持</h2>
-              <p class="reward-text" th:text="${theme.config.post.rewardConfig.rewardText ?: '如果觉得文章对你有帮助，可以请作者喝杯咖啡 ☕'}">如果觉得文章对你有帮助，可以请作者喝杯咖啡 ☕</p>
+              <p class="reward-text" th:text="${theme.config.post.rewardConfig.rewardText ?: '如果觉得文章对你有帮助，可以请作者喝杯咖啡☕'}">如果觉得文章对你有帮助，可以请作者喝杯咖啡☕</p>
               <div class="reward-icon">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -382,7 +389,7 @@
                   </div>
                   <div class="widget-author">
                     <img class="author-avatar" 
-                         th:src="${post.owner != null && post.owner.avatar != null && !#strings.isEmpty(post.owner.avatar) ? post.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp')}" 
+                         th:src="${post.owner != null && post.owner.avatar != null && !#strings.isEmpty(post.owner.avatar) ? post.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp')}" 
                          th:alt="${post.owner != null ? post.owner.displayName : (theme.config.basic != null and theme.config.basic.siteInfo != null ? theme.config.basic.siteInfo.author : 'Author')}" />
                     <div class="author-info">
                       <a class="author-name-link" th:href="@{/about}" href="/about">
@@ -495,7 +502,7 @@
                 </div>
                 <div class="widget-author">
                   <img class="author-avatar" 
-                       th:src="${post.owner != null && post.owner.avatar != null && !#strings.isEmpty(post.owner.avatar) ? post.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp')}" 
+                       th:src="${post.owner != null && post.owner.avatar != null && !#strings.isEmpty(post.owner.avatar) ? post.owner.avatar : (site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp')}" 
                        th:alt="${post.owner != null ? post.owner.displayName : theme.config.basic.siteInfo.author}" />
                   <div class="author-info">
                     <a class="author-name-link" th:href="@{/about}" href="/about">

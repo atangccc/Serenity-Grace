@@ -7,15 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2" />
     <title th:text="${title}"></title>
     <link rel="icon" th:href="${site.favicon}" />
-    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}" />
-    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}" />
     
     <th:block th:replace="~{gateway_fragments/common::basicStaticResources}"></th:block>
-    <link rel="stylesheet" th:href="@{/assets/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/assets/css/login.css}" />
-    <script th:src="@{/assets/js/gateway-toast.js}" defer></script>
     
-    <!-- 暗色模式初始化（与主题一致） -->
+    <!-- 暗色模式初始化（必须先于 theme-color-init.js，确保后者读到正确的 data-theme） -->
     <meta name="default-theme" th:content="${defaultTheme}" />
     <script>
       (function() {
@@ -28,6 +23,16 @@
         document.documentElement.setAttribute('data-theme', scheme);
       })();
     </script>
+    
+    <script th:inline="javascript">
+      window.__ACCENT_LIGHT = /*[[${theme.config.basic?.lightColor != null and !#strings.isEmpty(theme.config.basic.lightColor) ? theme.config.basic.lightColor : '#7DCDE8'}]]*/ '#7DCDE8';
+      window.__ACCENT_DARK  = /*[[${theme.config.basic?.darkColor != null and !#strings.isEmpty(theme.config.basic.darkColor) ? theme.config.basic.darkColor : '#E87D98'}]]*/ '#E87D98';
+    </script>
+    <script th:src="@{/assets/js/theme-color-init.js}"></script>
+    
+    <link rel="stylesheet" th:href="@{/assets/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/login.css}" />
+    <script th:src="@{/assets/js/gateway-toast.js}" defer></script>
     <script th:inline="javascript">
       (function() {
         var enabled = /*[[${theme.config.basic != null and theme.config.basic.typographyConfig != null and theme.config.basic.typographyConfig.enabled != null ? theme.config.basic.typographyConfig.enabled : false}]]*/ false;
@@ -145,7 +150,7 @@
           <div class="brand-top">
             <div class="brand-logo-row">
               <div class="brand-logo-icon">
-                <img th:src="${site.logo ?: (site.favicon ?: '/themes/theme-Serenity/assets/public/ics6.webp')}"
+                <img th:src="${site.logo ?: (site.favicon ?: '/themes/theme-Serenity/assets/public/logo.webp')}"
                      th:alt="${site.title}" alt="Logo" />
               </div>
               <div class="brand-logo-info">
@@ -177,6 +182,9 @@
 
       </div>
     </div>
+
+    <!-- ANI 动态鼠标指针 (Hue 定制) -->
+    <script th:src="@{/assets/js/cursor-init.js}"></script>
 
     <!-- 页脚 -->
     <div class="gateway-footer">

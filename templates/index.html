@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-06-03 10:28:07
+  Fingerprint: 18f8d0015be24d2b
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
 <html xmlns:th="https://www.thymeleaf.org" 
       th:replace="~{modules/layout :: html(title = null, content = ~{::content}, head = ~{::head})}">
   <th:block th:fragment="head">
@@ -35,6 +43,7 @@
     <main class="main">
       <div class="hero-background" th:if="${theme.config.home == null || theme.config.home.backgroundConfig == null || theme.config.home.backgroundConfig.showHeroBackground == null || theme.config.home.backgroundConfig.showHeroBackground}"
            th:with="hasApi = ${theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundApi != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundApi)}">
+        <!-- 首页背景不使用色调遮罩，保持原始颜色 -->
         <th:block th:if="${hasApi}">
           <img class="hero-background-img hero-bg-api-img" 
                alt="" 
@@ -75,14 +84,14 @@
               return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
             }
 
+            function defaultUrl(theme) {
+              return theme === 'light' ? img.getAttribute('data-default-light') : img.getAttribute('data-default-dark');
+            }
+
             function themeUrl(theme) {
               var selected = theme === 'light' ? img.getAttribute('data-light') : img.getAttribute('data-dark');
               var fallback = defaultUrl(theme);
               return selected || fallback || '';
-            }
-
-            function defaultUrl(theme) {
-              return theme === 'light' ? img.getAttribute('data-default-light') : img.getAttribute('data-default-dark');
             }
 
             function resetVideo() {
@@ -208,7 +217,7 @@
             <div class="hero-avatar-wrapper">
               <div class="hero-avatar"
                    th:style="${theme.config.hero != null and theme.config.hero.colorConfig != null and theme.config.hero.colorConfig.avatarGlowColor != null and !#strings.isEmpty(theme.config.hero.colorConfig.avatarGlowColor) ? '--avatar-glow:' + theme.config.hero.colorConfig.avatarGlowColor : ''}">
-              <img th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/ics6.webp'}" 
+              <img th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp'}" 
                    th:alt="${site.title}" alt="Avatar" />
             </div>
               <!-- 天气时钟 - 头像下方 -->

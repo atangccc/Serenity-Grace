@@ -17,7 +17,7 @@ spec:
       url: LICENSE
   settingName: theme-Serenity-setting
   configMapName: theme-Serenity-configmap
-  version: 2.0.1
+  version: 2.0.2
   requires: ">=2.0.0"
   customTemplates:
     page:

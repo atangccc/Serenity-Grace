@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
   calcTotal();
 });
 
-/* 从隐藏 DOM 读取所有标签数据 */
 function getAllTagsData() {
   var items = document.querySelectorAll('#tags-data .tag-data-item');
   var result = [];
@@ -27,7 +26,6 @@ function getAllTagsData() {
   return result;
 }
 
-/* 通用：高亮/取消底部标签胶囊 */
 function highlightChip(name) {
   var chip = document.querySelector('.tag-chip[data-name="' + name + '"]');
   if (chip) chip.classList.add('chip-highlight');
@@ -37,14 +35,12 @@ function unhighlightChip(name) {
   if (chip) chip.classList.remove('chip-highlight');
 }
 
-/* 动态生成环形：按 postCount 降序取前4个标签 */
 function initRings() {
   var svg = document.getElementById('rings-svg');
   if (!svg) return;
   var allTags = getAllTagsData();
   if (!allTags.length) return;
 
-  // 只取 postCount > 0 的标签，按降序排序，取前4
   var sorted = allTags.filter(function(t) { return t.count > 0; })
     .sort(function(a, b) { return b.count - a.count; });
   var top4 = sorted.slice(0, 4);
@@ -79,7 +75,6 @@ function initRings() {
   });
 }
 
-/* 统计标签数量 */
 function calcTotal() {
   var el = document.getElementById('rings-total');
   if (!el) return;
@@ -98,7 +93,6 @@ function animateNumber(el, from, to, duration) {
   requestAnimationFrame(tick);
 }
 
-/* 圆环 hover 提示 + 联动底部标签 */
 function initRingTooltips() {
   var rings = document.querySelectorAll('.ring[data-name]');
   var tooltip = document.getElementById('ring-tooltip');
@@ -124,7 +118,6 @@ function initRingTooltips() {
   });
 }
 
-/* 竖柱图 + tooltip + 联动底部标签 */
 function initBarChart() {
   var chartArea = document.getElementById('chart-area');
   if (!chartArea) return;

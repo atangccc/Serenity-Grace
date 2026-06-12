@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -205,7 +205,11 @@ function transitionTheme(updateCb, x, y) {
       Math.max(y || 0, window.innerHeight - (y || 0))
     );
     root.style.setProperty('--tr', maxR + 'px');
-    document.startViewTransition(updateCb);
+    root.classList.add('theme-vt');
+    var vt = document.startViewTransition(updateCb);
+    vt.finished.finally(function () {
+      root.classList.remove('theme-vt');
+    });
   } else {
     document.documentElement.classList.add('theme-transitioning');
     updateCb();
@@ -364,7 +368,7 @@ function initMobileDropdowns() {
         if (window.innerWidth > 768) return;
         var href = btn.getAttribute('href');
         var isCurrentPage = href && window.location.pathname.indexOf(href) === 0;
-        if (!isCurrentPage) return; // 不在当前页面，让 pjax 正常导航，不展开
+        if (!isCurrentPage) return; // 不在当前页面，正常导航，不展开
         // 已在当前页面，阻止导航，toggle 二级菜单
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -444,13 +448,19 @@ function initHeroBackground() {
   if (!heroBackgroundMedia || heroBackgroundMedia.length === 0) return;
   
   // 立即根据当前滚动位置设置状态（防止刷新时闪烁）
+  var lastProgress = -1;
   function updateBackground() {
     const scrollY = window.pageYOffset;
     const windowHeight = window.innerHeight;
     const scrollProgress = Math.min(scrollY / windowHeight, 1);
+
+    // 进度无变化（已滚过首屏停在 1，或停在 0）时跳过，避免对全屏背景图持续重算高斯模糊
+    if (scrollProgress === lastProgress) return;
+    lastProgress = scrollProgress;
+
     const blurAmount = scrollProgress * 20;
     const opacity = 1 - scrollProgress;
-    
+
     heroBackgroundMedia.forEach((el) => {
       el.style.filter = `blur(${blurAmount}px)`;
       el.style.opacity = opacity;

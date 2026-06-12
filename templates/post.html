@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-03 10:28:07
-  Fingerprint: 18f8d0015be24d2b
+  Build: 2026-06-12 17:03:04
+  Fingerprint: a120876833389618
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -39,6 +39,7 @@
   <script th:src="@{/assets/js/lightbox.js}" defer></script>
   <script th:inline="javascript">window.__showHeadingIcons = /*[[${theme.config.post != null && theme.config.post.headingIconsConfig != null && theme.config.post.headingIconsConfig.showHeadingIcons != null ? theme.config.post.headingIconsConfig.showHeadingIcons : true}]]*/ true;</script>
   <script th:src="@{/assets/js/post.js}" defer></script>
+  <script th:src="@{/assets/js/tag-sphere.js}" defer></script>
   <script th:if="${theme.config.seo != null && theme.config.seo.seoConfig != null && (theme.config.seo.seoConfig.enableJsonLd == null || theme.config.seo.seoConfig.enableJsonLd)}" type="application/ld+json" th:inline="javascript">
   {
     "@context": "https://schema.org",
@@ -117,11 +118,7 @@
 
         var finalUrl = (cachedUrl && currentSession) ? cachedUrl : currentApi;
         
-        img.src = finalUrl;
-        img.decoding = 'async';
-        img.loading = 'eager';
-        
-        img.onload = function() {
+        function markLoaded() {
           img.classList.add('loaded');
           document.body.classList.add('has-bg-wallpaper');
 
@@ -129,14 +126,23 @@
             localStorage.setItem(STORAGE_KEY, img.src);
             sessionStorage.setItem(sessionKey, 'true');
           }
-        };
-        
-        img.onerror = function() {
+        }
 
+        img.onload = markLoaded;
+
+        img.onerror = function() {
           if (finalUrl !== currentApi) {
             img.src = currentApi;
           }
         };
+
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.src = finalUrl;
+
+        if (img.complete && img.naturalWidth > 0) {
+          markLoaded();
+        }
       })();
     </script>
   </th:block>
@@ -456,7 +462,7 @@
                     <span class="widget-divider"></span>
                     <span class="widget-title">热门标签</span>
                   </div>
-                  <div class="widget-tags">
+                  <div class="widget-tags widget-tags-sphere">
                     <th:block th:if="${not #lists.isEmpty(tagFinder.listAll())}">
                       <a th:each="tag : ${tagFinder.listAll()}" 
                          th:href="@{${tag.status.permalink}}" 
@@ -569,7 +575,7 @@
                   <span class="widget-divider"></span>
                   <span class="widget-title">热门标签</span>
                 </div>
-                <div class="widget-tags">
+                <div class="widget-tags widget-tags-sphere">
                   <th:block th:if="${not #lists.isEmpty(tagFinder.listAll())}">
                     <a th:each="tag : ${tagFinder.listAll()}" 
                        th:href="@{${tag.status.permalink}}" 

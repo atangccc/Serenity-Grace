@@ -1,8 +1,8 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -373,4 +373,45 @@
 
 .pagination-arrow.disabled svg {
   color: var(--color-text-muted);
+}
+
+/* 标签云 - 3D 旋转球形 */
+.widget-tags-sphere.tag-sphere-ready {
+  position: relative;
+  display: block;
+  /* 抵消卡片左右下内边距(--space-5:24px)，让球面铺满到卡片真实边缘，
+     截断线即卡片边缘，而非内容区边缘 */
+  width: auto;
+  height: 240px;
+  margin: 4px -24px -24px;
+  perspective: 700px;
+  overflow: hidden;
+  /* 底部跟随卡片圆角(--radius-lg:16px)裁切，视觉与卡片贴合 */
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  cursor: grab;
+}
+
+.widget-tags-sphere.tag-sphere-ready.tag-sphere-grabbing {
+  cursor: grabbing;
+}
+
+.widget-tags-sphere.tag-sphere-ready .widget-tag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  padding: 3px 9px;
+  font-size: 12px;
+  /* 以容器中心为原点，translate3d 由 JS 接管 */
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: none; /* 自转期间禁用过渡，避免抖动 */
+  backface-visibility: hidden;
+}
+
+/* hover 单个标签时高亮，不影响球面定位（颜色变化交给 base.css 的 :hover） */
+.widget-tags-sphere.tag-sphere-ready .widget-tag:hover {
+  filter: none !important;
+  opacity: 1 !important;
 }

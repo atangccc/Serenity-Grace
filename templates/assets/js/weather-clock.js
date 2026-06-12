@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -167,10 +167,7 @@
 
     if (config.showTime) {
       updateTime();
-      var timeTimer = setInterval(updateTime, 60000);
-      document.addEventListener('pjax:beforeReplace', function() {
-        clearInterval(timeTimer);
-      }, { once: true });
+      setInterval(updateTime, 60000);
     }
 
     if (config.showWeather || config.showTemperature || config.showCity) {

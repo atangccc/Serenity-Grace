@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -511,7 +511,7 @@ async function loadProjects() {
   const loading = document.getElementById('projectsLoading');
   const empty = document.getElementById('projectsEmpty');
   
-  // PJAX 导航后 DOM 可能已被替换，元素不存在则直接返回
+  // 元素不存在则直接返回
   if (!grid || !loading || !empty) return;
   
   const GITHUB_PROJECTS = window.GITHUB_PROJECTS || [];
@@ -555,7 +555,7 @@ async function loadProjects() {
   
   loading.style.display = 'none';
   
-  // PJAX 导航后 DOM 可能已被替换
+  // 元素不存在则直接返回
   if (!document.getElementById('projectsGrid')) return;
   
   if (projects.length === 0) {

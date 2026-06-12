@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -23,19 +23,15 @@ window.SerenityLightbox = (function() {
     var getSrc           = opts.getSrc || function(img) { return img.getAttribute('data-src') || img.src; };
     var guard            = opts.guard;
 
-    // 前置守卫
     if (typeof guard === 'function' && guard() === false) return null;
 
-    // 创建 DOM
     var overlay = document.createElement('div');
     overlay.className = className;
-    // 使用内联样式确保在 CSS 加载前也能隐藏
-    // 添加 !important 确保不会被外部 CSS 覆盖
+    // 内联样式 + !important：确保在 CSS 加载前就隐藏，且不被外部 CSS 覆盖
     overlay.style.cssText = 'position:fixed !important;inset:0 !important;z-index:99999 !important;background:rgba(0,0,0,0.92) !important;display:flex !important;align-items:center !important;justify-content:center !important;opacity:0 !important;visibility:hidden !important;cursor:zoom-out !important;';
     overlay.innerHTML =
       '<div class="' + className + '-close" style="position:absolute;top:20px;right:24px;font-size:36px;color:rgba(255,255,255,0.7);cursor:pointer;line-height:1;z-index:1;">&times;</div>' +
       '<img class="' + className + '-img" src="" alt="" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px;transform:scale(0.9);transition:transform 0.3s ease;" />';
-    // 确保 overlay 是定位上下文
     overlay.style.position = 'fixed';
     document.body.appendChild(overlay);
 
@@ -91,7 +87,7 @@ window.SerenityLightbox = (function() {
   return { create: create };
 })();
 
-document.addEventListener('pjax:complete', function() {
+function __serenityInitLightboxes() {
 
   var instances = ['__postLightbox', '__photosLightbox', '__momentLightbox', '__memoLightbox'];
   instances.forEach(function(key) {
@@ -143,4 +139,11 @@ document.addEventListener('pjax:complete', function() {
       });
     }
   }, 100);
-});
+}
+
+// 首次加载初始化（整页跳转下每次都会触发）
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', __serenityInitLightboxes);
+} else {
+  __serenityInitLightboxes();
+}

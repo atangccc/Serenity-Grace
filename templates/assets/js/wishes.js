@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -40,14 +40,12 @@
     initDaysCounter();
   });
 
-  /* ===== Init cards: random position, rotation, color, drag ===== */
   function initCards() {
     var board = document.getElementById('wishBoard');
     if (!board) return;
     var cards = board.querySelectorAll('.wish-card');
     if (cards.length === 0) return;
 
-    // Board has fixed height via CSS (overflow: hidden), use its actual size
     var bw = board.offsetWidth;
     var bh = board.offsetHeight;
     var cw = isMobile ? 150 : 230;
@@ -76,7 +74,6 @@
     });
   }
 
-  /* ===== Drag (constrained to viewport & board bottom) ===== */
   function initDrag(card, board) {
     var header = card.querySelector('.wish-card-header');
     if (!header) return;
@@ -97,15 +94,11 @@
         var newLeft = origX + ev.clientX - startX;
         var newTop = origY + ev.clientY - startY;
 
-        // Clamp: left/right within board (which is 100vw)
         var bw = board.offsetWidth;
         var cw = card.offsetWidth;
         if (newLeft < 0) newLeft = 0;
         if (newLeft + cw > bw) newLeft = bw - cw;
 
-        // No top clamp — free to move upward
-
-        // Clamp: bottom within board height (don't go under footer)
         var bh = board.offsetHeight;
         var ch = card.offsetHeight;
         if (newTop + ch > bh) newTop = bh - ch;
@@ -124,7 +117,6 @@
     });
   }
 
-  /* ===== Tabs ===== */
   function initTabs() {
     document.querySelectorAll('.wish-tab').forEach(function (t) {
       t.addEventListener('click', function () {
@@ -148,10 +140,9 @@
         c.style.display = 'none';
       } else {
         c.style.display = '';
-        // 重新播放入场动画，用新的交错延迟（从 0 开始）
         c.style.animation = 'none';
         c.style.opacity = '0';
-        void c.offsetWidth; // 强制 reflow
+        void c.offsetWidth; 
         c.style.animation = 'wishCardIn 0.4s ease ' + (visible * 40) + 'ms forwards';
         visible++;
       }
@@ -159,7 +150,6 @@
     if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
   }
 
-  /* ===== Color picker ===== */
   function initColorPicker() {
     document.querySelectorAll('.wish-color-dot').forEach(function (d) {
       d.addEventListener('click', function () {
@@ -170,7 +160,6 @@
     });
   }
 
-  /* ===== Type toggle ===== */
   function initTypeToggle() {
     var btn = document.getElementById('wishTypeToggle');
     if (!btn) return;
@@ -183,7 +172,6 @@
     });
   }
 
-  /* ===== Char counter ===== */
   function initCharCounter() {
     var input = document.getElementById('wishContent');
     if (!input) return;
@@ -199,7 +187,6 @@
     counter.classList.toggle('over', len > maxLen);
   }
 
-  /* ===== Submit ===== */
   function initSubmit() {
     var btn = document.getElementById('wishSubmitBtn');
     if (!btn) return;
@@ -236,7 +223,6 @@
     });
   }
 
-  /* ===== Insert new card into board without reload ===== */
   function insertNewCard(wish) {
     var board = document.getElementById('wishBoard');
     if (!board) return;
@@ -245,7 +231,6 @@
     var type = spec.type || 'treehole';
     var bg = CARD_COLORS[color] || CARD_COLORS.green;
 
-    // Find type display name from allTypes
     var typeLabel = type;
     for (var i = 0; i < allTypes.length; i++) {
       if (allTypes[i].spec.slug === type) {
@@ -254,11 +239,9 @@
       }
     }
 
-    // Format date
     var now = new Date(spec.createdAt || Date.now());
     var dateStr = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
 
-    // Build card HTML
     var card = document.createElement('div');
     card.className = 'wish-card';
     card.dataset.type = type;
@@ -270,7 +253,6 @@
       + '<span class="wish-card-label">' + esc(typeLabel) + '</span>'
       + '</div>';
 
-    // Status inline after content
     var statusHtml = '';
     if (spec.status === 'doing') {
       statusHtml = ' <em class="wish-status-text">进行中</em>';
@@ -298,7 +280,6 @@
 
     card.innerHTML = html;
 
-    // Position randomly within board
     var bw = board.offsetWidth;
     var bh = board.offsetHeight;
     var cw = isMobile ? 180 : 230;
@@ -316,23 +297,19 @@
     card.style.transform = 'rotate(' + rotation + 'deg)';
     card.style.animation = 'wishCardIn 0.4s ease forwards';
 
-    // Respect current filter
     if (currentFilter !== 'all' && currentFilter !== type) {
       card.style.display = 'none';
     }
 
     board.appendChild(card);
 
-    // Attach drag on desktop
     if (!isMobile) initDrag(card, board);
     card.addEventListener('mousedown', function () { card.style.zIndex = ++zCounter; });
 
-    // Hide empty state
     var empty = document.getElementById('wishEmpty');
     if (empty) empty.style.display = 'none';
   }
 
-  /* ===== AI Polish ===== */
   function initPolish() {
     var btn = document.getElementById('wishPolishBtn');
     if (!btn) return;
@@ -355,7 +332,6 @@
     });
   }
 
-  /* ===== Days counter ===== */
   function initDaysCounter() {
     var badge = document.getElementById('daysBadge');
     if (!badge) return;
@@ -377,7 +353,6 @@
     if (typeof AOS !== 'undefined') AOS.refresh();
   }
 
-  /* ===== Utils ===== */
   function toast(msg) {
     var t = document.getElementById('wishToast');
     if (!t) return;

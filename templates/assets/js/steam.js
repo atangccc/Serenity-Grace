@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -56,8 +56,7 @@
       };
       renderProfile(data);
     })
-    .catch(function (err) {
-      console.error('Steam API error:', err);
+    .catch(function () {
       container.innerHTML = '<div class="steam-error"><p>Steam 数据加载失败，请检查插件配置</p></div>';
     });
 

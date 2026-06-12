@@ -1,11 +1,11 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/atangccc/Serenity-Grace/main/screenshots/1.png" alt="Serenity-Grace Banner" width="800" />
+<img src="screenshots/1.png" alt="Serenity-Hue Banner" width="800" />
 
 <br/>
 <br/>
 
-# 🌸 Serenity-Grace
+# 🌸 Serenity-Hue
 
 **简约优雅的 Halo 2.x 博客主题**
 
@@ -13,41 +13,21 @@
 
 <br/>
 
-[![Release](https://img.shields.io/github/v/release/atangccc/Serenity-Grace?style=for-the-badge&color=F596AA&logo=github&logoColor=white&label=最新版本)](https://github.com/atangccc/Serenity-Grace/releases)
-&nbsp;&nbsp;
-[![License](https://img.shields.io/github/license/atangccc/Serenity-Grace?style=for-the-badge&color=33A6B8&logo=opensourceinitiative&logoColor=white)](https://github.com/atangccc/Serenity-Grace/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/License-GPL--3.0-33A6B8?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 &nbsp;&nbsp;
 [![Halo](https://img.shields.io/badge/Halo-2.x-blue?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+PC9zdmc+)](https://halo.run)
+&nbsp;&nbsp;
+[![Based on](https://img.shields.io/badge/Based%20on-Serenity--Grace-F596AA?style=for-the-badge&logo=github&logoColor=white)](https://github.com/atangccc/Serenity-Grace)
 
 <br/>
 
-[🖼️ 预览截图](#-预览) · [✨ 功能特性](#-功能特性) · [📦 安装使用](#-安装使用) · [⚙️ 页面配置](#%EF%B8%8F-页面配置) · [� 食用指南](https://www.lunarmc.cn/docs/Serenity/description/) · [📝 更新日志](https://github.com/atangccc/Serenity-Grace/releases)
+[🖼️ 预览截图](#-预览) · [✨ 功能特性](#-功能特性) · [📦 安装使用](#-安装使用) · [⚙️ 页面配置](#%EF%B8%8F-页面配置) · [📝 致谢](#-致谢与版权)
 
 <br/>
 
 </div>
 
 ---
-
-## � 食用指南
-
-> 由社区小伙伴 Sopify 编写的详细使用教程，涵盖主题安装、配置、页面创建等完整流程：
->
-> 🔗 **[Serenity 主题食用指南 — Sopify's Blog](https://www.lunarmc.cn/docs/Serenity/description/)**
-
-## 🔗 作者站点
-
-> **在线演示：** [serenity.aobp.cn](https://serenity.aobp.cn/)
-
-## 🤝 小伙伴站点
-
-| 站点 | 链接 |
-|:-----|:-----|
-| 🏠 空白 Blog | [www.guaike.top](https://www.guaike.top/) |
-| 🏠 Sopify Blog | [www.lunarmc.cn](https://www.lunarmc.cn/) |
-| 🏠 Fry酥条の博客 | [blog.fryfries13.cn](https://blog.fryfries13.cn/) |
-
-> 💡 欢迎使用 Serenity 主题的站长提交自己的站点，PR 即可~
 
 ## 🖼️ 预览
 
@@ -76,15 +56,16 @@
 
 ### 🎨 视觉与交互
 
-
 | 特性 | 描述 |
 |:-----|:-----|
 | 🌓 双色模式 | 暗色 / 亮色自由切换，支持跟随系统偏好，切换时带圆形扩散动画（View Transition API） |
+| 🎨 主题色配置 | 后台可视化配置亮色 / 暗色主题色，切换模式时带渐变过渡 |
 | 📱 全端适配 | 响应式布局，桌面端、平板、手机全面适配，移动端各页面独立优化 |
 | 🧈 丝滑滚动 | Lenis 全局惯性缓动，锚点跳转和返回顶部均为平滑滚动 |
 | 🎬 入场动画 | AOS 滚动入场动画，元素随滚动渐入视野 |
 | 👋 欢迎页 | 首次访问全屏欢迎页，可配置吉祥物形象和自定义语录 |
 | ✨ 过渡动画 | 页面切换淡入淡出效果，浏览体验流畅自然 |
+| 🖱️ 指针样式 | 自定义指针样式，提升交互沉浸感 |
 
 ### 📄 页面模板
 
@@ -99,7 +80,7 @@
   </tr>
   <tr>
     <td>📖 <strong>文章详情</strong></td>
-    <td>封面 Hero · 浮动目录导航 · 阅读进度条 · 相关文章推荐 · 版权声明 · 社交分享（微信/微博/QQ/复制链接）· 打赏组件 · 背景壁纸</td>
+    <td>封面 Hero · 浮动目录导航（自适应高度）· 阅读进度条 · 相关文章推荐 · 版权声明 · 社交分享 · 打赏组件 · 背景壁纸</td>
   </tr>
   <tr>
     <td>🗂️ <strong>归档</strong></td>
@@ -123,11 +104,11 @@
   </tr>
   <tr>
     <td>🔗 <strong>朋友们</strong></td>
-    <td>友链卡片 · 友链申请（适配友链自助提交插件）· 信息一键复制</td>
+    <td>友链卡片 · 一键复制本站信息 · 支持 AstraHub 星链插件邀请注册</td>
   </tr>
   <tr>
     <td>💬 <strong>留言板</strong></td>
-    <td>弹幕式留言展示 · 评论组件</td>
+    <td>弹幕式留言展示 · 评论组件 · 运行天数自动统计</td>
   </tr>
   <tr>
     <td>🚀 <strong>项目集</strong></td>
@@ -162,7 +143,7 @@
 
 | 配置分组 | 可配置项 |
 |:---------|:---------|
-| 🔧 基本设置 | 站点标题 · 作者 · 描述 · Logo · Favicon · 默认主题模式 · 导航图标 · 分类图标 · 自定义 Head/Script 代码注入 |
+| 🔧 基本设置 | 站点标题 · 作者 · 描述 · Logo · Favicon · 默认主题模式 · **亮色 / 暗色主题色** · 导航图标 · 分类图标 · 自定义 Head/Script 代码注入 |
 | 🎯 首页头部 | 头像 · 名称 · 标语 · 个人简介 · 打字机效果 · 自定义颜色（名称/标语/简介/头像光晕/天气文字） |
 | 👋 欢迎页 | 启用开关 · 吉祥物图片（暗色/亮色各一张）· 自定义语录 · 来源链接 |
 | 🌐 社交链接 | GitHub · Twitter/X · Email · 微博 · B站 · 知乎 · Telegram · Discord · 自定义 Iconify 图标 · RSS 订阅 · 赞助功能 |
@@ -173,7 +154,7 @@
 | 👤 关于页面 | 个性标签 · 技能列表（支持 Iconify 图标）· 关于本站 · 建站历程 · 十年之约 · 吉祥物 · Steam 游戏 · 爱发电赞助 · 联系组件显示开关 |
 | 🚀 项目展示 | GitHub Token · GitHub 项目列表 · 自定义项目列表 · 项目归属类型 |
 | 🔗 友链页面 | 站点信息 · 友链申请配置 |
-| 🦶 页脚 | ICP/公安备案 · 建站年份 · 运行时间 · 在线状态栏（依赖 online-user 插件，展示连接状态 / 在线人数 / 活跃页面数）· RSS · Powered by · 服务商标识 · 隐私政策 · 服务条款 |
+| 🦶 页脚 | ICP/公安备案 · 建站年份 · 运行时间 · 在线状态栏（依赖 online-user 插件）· RSS · Powered by · 服务商标识 · 隐私政策 · 服务条款 |
 | 🔍 SEO 优化 | 关键词 · JSON-LD 结构化数据 · 百度/Google 站点验证 |
 | 💧 水印设置 | 启用开关 · 水印文字 · 透明度 |
 
@@ -189,12 +170,12 @@
 | ✅ 必需 | [瞬间](https://www.halo.run/store/apps/app-SnwWD) | 碎碎念页面数据源 |
 | ✅ 必需 | [链接管理](https://www.halo.run/store/apps/app-hfbQg) | 友链页面数据源 |
 | ✅ 必需 | [图库管理](https://halo.run/store/apps/app-BmQJW) | 图库页面数据源 |
-| 💡 推荐 | [友链自助提交](https://www.halo.run/store/apps/app-glejqzwk) | 友链申请功能 |
+| 💡 推荐 | [AstraHub 星链](https://www.halo.run/store/apps) | 友链邀请注册 |
 | 💡 推荐 | [朋友圈](https://docs.kunkunyu.com/docs/plugin-friends) | 朋友圈聚合页面 |
 | 🔌 可选 | [爱发电](https://blog.xindu.site/docs/plugin-afdian) | 关于页面赞助展示 |
 | 🔌 可选 | [Dicebear 头像](https://github.com/YunJian101/Halo-Plugin-Dicebear-Avatar) | 评论随机头像 |
 | 🔌 可选 | [LightGallery 灯箱](https://www.halo.run/store/apps) | 文章图片灯箱（未安装时使用内置灯箱） |
-| 🔌 可选 | 便签墙插件 | 便签墙页面数据源（纪念日倒计时 · 便签卡片 · 状态追踪） |
+| 🔌 可选 | 便签墙插件 | 便签墙页面数据源 |
 | 🔌 可选 | Steam 游戏展示 | 关于页面 Steam 游戏卡片数据源 |
 
 > 📦 所有插件均可在 [Halo 应用市场](https://www.halo.run/store/apps) 中安装。
@@ -203,15 +184,21 @@
 
 ## 📦 安装使用
 
-### 方式一：应用市场安装
+### 手动安装
 
-前往 [Halo 应用市场](https://www.halo.run/store/apps) 搜索 **Serenity-Grace** 一键安装。
-
-### 方式二：手动安装
-
-1. 前往 [Releases](https://github.com/atangccc/Serenity-Grace/releases) 下载最新版本的 `.zip` 文件
+1. 前往本仓库 Releases 下载最新版本的 `.zip` 文件
 2. 在 Halo 后台「外观 → 主题」中上传安装
 3. 启用主题并进入「主题设置」进行个性化配置
+
+### 源码构建
+
+```bash
+# 克隆仓库
+git clone <your-repo-url>
+
+# 使用打包脚本生成主题包
+python build_theme.py
+```
 
 ---
 
@@ -229,6 +216,7 @@
 | 朋友圈 | `friends-circle.html` | `friends-circle` | `/friends-circle` |
 | 图库 | `photos.html` | `photos` | `/photos` |
 | 便签墙 | `wishes.html` | `wishes` | `/wishes` |
+| 我的装备 | `equipments.html` | `equipments` | `/equipments` |
 
 > 📌 归档（`/archives`）、标签（`/tags`）、分类（`/categories`）为 Halo 内置路由，无需手动创建页面。
 
@@ -252,7 +240,7 @@
 
 | 微信交流群 |
 |:---:|
-| <img src="screenshots/7.png" alt="微信交流群" width="280" /> |
+| <img src="screenshots/7.jpg" alt="微信交流群" width="280" /> |
 
 *扫码加入，一起交流主题使用心得~*
 
@@ -260,18 +248,34 @@
 
 ---
 
+## 🙏 致谢与版权
+
+本主题基于 [atangccc/Serenity-Grace](https://github.com/atangccc/Serenity-Grace) 二次开发，遵循原作者采用的 GPL-3.0 开源协议。
+
+在原版基础上，本分支主要改动：
+
+- 移除前端色相切换面板，改为后台亮色 / 暗色双主题色配置
+- 新增亮暗切换模式渐变渲染
+- 新增文章页目录组件自适应高度
+- 新增指针样式
+- 修复留言板天数统计、页脚备案图标等细节问题
+- 朋友们页面对接 AstraHub 星链插件邀请注册
+- 资源加载顺序优化、首屏遮罩防 FOUC 等性能改进
+
+感谢原作者 [@atangccc](https://github.com/atangccc) 提供的优秀基础主题，以及社区伙伴对原版的贡献。
+
+---
+
 <div align="center">
 
 ## 📜 License
 
-[GPL-3.0](LICENSE) © [Serenity](https://github.com/atangccc)
+[GPL-3.0](LICENSE)
+
+本项目采用 [GNU General Public License v3.0](LICENSE) 协议开源。任何基于本项目的二次开发须保留同等开源协议、版权声明及致谢。
 
 <br/>
 
 **如果这个主题对你有帮助，请给一个 ⭐ Star 支持一下~**
-
-<br/>
-
-<sub>Made with ❤️ by Serenity</sub>
 
 </div>

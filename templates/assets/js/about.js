@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -13,7 +13,7 @@ function initForeverBlog() {
   
   function updateCountdown() {
     const el = document.getElementById('progressPercent');
-    if (!el) return; // PJAX 离开页面后 DOM 已不存在
+    if (!el) return; // 元素不存在时跳过
     
     const now = new Date();
     const elapsed = now - START_DATE;
@@ -41,12 +41,7 @@ function initForeverBlog() {
   }
   
   updateCountdown();
-  var timerId = setInterval(updateCountdown, 1000);
-
-  document.addEventListener('pjax:beforeReplace', function cleanup() {
-    clearInterval(timerId);
-    document.removeEventListener('pjax:beforeReplace', cleanup);
-  });
+  setInterval(updateCountdown, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -1,8 +1,8 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -74,6 +74,27 @@
 .page-transition.active {
   opacity: 1;
   visibility: visible;
+}
+
+/* 跨文档导航过渡：页面跳转/刷新时 root 层交叉淡入淡出，替代纯色硬切。
+   仅 Chromium 系 MPA 支持，其它浏览器自动降级为普通整页加载（无副作用）。
+   主题切换的圆形扩散由 html.theme-vt 单独接管，不走此默认动画。
+   sticky 失效的历史根因是 welcome 的 body overflow，已单独修复，故可安全启用。 */
+@view-transition {
+  navigation: auto;
+}
+
+html:not(.theme-vt)::view-transition-old(root),
+html:not(.theme-vt)::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not(.theme-vt)::view-transition-old(root),
+  html:not(.theme-vt)::view-transition-new(root) {
+    animation: none;
+  }
 }
 
 /* 优雅的加载动画 - 三个跳动的圆点 */
@@ -196,7 +217,7 @@ html.index-page {
 /* 页面切换淡入淡出动画 */
 .main {
   flex: 1;
-  animation: pageEnter 0.4s ease-out;
+  /* 页面过渡已交给原生 View Transitions（base.css 顶部），此处不再叠加动画，避免双重淡入 */
 }
 
 /* 首页 .main 不使用 opacity 动画，避免遮挡背景模糊效果 */
@@ -288,26 +309,20 @@ ul, ol {
     box-shadow 0.5s ease !important;
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
+/* 圆形扩散仅用于暗黑/主题切换（同文档，由 main.js 调 startViewTransition 触发，带 .theme-vt 标记）。
+   页面跳转/刷新为普通整页加载，不做跨文档过渡，避免破坏 position:sticky 等布局。 */
+html.theme-vt::view-transition-old(root),
+html.theme-vt::view-transition-new(root) {
   animation-duration: 1200ms;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-::view-transition-old(root) {
+html.theme-vt::view-transition-old(root) {
   animation: none;
 }
 
-::view-transition-new(root) {
+html.theme-vt::view-transition-new(root) {
   animation-name: circle-spread;
-}
-
-[data-theme='dark']::view-transition-new(root) {
-  animation-name: circle-spread;
-}
-
-[data-theme='dark']::view-transition-old(root) {
-  animation: none;
 }
 
 ::view-transition {
@@ -1051,7 +1066,6 @@ a.footer-provider {
   transition: background var(--duration-normal) var(--ease-out), 
               box-shadow var(--duration-normal) var(--ease-out),
               transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: background, box-shadow, transform;
 }
 
 .header.header-hidden {
@@ -1470,10 +1484,6 @@ a.footer-provider {
   letter-spacing: 2px;
 }
 
-/* ========================================
-   Sidebar - 侧边栏组件
-   ======================================== */
-
 .archive-sidebar {
   display: flex;
   flex-direction: column;
@@ -1714,11 +1724,6 @@ a.footer-provider {
   background: color-mix(in srgb, var(--color-accent) 10%, transparent);
 }
 
-
-/* ========================================
-   Toggle - 主题切换按钮
-   ======================================== */
-
 .theme-toggle {
   position: relative;
   width: 40px;
@@ -1770,10 +1775,6 @@ a.footer-provider {
   display: block;
 }
 
-/* ========================================
-   Markdown Content 额外样式
-   ======================================== */
-
 .markdown-content pre {
   max-width: 100%;
   overflow-x: auto;
@@ -1801,10 +1802,6 @@ a.footer-provider {
   max-width: 100%;
   height: auto;
 }
-
-/* ========================================
-   代码块自动换行
-   ======================================== */
 
 .post-content pre,
 .post-content pre code,
@@ -1852,10 +1849,6 @@ pre code,
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
 }
-
-/* ========================================
-   Halo Comment Widget - 评论组件样式自定义
-   ======================================== */
 
 .post-comments {
   margin-top: var(--space-8);
@@ -1954,10 +1947,6 @@ html[data-theme='light'] body,
   border: 1px solid var(--color-border);
 }
 
-/* ========================================
-   评论组件深度样式覆盖 (Shadow DOM穿透)
-   ======================================== */
-
 /* 评论组件容器 */
 halo-comment {
   display: block;
@@ -2015,10 +2004,6 @@ halo-comment::part(button):hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-
-/* ========================================
-   搜索弹窗
-   ======================================== */
 
 .search-modal {
   position: fixed;
@@ -2710,10 +2695,6 @@ halo-comment::part(button):hover {
   }
 }
 
-/* ========================================
-   镂空标题效果
-   ======================================== */
-
 .page-title-hollow {
   font-size: 2rem;
   font-weight: 800;
@@ -2733,13 +2714,6 @@ halo-comment::part(button):hover {
   color: var(--color-accent);
   -webkit-text-fill-color: var(--color-accent);
 }
-
-
-/* ========================================
-   公共页面标题组件
-   用于: archives, tags, projects, moments, 
-         links, guestbook, friends-circle
-   ======================================== */
 
 /* 页面标题动画 */
 @keyframes wave-flow {
@@ -2847,12 +2821,6 @@ halo-comment::part(button):hover {
   color: var(--color-text-muted);
   margin-top: var(--space-4);
 }
-
-
-/* ========================================
-   统一气泡/提示框组件
-   用于: 分享弹窗, 赞助弹窗, 标签提示等
-   ======================================== */
 
 /* 基础气泡样式 */
 .serenity-popup {
@@ -3133,10 +3101,6 @@ halo-comment::part(button):hover {
   }
 }
 
-/* ========================================
-   交错入场动画系统
-   ======================================== */
-
    @keyframes entrance-fade-up {
     from {
       opacity: 0;
@@ -3196,7 +3160,7 @@ halo-comment::part(button):hover {
   @media (prefers-reduced-motion: reduce) {
     .onload-animation,
     .header,
-    #pjax-container,
+    .main,
     .footer,
     .post-hero,
     .post-sidebar .sidebar-widget,

@@ -143,7 +143,7 @@
       animation: none;
     }
   </style>
-  <link rel="stylesheet" th:href="@{/assets/css/base.css}" onload="document.body.classList.add('css-ready')" />
+  <link rel="stylesheet" th:href="@{/assets/css/base.css}" onload="if(document.body)document.body.classList.add('css-ready')" />
   <script>
     (function () {
       function show() { if (document.body) document.body.classList.add('css-ready'); }
@@ -335,7 +335,7 @@
   
   <th:block th:replace="~{modules/search-modal}"></th:block>
 
-  <main class="main" id="pjax-container">
+  <main class="main">
     <th:block th:replace="${content}" />
   </main>
 
@@ -475,9 +475,7 @@
   <script th:src="@{/assets/js/aos.js}" defer></script>
   <script th:src="@{/assets/js/iconify.min.js}" defer></script>
   <script th:src="@{/assets/js/main.js}" defer></script>
-    <script th:src="@{/assets/js/pjax.js}" defer></script>
   <script th:src="@{/assets/js/search.js}" defer></script>
-  <script th:src="@{/assets/js/sidebar-sticky.js}" defer></script>
   
   <!-- 欢迎页控制脚本（全局） -->
   <script th:if="${theme.config.welcome == null || theme.config.welcome.welcomeConfig == null || theme.config.welcome.welcomeConfig.enabled == null || theme.config.welcome.welcomeConfig.enabled}" th:src="@{/assets/js/welcome.js}" defer></script>

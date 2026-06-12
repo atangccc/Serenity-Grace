@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -56,7 +56,7 @@ async function fetchCommentData() {
 
 fetchCommentData();
 
-// Use var to allow PJAX re-execution without redeclaration error
+// Use var to avoid redeclaration error on re-execution
 var DanmakuSystem = class DanmakuSystem {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -106,13 +106,6 @@ var DanmakuSystem = class DanmakuSystem {
         currentIndex = (currentIndex + 1) % this.messages.length;
       }
     }, 5000);
-    
-    document.addEventListener('pjax:beforeReplace', () => {
-      if (this._autoPlayTimer) {
-        clearInterval(this._autoPlayTimer);
-        this._autoPlayTimer = null;
-      }
-    }, { once: true });
   }
   
   sendInitialDanmakus() {

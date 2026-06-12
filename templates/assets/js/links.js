@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -28,14 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   document.addEventListener('keydown', handleKeydown);
-
-  document.addEventListener(
-    'pjax:beforeReplace',
-    function () {
-      document.removeEventListener('keydown', handleKeydown);
-    },
-    { once: true }
-  );
 });
 
 function showLinkConfirm(url, name) {

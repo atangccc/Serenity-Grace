@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-03 10:28:07
-  Fingerprint: 18f8d0015be24d2b
+  Build: 2026-06-12 17:03:04
+  Fingerprint: a120876833389618
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -111,6 +111,10 @@
               resetVideo();
             }
 
+            function markVideoLoaded() {
+              video.classList.add('loaded');
+            }
+
             function useVideo(url) {
               if (video.getAttribute('data-current-src') !== url) {
                 video.setAttribute('src', url);
@@ -119,6 +123,13 @@
               }
               video.style.display = 'block';
               img.style.display = 'none';
+              if (video.readyState >= 2) {
+                markVideoLoaded();
+              }
+              var playPromise = video.play();
+              if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(function() {});
+              }
             }
 
             function applyThemeBackground() {
@@ -189,25 +200,30 @@
 
           var finalUrl = (cachedUrl && currentSession) ? cachedUrl : currentApi;
           
-          img.src = finalUrl;
-          img.decoding = 'async';
-          img.loading = 'eager';
-          
-          img.onload = function() {
+          function markLoaded() {
             img.classList.add('loaded');
 
             if (!cachedUrl && img.src && img.src.startsWith('http')) {
               localStorage.setItem(STORAGE_KEY, img.src);
               sessionStorage.setItem(sessionKey, 'true');
             }
-          };
-          
-          img.onerror = function() {
+          }
 
+          img.onload = markLoaded;
+
+          img.onerror = function() {
             if (finalUrl !== currentApi) {
               img.src = currentApi;
             }
           };
+
+          img.decoding = 'async';
+          img.loading = 'eager';
+          img.src = finalUrl;
+
+          if (img.complete && img.naturalWidth > 0) {
+            markLoaded();
+          }
         })();
       </script>
       

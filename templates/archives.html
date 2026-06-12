@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-03 10:28:07
-  Fingerprint: 18f8d0015be24d2b
+  Build: 2026-06-12 17:03:04
+  Fingerprint: a120876833389618
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -12,6 +12,7 @@
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/archives.css}" />
   <script th:src="@{/assets/js/archives.js}" defer></script>
+  <script th:src="@{/assets/js/tag-sphere.js}" defer></script>
   <meta property="og:type" content="website" />
   <meta property="og:title" th:content="${((theme.config.watermark?.archives?.enabled == true ? theme.config.watermark.archives.title : null) ?: '归档') + ' - ' + (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title)}" />
   <meta property="og:description" th:content="${'全部文章归档列表'}" />
@@ -164,7 +165,7 @@
             <span class="widget-divider"></span>
             <span class="widget-title">标签云</span>
           </div>
-          <div class="widget-tags">
+          <div class="widget-tags widget-tags-sphere" id="tagSphere">
             <th:block th:if="${not #lists.isEmpty(tagFinder.listAll())}">
               <a th:each="tag : ${tagFinder.listAll()}" 
                  th:href="@{${tag.status.permalink}}" 

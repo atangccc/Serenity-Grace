@@ -1,8 +1,8 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -989,10 +989,9 @@
   object-fit: cover;
   object-position: center;
   transition: filter 0.3s ease, opacity 0.3s ease;
-  /* GPU 加速 */
+  /* GPU 加速：一次性合成提示，不用常驻 will-change 长期占用合成内存 */
   transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: transform, opacity;
 }
 
 /* 图片加载完成后的淡入效果 */

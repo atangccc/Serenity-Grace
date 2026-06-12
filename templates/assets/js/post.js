@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-03 10:28:07
- * Fingerprint: 18f8d0015be24d2b
+ * Build: 2026-06-12 17:03:04
+ * Fingerprint: a120876833389618
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -224,52 +224,59 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const links = tocNav.querySelectorAll('.toc-link');
   
+  var lastActiveId = null;
   function highlightToc() {
     let current = '';
-    
+
     headings.forEach(heading => {
       const rect = heading.getBoundingClientRect();
       if (rect.top <= 100) {
         current = heading.id;
       }
     });
-    
+
+    if (current === lastActiveId) return;
+    lastActiveId = current;
+
     links.forEach(link => {
       link.classList.remove('is-active-link');
       if (link.getAttribute('href') === `#${current}`) {
         link.classList.add('is-active-link');
-        
-        setTimeout(() => {
-          const linkRect = link.getBoundingClientRect();
-          const tocNavRect = tocNav.getBoundingClientRect();
-          
-          const linkRelativeTop = linkRect.top - tocNavRect.top + tocNav.scrollTop;
-          const tocNavHeight = tocNav.clientHeight;
-          const linkHeight = linkRect.height;
-          
-          const isAboveView = linkRect.top < tocNavRect.top;
-          const isBelowView = linkRect.bottom > tocNavRect.bottom;
-          
-          if (isAboveView || isBelowView) {
-            tocNav.scrollTo({
-              top: linkRelativeTop - tocNavHeight / 2 + linkHeight / 2,
-              behavior: 'smooth'
-            });
-          }
-        }, 100);
+
+        const linkRect = link.getBoundingClientRect();
+        const tocNavRect = tocNav.getBoundingClientRect();
+
+        const linkRelativeTop = linkRect.top - tocNavRect.top + tocNav.scrollTop;
+        const tocNavHeight = tocNav.clientHeight;
+        const linkHeight = linkRect.height;
+
+        const isAboveView = linkRect.top < tocNavRect.top;
+        const isBelowView = linkRect.bottom > tocNavRect.bottom;
+
+        if (isAboveView || isBelowView) {
+          tocNav.scrollTo({
+            top: linkRelativeTop - tocNavHeight / 2 + linkHeight / 2,
+            behavior: 'smooth'
+          });
+        }
       }
     });
   }
   
-  window.addEventListener('scroll', highlightToc);
-  window.addEventListener('scroll', updateReadingProgress);
+  window.addEventListener('scroll', onScroll, { passive: true });
   highlightToc();
   updateReadingProgress();
-  
-  document.addEventListener('pjax:beforeReplace', function() {
-    window.removeEventListener('scroll', highlightToc);
-    window.removeEventListener('scroll', updateReadingProgress);
-  }, { once: true });
+
+  var scrollTicking = false;
+  function onScroll() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(function () {
+      highlightToc();
+      updateReadingProgress();
+      scrollTicking = false;
+    });
+  }
   
   // 阅读进度更新
   function updateReadingProgress() {
@@ -345,9 +352,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     window.addEventListener('scroll', onCommentsScroll, { passive: true });
-    document.addEventListener('pjax:beforeReplace', function() {
-      window.removeEventListener('scroll', onCommentsScroll);
-    }, { once: true });
     
     // 点击跳转到评论 — 优先使用 Lenis 平滑滚动
     goToCommentsBtn.addEventListener('click', function() {

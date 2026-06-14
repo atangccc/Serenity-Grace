@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-12 17:18:05
- * Fingerprint: 028f1f763c1f1f0f
+ * Build: 2026-06-14 20:38:41
+ * Fingerprint: c77ef69c22818532
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -131,12 +131,9 @@
     if (retryCount === 0) showLoading();
 
     try {
-      const ipResponse = await fetchWithTimeout('https://api.ipify.cn/?format=json', 5000);
-      const ipData = await ipResponse.json();
-      if (!ipData.ip) throw new Error('IP Error');
-
+      // 直接让心知按访客公网 IP 自动定位（location=ip），无需依赖第三方 IP 查询服务
       const weatherResponse = await fetchWithTimeout(
-        `https://api.seniverse.com/v3/weather/now.json?key=${config.apiKey}&location=${ipData.ip}&language=zh-Hans&unit=c`,
+        `https://api.seniverse.com/v3/weather/now.json?key=${config.apiKey}&location=ip&language=zh-Hans&unit=c`,
         8000
       );
       const weatherData = await weatherResponse.json();

@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -32,13 +32,12 @@
     }
   }
   </script>
-  <script th:src="@{/assets/js/iconify.min.js}" defer></script>
+</th:block>
+<th:block th:fragment="content">
+  <!-- PJAX：页面脚本置于 content 内，随局部刷新重新执行 -->
   <script th:if="${theme.config.about != null && theme.config.about.foreverBlogConfig != null && theme.config.about.foreverBlogConfig.showForeverBlog}" th:src="@{/assets/js/about.js}" defer></script>
   <script th:if="${theme.config.about != null && theme.config.about.steamConfig != null && theme.config.about.steamConfig.showSteam}" th:src="@{/assets/js/steam.js}" defer></script>
   <script th:if="${theme.config.about != null && theme.config.about.afdianSettings != null && theme.config.about.afdianSettings.showAfdian}" th:src="@{/assets/js/about-afdian.js}"></script>
-
-</th:block>
-<th:block th:fragment="content">
   <div class="container">
     <section class="about-hero" data-aos="fade-up">
       <div class="about-hero-center">

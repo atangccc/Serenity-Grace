@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -11,8 +11,6 @@
       th:replace="~{modules/layout :: html(title = ${(theme.config.watermark?.photos?.enabled == true ? theme.config.watermark.photos.title : null) ?: (singlePage != null ? singlePage.spec.title : '图库页')}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/photos.css}" />
-  <script th:src="@{/assets/js/lightbox.js}" defer></script>
-  <script th:src="@{/assets/js/photos.js}" defer></script>
   <meta property="og:type" content="website" />
   <meta property="og:title" th:content="${singlePage != null ? singlePage.spec.title : '图库页'}" />
   <meta property="og:description" th:content="${singlePage != null && singlePage.status.excerpt != null ? singlePage.status.excerpt : (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle)}" />
@@ -21,6 +19,9 @@
 </th:block>
 <th:block th:fragment="content">
   <main class="main">
+    <!-- PJAX：页面脚本置于 content 内，随局部刷新重新执行 -->
+    <script th:src="@{/assets/js/lightbox.js}" defer></script>
+    <script th:src="@{/assets/js/photos.js}" defer></script>
     <div class="container">
       <section class="photos-page" th:with="photoGroups = ${photoFinder != null ? photoFinder.groupBy() : null}">
         

@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -14,6 +14,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" th:content="${(pageTitle ?: (singlePage != null ? singlePage.spec.title : '便签墙')) + ' - ' + (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title)}" />
   <meta property="og:description" th:content="${pageSubtitle ?: '写下你的心愿，留下你的故事'}" />
+</th:block>
+<th:block th:fragment="content">
+  <!-- PJAX：脚本与服务端注入变量置于 content 内，随局部刷新重新执行 -->
   <script th:if="${wishFinder != null and wishFinder.isAvailable()}" th:inline="javascript">
     window.__WISH_CONFIG__ = {
       wishTypes: /*[[${wishFinder.listTypes()}]]*/ [],
@@ -29,8 +32,6 @@
     };
   </script>
   <script th:src="@{/assets/js/wishes.js}" defer></script>
-</th:block>
-<th:block th:fragment="content">
   <div class="container">
     <header class="page-header" data-aos="fade-up">
       <h1 class="page-title" th:text="${pageTitle ?: (singlePage != null ? singlePage.spec.title : '便签墙')}">便签墙</h1>

@@ -1,14 +1,16 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
 var COMMENT_DATA = [];
 
 async function fetchCommentData() {
+  // 幂等：重入时重置数组，避免数据翻倍累积
+  COMMENT_DATA = [];
   try {
     const params = new URLSearchParams({
       group: 'content.halo.run',
@@ -161,6 +163,23 @@ var DanmakuSystem = class DanmakuSystem {
   }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-  new DanmakuSystem('danmakuContainer');
-});
+function initDanmakuSystem() {
+  // 重入时停掉上一个实例的自动播放定时器，避免 interval 泄漏
+  if (window.__danmakuSystem && window.__danmakuSystem._autoPlayTimer) {
+    clearInterval(window.__danmakuSystem._autoPlayTimer);
+  }
+  window.__danmakuSystem = new DanmakuSystem('danmakuContainer');
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(function () {
+      if (window.__danmakuSystem && window.__danmakuSystem._autoPlayTimer) {
+        clearInterval(window.__danmakuSystem._autoPlayTimer);
+      }
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDanmakuSystem);
+} else {
+  initDanmakuSystem();
+}

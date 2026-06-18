@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -41,11 +41,24 @@ function initForeverBlog() {
   }
   
   updateCountdown();
-  setInterval(updateCountdown, 1000);
+  // 定时器存到 window，重入前先清理，防止泄漏
+  clearInterval(window.__aboutCountdownTimer);
+  window.__aboutCountdownTimer = setInterval(updateCountdown, 1000);
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(function () {
+      clearInterval(window.__aboutCountdownTimer);
+    });
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function initAboutPage() {
   if (document.getElementById('progressFill')) {
     initForeverBlog();
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAboutPage);
+} else {
+  initAboutPage();
+}

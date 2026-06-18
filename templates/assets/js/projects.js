@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -501,10 +501,13 @@ function getTimeAgo(date) {
   return `${Math.floor(days / 365)} 年前`;
 }
 
-// ESC 关闭弹窗
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeReleasesModal();
-});
+// ESC 关闭弹窗（顶层全局监听，用单例守卫只绑一次，避免重入叠加）
+if (!window.__projectsKeydownBound) {
+  window.__projectsKeydownBound = true;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeReleasesModal();
+  });
+}
 
 async function loadProjects() {
   const grid = document.getElementById('projectsGrid');
@@ -581,4 +584,18 @@ async function loadProjects() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', loadProjects);
+function loadProjectsInit() {
+  // 离场时恢复 body overflow，防止弹窗打开状态离场后页面无法滚动
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(function () {
+      document.body.style.overflow = '';
+    });
+  }
+  loadProjects();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadProjectsInit);
+} else {
+  loadProjectsInit();
+}

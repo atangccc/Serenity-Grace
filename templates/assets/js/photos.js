@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -73,6 +73,13 @@ function initPhotosPage() {
     }
     window.__photosCleanup = null;
   };
+
+  // 注册 PJAX 离场清理
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(function () {
+      if (window.__photosCleanup) window.__photosCleanup();
+    });
+  }
 }
 
 // 首次加载初始化

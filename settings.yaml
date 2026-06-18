@@ -229,6 +229,7 @@ spec:
           value:
             enableLoading: true
             loadingGif: ""
+            enablePjax: false
           children:
             - $formkit: switch
               id: loading_enabled
@@ -236,6 +237,11 @@ spec:
               label: 启用页面过渡动画
               value: true
               help: 开启后，首次访问和站内跳转都会显示加载遮罩，等所有资源就绪后自动淡出
+            - $formkit: switch
+              name: enablePjax
+              label: 启用无刷新切换 (PJAX)
+              value: false
+              help: 开启后站内页面切换不再整页刷新，音乐可跨页面连续播放。登录/控制台等页面仍走整页跳转。如遇异常可关闭此项回退。
             - $formkit: attachment
               name: loadingGif
               label: 加载动画 GIF

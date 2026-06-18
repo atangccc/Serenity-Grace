@@ -1,29 +1,17 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+function initPost() {
   document.querySelectorAll('.post-content img').forEach(function(img) {
     if (!img.getAttribute('data-src') && img.src) {
       img.setAttribute('data-src', img.src);
     }
   });
-
-  setTimeout(function() {
-    if (!window.__postLightbox && typeof SerenityLightbox !== 'undefined') {
-      window.__postLightbox = SerenityLightbox.create({
-        className: 'post-lightbox',
-        delegateSelector: '.post-content img',
-        guard: function() {
-          return !(typeof lightGallery === 'function' || document.querySelector('.lg-container'));
-        }
-      });
-    }
-  }, 500);
 
   const outdatedNotice = document.getElementById('post-outdated-notice');
   if (outdatedNotice) {
@@ -114,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.classList.toggle('hide-heading-icons', !show);
       }
       var postContent = document.querySelector('.post-content');
-      if (postContent) {
+      if (postContent && !postContent.querySelector('.heading-icons-toggle')) {
         var toggle = document.createElement('div');
         toggle.className = 'heading-icons-toggle';
         toggle.innerHTML =
@@ -153,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentH3Item = null;
   let currentH3List = null;
   let currentH4List = null;
+  tocNav.innerHTML = '';
   const mainList = document.createElement('ol');
   mainList.className = 'toc-list';
   
@@ -264,6 +253,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   window.addEventListener('scroll', onScroll, { passive: true });
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(function() {
+      window.removeEventListener('scroll', onScroll);
+    });
+  }
   highlightToc();
   updateReadingProgress();
 
@@ -352,6 +346,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     window.addEventListener('scroll', onCommentsScroll, { passive: true });
+    if (typeof window.__pjaxOnLeave === 'function') {
+      window.__pjaxOnLeave(function() {
+        window.removeEventListener('scroll', onCommentsScroll);
+      });
+    }
     
     // 点击跳转到评论 — 优先使用 Lenis 平滑滚动
     goToCommentsBtn.addEventListener('click', function() {
@@ -365,11 +364,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPost);
+} else {
+  initPost();
+}
 
 
 // 分享功能
-(function() {
+function initPostShare() {
   const shareContainer = document.querySelector('.post-share');
   if (!shareContainer) return;
   
@@ -441,4 +446,10 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
     });
   }
-})();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPostShare);
+} else {
+  initPostShare();
+}

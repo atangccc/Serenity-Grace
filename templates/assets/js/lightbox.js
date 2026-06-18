@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -89,22 +89,35 @@ window.SerenityLightbox = (function() {
 
 function __serenityInitLightboxes() {
 
-  var instances = ['__postLightbox', '__photosLightbox', '__momentLightbox', '__memoLightbox'];
-  instances.forEach(function(key) {
-    if (window[key] && typeof window[key].destroy === 'function') {
-      window[key].destroy();
-    }
-    window[key] = null;
-  });
+  clearTimeout(window.__lightboxInitTimer);
 
-  ['.post-lightbox', '.photo-lightbox', '.moment-lightbox', '.memo-lightbox', '.image-lightbox'].forEach(function(selector) {
-    var el = document.querySelector(selector);
-    if (el) el.remove();
-  });
+  function __serenityDestroyLightboxes() {
+    var instances = ['__postLightbox', '__photosLightbox', '__momentLightbox', '__memoLightbox'];
+    instances.forEach(function(key) {
+      if (window[key] && typeof window[key].destroy === 'function') {
+        window[key].destroy();
+      }
+      window[key] = null;
+    });
 
-  document.body.style.overflow = '';
+    ['.post-lightbox', '.photo-lightbox', '.moment-lightbox', '.memo-lightbox', '.image-lightbox'].forEach(function(selector) {
+      var el = document.querySelector(selector);
+      if (el) el.remove();
+    });
 
-  setTimeout(function() {
+    document.body.style.overflow = '';
+  }
+
+  __serenityDestroyLightboxes();
+
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(function() {
+      clearTimeout(window.__lightboxInitTimer);
+      __serenityDestroyLightboxes();
+    });
+  }
+
+  window.__lightboxInitTimer = setTimeout(function() {
 
     if (!window.__postLightbox && document.querySelector('.post-content img') && typeof SerenityLightbox !== 'undefined') {
 

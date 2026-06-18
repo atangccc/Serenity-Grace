@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -16,9 +16,10 @@
   <meta property="og:description" content="全部文章标签" />
   <meta name="twitter:title" th:content="${((theme.config.watermark?.tags?.enabled == true ? theme.config.watermark.tags.title : null) ?: '标签') + ' - ' + (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title)}" />
   <meta name="twitter:description" content="全部文章标签" />
-  <script th:src="@{/assets/js/tags.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
+  <!-- PJAX：页面脚本置于 content 内，随局部刷新重新执行 -->
+  <script th:src="@{/assets/js/tags.js}" defer></script>
   <div class="container">
     <header class="page-header" data-aos="fade-up">
       <h1 class="page-title" th:text="${(theme.config.watermark?.tags?.enabled == true ? theme.config.watermark.tags.title : null) ?: '标签'}">标签</h1>

@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -37,6 +37,10 @@ function sanitizeUrl(url, fallback) {
 }
 
 function init() {
+  // 幂等：重入时重置分页状态
+  currentPage = 1;
+  totalPages = 1;
+  allFriends = [];
   fetch('/apis/api.link.halo.run/v1alpha1/linkfeeds?limit=500')
     .then(function(res) {
       if (res.status === 404 || res.status === 403) {
@@ -194,4 +198,8 @@ function nextPage() {
   if (currentPage < totalPages) renderPage(currentPage + 1);
 }
 
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

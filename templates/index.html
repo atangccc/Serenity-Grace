@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -11,36 +11,38 @@
       th:replace="~{modules/layout :: html(title = null, content = ~{::content}, head = ~{::head})}">
   <th:block th:fragment="head">
     <link rel="stylesheet" th:href="@{/assets/css/index.css}" />
-    <!-- Iconify 图标库（社交图标 Iconify 模式） -->
-    <script th:src="@{/assets/js/iconify.min.js}" defer></script>
-    <script th:src="@{/assets/js/lightbox.js}" defer></script>
-    
-    <script>
-
-      (function() {
-        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        var windowHeight = window.innerHeight;
-        if (scrollY > 0) {
-          var style = document.createElement('style');
-          var progress = Math.min(scrollY / windowHeight, 1);
-          style.textContent = '.hero-background{opacity:' + (1 - progress) + '!important}.hero-background-img{filter:blur(' + (progress * 20) + 'px)!important}';
-          document.head.appendChild(style);
-        }
-      })();
-    </script>
-    <script th:if="${theme.config.home != null and theme.config.home.weatherConfig != null and theme.config.home.weatherConfig.showWeatherClock}" th:inline="javascript">
-      window.WEATHER_CONFIG = {
-        apiKey: /*[[${theme.config.home.weatherConfig.seniverseKey}]]*/ '',
-        showTime: true,
-        showWeather: true,
-        showTemperature: true,
-        showCity: true
-      };
-    </script>
-    <script th:if="${theme.config.home != null and theme.config.home.weatherConfig != null and theme.config.home.weatherConfig.showWeatherClock}" th:src="@{/assets/js/weather-clock.js}" defer></script>
   </th:block>
   <th:block th:fragment="content">
     <main class="main">
+      <!-- PJAX：首页脚本与服务端注入变量置于 content 内，随局部刷新重新执行 -->
+      <script th:src="@{/assets/js/lightbox.js}" defer></script>
+      <script>
+        (function() {
+          var STYLE_ID = 'hero-bg-init-style';
+          var existing = document.getElementById(STYLE_ID);
+          var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          var windowHeight = window.innerHeight;
+          if (scrollY > 0) {
+            var style = existing || document.createElement('style');
+            style.id = STYLE_ID;
+            var progress = Math.min(scrollY / windowHeight, 1);
+            style.textContent = '.hero-background{opacity:' + (1 - progress) + '!important}.hero-background-img{filter:blur(' + (progress * 20) + 'px)!important}';
+            if (!existing) document.head.appendChild(style);
+          } else if (existing) {
+            existing.parentNode.removeChild(existing);
+          }
+        })();
+      </script>
+      <script th:if="${theme.config.home != null and theme.config.home.weatherConfig != null and theme.config.home.weatherConfig.showWeatherClock}" th:inline="javascript">
+        window.WEATHER_CONFIG = {
+          apiKey: /*[[${theme.config.home.weatherConfig.seniverseKey}]]*/ '',
+          showTime: true,
+          showWeather: true,
+          showTemperature: true,
+          showCity: true
+        };
+      </script>
+      <script th:if="${theme.config.home != null and theme.config.home.weatherConfig != null and theme.config.home.weatherConfig.showWeatherClock}" th:src="@{/assets/js/weather-clock.js}" defer></script>
       <div class="hero-background" th:if="${theme.config.home == null || theme.config.home.backgroundConfig == null || theme.config.home.backgroundConfig.showHeroBackground == null || theme.config.home.backgroundConfig.showHeroBackground}"
            th:with="hasApi = ${theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundApi != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundApi)}">
         <!-- 首页背景不使用色调遮罩，保持原始颜色 -->
@@ -683,20 +685,20 @@
           }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        (function initIndexExtras() {
           initMemoLightbox();
-          
+
           var weatherBar = document.querySelector('.hero-weather-bar');
           if (weatherBar) {
             var style = getComputedStyle(weatherBar);
             var weatherColor = style.getPropertyValue('--weather-color').trim();
             var isGradient = weatherColor && weatherColor.includes('gradient');
-            
+
             document.querySelectorAll('.weather-text').forEach(function(el) {
               el.setAttribute('data-gradient', isGradient ? 'true' : 'false');
             });
           }
-        });
+        })();
       </script>
     </main>
   </th:block>

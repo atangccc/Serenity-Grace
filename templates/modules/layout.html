@@ -117,13 +117,13 @@
   <meta name="twitter:image" th:content="${site.logo != null && !#strings.isEmpty(site.logo) ? site.logo : '/themes/theme-Serenity/assets/public/logo.webp'}" />
 
   
-  <link rel="stylesheet" th:href="@{/assets/fonts/qweather-icons.css}" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome.min.css}" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" th:href="@{/assets/fonts/qweather-icons.css}" />
+  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome.min.css}" />
   
   <link rel="preload" th:href="@{/assets/css/base.css}" as="style" />
   <link rel="stylesheet" th:href="@{/assets/css/lenis.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/aos.css}" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" th:href="@{/assets/css/swiper-bundle.min.css}" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" th:href="@{/assets/css/aos.css}" />
+  <link rel="stylesheet" th:href="@{/assets/css/swiper-bundle.min.css}" />
 
   <style id="critical-css-gate">
     body { visibility: hidden !important; }
@@ -328,6 +328,13 @@
       })();
     </script>
   </th:block>
+
+  <th:block th:if="${theme.config.basic != null and theme.config.basic.loadingConfig != null and theme.config.basic.loadingConfig.enablePjax and !theme.config.basic.loadingConfig.enableLoading}">
+    <div class="page-transition" id="page-transition">
+      <div class="page-transition-spinner"><span></span></div>
+      <div class="page-transition-text">正在跳转...</div>
+    </div>
+  </th:block>
   
   <div class="page-gradient"></div>
 
@@ -336,7 +343,9 @@
   <th:block th:replace="~{modules/search-modal}"></th:block>
 
   <main class="main">
-    <th:block th:replace="${content}" />
+    <div id="pjax-main">
+      <th:block th:replace="${content}" />
+    </div>
   </main>
 
   <th:block th:replace="~{modules/footer}"></th:block>
@@ -482,6 +491,12 @@
   
   <!-- 音乐播放器控制 -->
   <script th:src="@{/assets/js/music-panel.js}" defer></script>
+
+  <!-- PJAX 无刷新切换（局部刷新，保持音乐连续播放） -->
+  <th:block th:if="${theme.config.basic != null and theme.config.basic.loadingConfig != null and theme.config.basic.loadingConfig.enablePjax}">
+    <script>window.__PJAX_ENABLED = true;</script>
+    <script th:src="@{/assets/js/pjax.js}" defer></script>
+  </th:block>
 
   <!-- ANI 动态鼠标指针 (Hue 定制) -->
   <script th:src="@{/assets/js/cursor-init.js}"></script>

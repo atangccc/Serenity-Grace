@@ -1,17 +1,28 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+function __initTagsPage() {
+  // 幂等：清理上一次可能残留的圆环（PJAX 下 DOM 已随容器替换，这里防御性处理）
+  if (window.__tagsBarObserver && typeof window.__tagsBarObserver.disconnect === 'function') {
+    try { window.__tagsBarObserver.disconnect(); } catch (e) {}
+    window.__tagsBarObserver = null;
+  }
   initRings();
   initRingTooltips();
   initBarChart();
   calcTotal();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', __initTagsPage);
+} else {
+  __initTagsPage();
+}
 
 function getAllTagsData() {
   var items = document.querySelectorAll('#tags-data .tag-data-item');
@@ -159,6 +170,7 @@ function initBarChart() {
       });
     }, { threshold: 0.2 });
     observer.observe(chartArea);
+    window.__tagsBarObserver = observer;
   } else {
     setTimeout(animate, 500);
   }

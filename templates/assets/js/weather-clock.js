@@ -1,12 +1,18 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
 (function() {
+  if (window.__weatherClockLoaded) {
+    if (typeof window.__weatherClockInit === 'function') window.__weatherClockInit();
+    return;
+  }
+  window.__weatherClockLoaded = true;
+
   const CACHE_KEY = 'serenity_weather_cache';
   const CACHE_DURATION = 60 * 60 * 1000;
   const MAX_RETRIES = 2;
@@ -162,9 +168,15 @@
     const config = window.WEATHER_CONFIG;
     if (!config) return;
 
+    // 清理上一次的时钟定时器（PJAX 重入）
+    if (window.__weatherClockTimer) {
+      clearInterval(window.__weatherClockTimer);
+      window.__weatherClockTimer = null;
+    }
+
     if (config.showTime) {
       updateTime();
-      setInterval(updateTime, 60000);
+      window.__weatherClockTimer = setInterval(updateTime, 60000);
     }
 
     if (config.showWeather || config.showTemperature || config.showCity) {
@@ -172,9 +184,24 @@
     }
   }
 
+  // 一次性离场清理：清除时钟 interval（每次进入页面注册一次）
+  function registerLeave() {
+    if (typeof window.__pjaxOnLeave === 'function') {
+      window.__pjaxOnLeave(function () {
+        if (window.__weatherClockTimer) {
+          clearInterval(window.__weatherClockTimer);
+          window.__weatherClockTimer = null;
+        }
+      });
+    }
+  }
+
+  // 暴露供 PJAX 重入调用（先 init 再注册一次性离场清理）
+  window.__weatherClockInit = function () { init(); registerLeave(); };
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', window.__weatherClockInit);
   } else {
-    init();
+    window.__weatherClockInit();
   }
 })();

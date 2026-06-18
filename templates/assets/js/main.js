@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -18,6 +18,28 @@ function clearPageScrollListeners() {
     window.removeEventListener('scroll', h.fn, h.opts);
   });
   _pageScrollHandlers = [];
+}
+
+// ========== PJAX 页面级事件注册表 ==========
+// 通过 bindPageEvent 绑定的事件会登记在此，PJAX 切页前由 clearPageEvents() 统一解绑，
+// 避免局部刷新时 document/window/内容层监听重复叠加。
+var _pageEventBindings = [];
+window.__bindPageEvent = function(target, type, handler, options) {
+  target.addEventListener(type, handler, options);
+  var dispose = function() {
+    try { target.removeEventListener(type, handler, options); } catch (e) {}
+  };
+  _pageEventBindings.push(dispose);
+  return dispose;
+};
+window.__clearPageEvents = function() {
+  _pageEventBindings.forEach(function(dispose) {
+    try { dispose(); } catch (e) {}
+  });
+  _pageEventBindings = [];
+};
+function clearPageEvents() {
+  if (typeof window.__clearPageEvents === 'function') window.__clearPageEvents();
 }
 
 function bindPageEvent(target, type, handler, options) {
@@ -36,10 +58,10 @@ function bindPageEvent(target, type, handler, options) {
 function initLenis() {
   if (typeof Lenis === 'undefined') return;
 
+  // PJAX：Lenis 属持久层，已存在则不重建（避免 raf 循环叠加），仅 resize
   if (lenis) {
-    try { lenis.destroy(); } catch(e) {}
-    lenis = null;
-    window.__lenis = null;
+    try { lenis.resize(); } catch (e) {}
+    return;
   }
   
   lenis = new Lenis({
@@ -233,7 +255,11 @@ function toggleMenu() {
 function initHeaderScroll() {
   const header = document.querySelector('.header');
   if (!header) return;
-  
+
+  // 幂等守卫：header 在持久层，PJAX 下只需绑定一次
+  if (initHeaderScroll._bound) return;
+  initHeaderScroll._bound = true;
+
   let ticking = false;
   let lastScroll = 0;
   
@@ -321,7 +347,13 @@ function bindSwiperMediaRefresh(root, swiper) {
 function initMemoSlider() {
   var memoEl = document.querySelector('.memo-swiper');
   if (!memoEl || typeof Swiper === 'undefined') return;
-  
+
+  // PJAX 切页：先销毁旧实例，避免重复初始化 + autoplay/observer 泄漏
+  if (window.__memoSwiper) {
+    try { window.__memoSwiper.destroy(true, true); } catch (e) {}
+    window.__memoSwiper = null;
+  }
+
   var memoSwiper = new Swiper('.memo-swiper', {
     slidesPerView: 'auto',
     spaceBetween: 12,
@@ -346,6 +378,7 @@ function initMemoSlider() {
     }
   });
 
+  window.__memoSwiper = memoSwiper;
   bindSwiperMediaRefresh(memoEl, memoSwiper);
 }
 
@@ -396,32 +429,68 @@ function initMobileDropdowns() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// ========== 初始化分组（PJAX 支持） ==========
+// initOnce：绑定持久层（header/back-to-top/lenis 等），只执行一次
+// initPage：针对 #pjax-main 内容层，首次加载与每次 PJAX 切页都执行
+function initOnce() {
   initLenis();
   initThemeToggle();
   initHeaderScroll();
+}
+
+function initPage(isPjax) {
   initSmoothScroll();
   initMenuClose();
+  initBackToTop();
+  initPageTransition();
   initMobileDropdowns();
   initMemoSlider();
   initHeroBackground();
-  initBackToTop();
   initTypewriter();
   initDragScroll();
   cleanLifeDescriptions();
   sortStreamFeed();
-  initPageTransition();
 
   if (typeof AOS !== 'undefined') {
-    AOS.init({
-      duration: 800,
-      easing: 'ease-out-cubic',
-      once: true,
-      offset: 50,
-      delay: 0,
-      anchorPlacement: 'top-bottom'
-    });
+    if (window.__aosInited) {
+      // PJAX 切页：body 已有 aos-initialized，新内容的 [data-aos] 初始 opacity:0
+      // 且 base.css 的兜底动画被禁用，必须主动让新元素显示，避免整页空白。
+      var container = document.getElementById('pjax-main') || document;
+      container.querySelectorAll('[data-aos]').forEach(function (el) {
+        el.classList.add('aos-animate');
+      });
+      if (typeof AOS.refreshHard === 'function') {
+        AOS.refreshHard();
+      } else if (typeof AOS.refresh === 'function') {
+        AOS.refresh();
+      }
+    } else {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 50,
+        delay: 0,
+        anchorPlacement: 'top-bottom'
+      });
+      window.__aosInited = true;
+    }
   }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initOnce();
+  initPage(false);
+});
+
+// PJAX 切页钩子：进场时重跑内容层初始化（离场清理由 pjax.js 框架统一处理 +
+// clearPageScrollListeners / __clearPageEvents 覆盖；Swiper/Typewriter 各自在
+// 重新 init 时先销毁旧实例，已具备幂等）
+// 用全局队列模式，避免与 pjax.js 的脚本加载顺序耦合。
+window.__pjaxPageInit = window.__pjaxPageInit || [];
+window.__pjaxPageInit.push(function () {
+  initPage(true);
+  try { if (lenis) lenis.resize(); } catch (e) {}
 });
 
 function sortStreamFeed() {
@@ -509,6 +578,12 @@ function initTypewriter() {
   const textElement = document.querySelector('.typewriter-text');
   if (!textElement) return;
 
+  // PJAX 切页：清除上一页遗留的打字机定时器链
+  if (window.__typewriterTimer) {
+    clearTimeout(window.__typewriterTimer);
+    window.__typewriterTimer = null;
+  }
+
   const text = textElement.getAttribute('data-text') || textElement.textContent;
   const enableBackspace = textElement.getAttribute('data-backspace') === 'true';
   textElement.textContent = '';
@@ -523,9 +598,9 @@ function initTypewriter() {
     if (charIndex < text.length) {
       textElement.textContent += text.charAt(charIndex);
       charIndex++;
-      setTimeout(type, typingSpeed);
+      window.__typewriterTimer = setTimeout(type, typingSpeed);
     } else if (enableBackspace) {
-      setTimeout(backspace, pauseAfterType);
+      window.__typewriterTimer = setTimeout(backspace, pauseAfterType);
     }
   }
 
@@ -533,19 +608,25 @@ function initTypewriter() {
     if (charIndex > 0) {
       charIndex--;
       textElement.textContent = text.substring(0, charIndex);
-      setTimeout(backspace, backspaceSpeed);
+      window.__typewriterTimer = setTimeout(backspace, backspaceSpeed);
     } else {
-      setTimeout(type, pauseAfterBackspace);
+      window.__typewriterTimer = setTimeout(type, pauseAfterBackspace);
     }
   }
 
-  setTimeout(type, 500);
+  window.__typewriterTimer = setTimeout(type, 500);
 }
 
 function initDragScroll() {
   var lifeEl = document.querySelector('.life-swiper');
   if (!lifeEl || typeof Swiper === 'undefined') return;
-  
+
+  // PJAX 切页：先销毁旧实例
+  if (window.__lifeSwiper) {
+    try { window.__lifeSwiper.destroy(true, true); } catch (e) {}
+    window.__lifeSwiper = null;
+  }
+
   var lifeSwiper = new Swiper('.life-swiper', {
     slidesPerView: 'auto',
     spaceBetween: 16,
@@ -562,6 +643,7 @@ function initDragScroll() {
     mousewheel: { forceToAxis: true }
   });
 
+  window.__lifeSwiper = lifeSwiper;
   bindSwiperMediaRefresh(lifeEl, lifeSwiper);
 }
 

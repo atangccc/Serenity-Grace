@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -11,10 +11,6 @@
       th:replace="~{modules/layout :: html(title = ${post != null and post.spec != null ? post.spec.title : '文章详情'}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/post-page.css}" />
-  <!-- 文章页滚动条：根据设置动态添加 class -->
-  <script th:if="${theme.config.post != null and theme.config.post.scrollbarConfig != null and theme.config.post.scrollbarConfig.showScrollbar == true}">
-    document.documentElement.classList.add('show-scrollbar');
-  </script>
   <link rel="canonical" th:href="${site.url + post.status.permalink}" />
   <!-- 文章的 Open Graph 覆盖 -->
   <meta property="og:type" content="article" />
@@ -36,10 +32,6 @@
   <meta name="twitter:title" th:content="${post.spec.title}" />
   <meta name="twitter:description" th:content="${post.status.excerpt ?: (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.description != null ? theme.config.basic.siteInfo.description : site.subtitle)}" />
   <meta name="twitter:image" th:if="${post.spec.cover != null && !#strings.isEmpty(post.spec.cover)}" th:content="${post.spec.cover}" />
-  <script th:src="@{/assets/js/lightbox.js}" defer></script>
-  <script th:inline="javascript">window.__showHeadingIcons = /*[[${theme.config.post != null && theme.config.post.headingIconsConfig != null && theme.config.post.headingIconsConfig.showHeadingIcons != null ? theme.config.post.headingIconsConfig.showHeadingIcons : true}]]*/ true;</script>
-  <script th:src="@{/assets/js/post.js}" defer></script>
-  <script th:src="@{/assets/js/tag-sphere.js}" defer></script>
   <script th:if="${theme.config.seo != null && theme.config.seo.seoConfig != null && (theme.config.seo.seoConfig.enableJsonLd == null || theme.config.seo.seoConfig.enableJsonLd)}" type="application/ld+json" th:inline="javascript">
   {
     "@context": "https://schema.org",
@@ -89,6 +81,20 @@
   </script>
 </th:block>
 <th:block th:fragment="content">
+  <!-- PJAX：页面脚本与服务端注入变量置于 content 内，随局部刷新重新执行 -->
+  <!-- 文章页滚动条：根据设置动态添加 class，PJAX 离场时移除 -->
+  <script th:if="${theme.config.post != null and theme.config.post.scrollbarConfig != null and theme.config.post.scrollbarConfig.showScrollbar == true}">
+    document.documentElement.classList.add('show-scrollbar');
+    if (typeof window.__pjaxOnLeave === 'function') {
+      window.__pjaxOnLeave(function () {
+        document.documentElement.classList.remove('show-scrollbar');
+      });
+    }
+  </script>
+  <script th:src="@{/assets/js/lightbox.js}" defer></script>
+  <script th:inline="javascript">window.__showHeadingIcons = /*[[${theme.config.post != null && theme.config.post.headingIconsConfig != null && theme.config.post.headingIconsConfig.showHeadingIcons != null ? theme.config.post.headingIconsConfig.showHeadingIcons : true}]]*/ true;</script>
+  <script th:src="@{/assets/js/post.js}" defer></script>
+  <script th:src="@{/assets/js/tag-sphere.js}" defer></script>
   <!-- 阅读进度条 -->
   <div class="reading-progress-bar" id="reading-progress-bar"></div>
 
@@ -126,6 +132,12 @@
             localStorage.setItem(STORAGE_KEY, img.src);
             sessionStorage.setItem(sessionKey, 'true');
           }
+        }
+
+        if (typeof window.__pjaxOnLeave === 'function') {
+          window.__pjaxOnLeave(function () {
+            document.body.classList.remove('has-bg-wallpaper');
+          });
         }
 
         img.onload = markLoaded;

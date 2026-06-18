@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -11,10 +11,11 @@
       th:replace="~{modules/layout :: html(title = ${singlePage != null ? singlePage.spec.title : '朋友们'}, content = ~{::content}, head = ~{::head})}">
 <th:block th:fragment="head">
   <link rel="stylesheet" th:href="@{/assets/css/links.css}" />
-  <script th:src="@{/assets/js/links.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
   <main class="main">
+    <!-- PJAX：页面脚本置于 content 内，随局部刷新重新执行 -->
+    <script th:src="@{/assets/js/links.js}" defer></script>
     <div class="container">
       <section class="links-hero" data-aos="fade-up">
         <h1 class="links-hero-title" th:text="${(theme.config.watermark?.links?.enabled == true ? theme.config.watermark.links.title : null) ?: (singlePage != null ? singlePage.spec.title : '朋友们')}">朋友们</h1>

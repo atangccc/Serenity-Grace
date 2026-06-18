@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -16,10 +16,11 @@
   <meta property="og:description" content="记录生活中的点滴，留住那些值得回忆的瞬间" />
   <meta name="twitter:title" th:content="${(singlePage != null ? singlePage.spec.title : '碎碎念') + ' - ' + (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title)}" />
   <meta name="twitter:description" content="记录生活中的点滴，留住那些值得回忆的瞬间" />
-  <script th:src="@{/assets/js/lightbox.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
   <main class="main">
+    <!-- PJAX：页面脚本置于 content 内，随局部刷新重新执行 -->
+    <script th:src="@{/assets/js/lightbox.js}" defer></script>
     <div class="container">
       <section class="moments-page" th:with="momentsResult = ${momentFinder != null ? momentFinder.list(1, 9999) : null}">
         

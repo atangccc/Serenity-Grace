@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -29,7 +29,7 @@
   var zCounter = 200;
   var isMobile = /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function initWishesPage() {
     initCards();
     initTabs();
     initColorPicker();
@@ -38,7 +38,13 @@
     initTypeToggle();
     initCharCounter();
     initDaysCounter();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWishesPage);
+  } else {
+    initWishesPage();
+  }
 
   function initCards() {
     var board = document.getElementById('wishBoard');

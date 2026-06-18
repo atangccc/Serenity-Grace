@@ -1,16 +1,24 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-14 20:38:41
- * Fingerprint: c77ef69c22818532
+ * Build: 2026-06-18 09:45:57
+ * Fingerprint: 88625fba46de6b73
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
 /**
  * 3D 旋转球形标签云
+ * PJAX 兼容：状态挂到 window 单例，resize 仅绑定一次，避免随内容重执行而叠加。
  */
 (function () {
   'use strict';
+
+  if (window.__tagSphereLoaded) {
+    // 脚本已加载过（PJAX 随内容重复注入）：仅重新初始化当前页 DOM
+    if (typeof window.__tagSphereInit === 'function') window.__tagSphereInit();
+    return;
+  }
+  window.__tagSphereLoaded = true;
 
   var MAX_TAGS = 60;          
   var RADIUS_RATIO = 0.42;    
@@ -205,11 +213,30 @@
     requestAnimationFrame(initAll);
   }
 
-  document.addEventListener('DOMContentLoaded', boot);
-
   var resizeTimer = null;
+
+  // 暴露给 PJAX 重入：每次进入带标签云的页面时调用
+  window.__tagSphereInit = function () {
+    boot();
+    // 注册一次性离场清理（停止 rAF、解绑、清定时器）
+    if (typeof window.__pjaxOnLeave === 'function') {
+      window.__pjaxOnLeave(function () {
+        destroyAll();
+        if (resizeTimer) { clearTimeout(resizeTimer); resizeTimer = null; }
+      });
+    }
+  };
+
+  // resize 监听仅绑定一次（脚本首次执行时）
   window.addEventListener('resize', function () {
     if (resizeTimer) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(initAll, 250);
   });
+
+  // 入口：兼容首次加载与 PJAX 注入
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.__tagSphereInit);
+  } else {
+    window.__tagSphereInit();
+  }
 })();

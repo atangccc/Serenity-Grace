@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-14 20:38:41
-  Fingerprint: c77ef69c22818532
+  Build: 2026-06-18 09:45:57
+  Fingerprint: 88625fba46de6b73
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -17,13 +17,14 @@
   <meta property="og:description" content="来几句走心的评论吧，留下你的足迹" />
   <meta name="twitter:title" th:content="${(singlePage.spec.title ?: '留言板') + ' - ' + (theme.config.basic != null and theme.config.basic.siteInfo != null and theme.config.basic.siteInfo.title != null ? theme.config.basic.siteInfo.title : site.title)}" />
   <meta name="twitter:description" content="来几句走心的评论吧，留下你的足迹" />
-  <script th:inline="javascript">
-    window.__GUESTBOOK_PAGE_NAME__ = /*[[${singlePage.metadata.name}]]*/ '';
-  </script>
-  <script th:src="@{/assets/js/guestbook.js}" defer></script>
 </th:block>
 <th:block th:fragment="content">
   <main class="main">
+    <!-- PJAX：脚本与服务端注入变量置于 content 内，随局部刷新重新执行 -->
+    <script th:inline="javascript">
+      window.__GUESTBOOK_PAGE_NAME__ = /*[[${singlePage.metadata.name}]]*/ '';
+    </script>
+    <script th:src="@{/assets/js/guestbook.js}" defer></script>
     <div class="container">
       <section class="guestbook-page">
         <div class="guestbook-header" data-aos="fade-up">

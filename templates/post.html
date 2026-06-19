@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-18 20:18:24
-  Fingerprint: d54be6a69e9c9bfb
+  Build: 2026-06-19 11:46:37
+  Fingerprint: d071f399271682be
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -432,10 +432,11 @@
                         <span class="stat-label">访问</span>
                       </div>
                     </div>
-                    <a class="author-hover-overlay" th:href="@{/about}" href="/about">
+                    <a class="author-hover-overlay" th:href="@{/about}" href="/about" title="查看作者介绍" aria-label="查看作者介绍">
                       <svg t="1772421730895" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9964" width="48" height="48">
                         <path d="M539.194 566.388 212.864 566.388c-15.032 0-27.195 12.19-27.195 27.19 0 15.03 12.162 27.2 27.195 27.2l326.329 0c15.03 0 27.195-12.17 27.195-27.2C566.389 578.578 554.219 566.388 539.194 566.388zM539.194 675.163 212.864 675.163c-15.032 0-27.195 12.165-27.195 27.195s12.162 27.19 27.195 27.19l326.329 0c15.03 0 27.195-12.16 27.195-27.19S554.219 675.163 539.194 675.163zM838.328 185.669 185.67 185.669c-60.072 0-108.777 48.705-108.777 108.777l0 435.101c0 60.075 48.705 108.78 108.777 108.78l652.658 0c60.07 0 108.775-48.705 108.775-108.78L947.103 294.447C947.103 234.374 898.398 185.669 838.328 185.669zM892.718 729.548c0 30.04-24.355 54.39-54.39 54.39L185.67 783.938c-30.037 0-54.39-24.35-54.39-54.39L131.28 294.447c0-30.035 24.352-54.39 54.39-54.39l652.658 0c30.035 0 54.39 24.352 54.39 54.39L892.718 729.548zM783.938 294.447 675.163 294.447c-30.035 0-54.39 24.352-54.39 54.387l0 108.777c0 30.035 24.355 54.387 54.39 54.387l108.775 0c30.04 0 54.39-24.35 54.39-54.387L838.328 348.834C838.328 318.799 813.978 294.447 783.938 294.447zM783.938 430.416c0 15.03-12.16 27.195-27.19 27.195l-54.39 0c-15.03 0-27.195-12.165-27.195-27.195l0-54.39c0-15.005 12.165-27.195 27.195-27.195l54.39 0c15.03 0 27.19 12.19 27.19 27.195L783.938 430.416z" fill="currentColor" p-id="9965"></path>
                       </svg>
+                      <span class="sr-only">查看作者介绍</span>
                     </a>
                   </div>
                 </div>
@@ -458,9 +459,9 @@
                       </li>
                     </th:block>
                     <th:block th:if="${#lists.isEmpty(postFinder.list(1, relatedCount).items)}">
-                      <li><a href="javascript:void(0)">React Server Components 深入理解</a></li>
-                      <li><a href="javascript:void(0)">TypeScript 5.0 新特性详解</a></li>
-                      <li><a href="javascript:void(0)">Tailwind CSS 构建 UI 组件</a></li>
+                      <li><span class="widget-link-placeholder">React Server Components 深入理解</span></li>
+                      <li><span class="widget-link-placeholder">TypeScript 5.0 新特性详解</span></li>
+                      <li><span class="widget-link-placeholder">Tailwind CSS 构建 UI 组件</span></li>
                     </th:block>
                   </ul>
                 </div>
@@ -545,10 +546,11 @@
                       <span class="stat-label">访问</span>
                     </div>
                   </div>
-                  <a class="author-hover-overlay" th:href="@{/about}" href="/about">
+                  <a class="author-hover-overlay" th:href="@{/about}" href="/about" title="查看作者介绍" aria-label="查看作者介绍">
                     <svg t="1772421730895" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9964" width="48" height="48">
                       <path d="M539.194 566.388 212.864 566.388c-15.032 0-27.195 12.19-27.195 27.19 0 15.03 12.162 27.2 27.195 27.2l326.329 0c15.03 0 27.195-12.17 27.195-27.2C566.389 578.578 554.219 566.388 539.194 566.388zM539.194 675.163 212.864 675.163c-15.032 0-27.195 12.165-27.195 27.195s12.162 27.19 27.195 27.19l326.329 0c15.03 0 27.195-12.16 27.195-27.19S554.219 675.163 539.194 675.163zM838.328 185.669 185.67 185.669c-60.072 0-108.777 48.705-108.777 108.777l0 435.101c0 60.075 48.705 108.78 108.777 108.78l652.658 0c60.07 0 108.775-48.705 108.775-108.78L947.103 294.447C947.103 234.374 898.398 185.669 838.328 185.669zM892.718 729.548c0 30.04-24.355 54.39-54.39 54.39L185.67 783.938c-30.037 0-54.39-24.35-54.39-54.39L131.28 294.447c0-30.035 24.352-54.39 54.39-54.39l652.658 0c30.035 0 54.39 24.352 54.39 54.39L892.718 729.548zM783.938 294.447 675.163 294.447c-30.035 0-54.39 24.352-54.39 54.387l0 108.777c0 30.035 24.355 54.387 54.39 54.387l108.775 0c30.04 0 54.39-24.35 54.39-54.387L838.328 348.834C838.328 318.799 813.978 294.447 783.938 294.447zM783.938 430.416c0 15.03-12.16 27.195-27.19 27.195l-54.39 0c-15.03 0-27.195-12.165-27.195-27.195l0-54.39c0-15.005 12.165-27.195 27.195-27.195l54.39 0c15.03 0 27.19 12.19 27.19 27.195L783.938 430.416z" fill="currentColor" p-id="9965"></path>
                     </svg>
+                    <span class="sr-only">查看作者介绍</span>
                   </a>
                 </div>
               </div>
@@ -571,9 +573,9 @@
                     </li>
                   </th:block>
                   <th:block th:if="${#lists.isEmpty(postFinder.list(1, relatedCount).items)}">
-                    <li><a href="javascript:void(0)">React Server Components 深入理解</a></li>
-                    <li><a href="javascript:void(0)">TypeScript 5.0 新特性详解</a></li>
-                    <li><a href="javascript:void(0)">Tailwind CSS 构建 UI 组件</a></li>
+                    <li><span class="widget-link-placeholder">React Server Components 深入理解</span></li>
+                    <li><span class="widget-link-placeholder">TypeScript 5.0 新特性详解</span></li>
+                    <li><span class="widget-link-placeholder">Tailwind CSS 构建 UI 组件</span></li>
                   </th:block>
                 </ul>
               </div>

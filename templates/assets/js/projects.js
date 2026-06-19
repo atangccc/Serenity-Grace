@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-18 20:18:24
- * Fingerprint: d54be6a69e9c9bfb
+ * Build: 2026-06-19 11:46:37
+ * Fingerprint: d071f399271682be
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -106,11 +106,6 @@ async function fetchGitHubReleases(owner, repo) {
 }
 
 function createProjectCard(data, isCustom = false, ownerType = 'mine') {
-  const card = document.createElement('a');
-  card.className = 'project-card';
-  card.setAttribute('data-aos', 'fade-up');
-  card.setAttribute('data-owner-type', ownerType);
-  
   const languageColor = LANGUAGE_COLORS[data.language] || '#858585';
   let topics = [];
   if (isCustom && typeof data.topics === 'string') {
@@ -128,16 +123,22 @@ function createProjectCard(data, isCustom = false, ownerType = 'mine') {
   const safeLanguage = escapeForHtml(data.language || '');
   const safeAvatarUrl = escapeForHtml(avatarUrl);
   const safeTopics = topics.map(t => escapeForHtml(t));
+  const hasProjectUrl = projectUrl !== '#';
+
+  const card = document.createElement(ownerType === 'starred' && hasProjectUrl ? 'a' : 'button');
+  card.className = 'project-card';
+  card.setAttribute('data-aos', 'fade-up');
+  card.setAttribute('data-owner-type', ownerType);
   
   // 根据项目类型设置不同行为
-  if (ownerType === 'starred') {
+  if (ownerType === 'starred' && hasProjectUrl) {
     // 收藏项目：直接跳转链接
     card.href = projectUrl;
     card.target = '_blank';
     card.rel = 'noopener noreferrer';
   } else {
     // 我的项目：打开版本详情弹窗
-    card.href = 'javascript:void(0)';
+    card.type = 'button';
     const projectId = data.full_name || data.name;
     projectsCache.set(projectId, { data, isCustom, avatarUrl, projectUrl });
     card.onclick = (e) => {

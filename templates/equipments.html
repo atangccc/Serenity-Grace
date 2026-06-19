@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-18 20:18:24
-  Fingerprint: d54be6a69e9c9bfb
+  Build: 2026-06-19 11:46:37
+  Fingerprint: d071f399271682be
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -26,7 +26,7 @@
 				<p class="page-desc" th:text="${(theme.config.watermark?.equipments?.enabled == true ? theme.config.watermark.equipments.subtitle : null) ?: '工欲善其事，必先利其器'}">工欲善其事，必先利其器</p>
 			</header>
 
-			<!-- 未安装插件提示-->
+			<!-- 未安装插件提示 -->
 			<div th:if="${groups == null}" class="plugin-notice" data-aos="fade-up">
 				<div class="plugin-notice-icon">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -38,7 +38,7 @@
 				<p class="plugin-notice-desc">请先安装并启用「装备管理」插件</p>
 			</div>
 
-			<!-- 插件已安装时的正常内容-->
+			<!-- 插件已安装时的正常内容 -->
 			<th:block th:if="${groups != null}">
 				<div class="equipments-content" th:if="${!#lists.isEmpty(groups)}">
 					<th:block th:each="group : ${groups}">
@@ -51,46 +51,88 @@
 							</div>
 
 							<div class="equipment-grid" th:if="${group.equipments != null and !#lists.isEmpty(group.equipments)}">
-								<a th:href="${item.spec.url ?: 'javascript:void(0)'}"
-									th:target="${item.spec.url != null and !#strings.isEmpty(item.spec.url)} ? '_blank' : '_self'"
-									class="equipment-item"
-									th:each="item : ${group.equipments}">
-									<span class="tech-corner top-left"></span>
-									<span class="tech-corner top-right"></span>
-									<span class="tech-corner bottom-left"></span>
-									<span class="tech-corner bottom-right"></span>
+								<th:block th:each="item : ${group.equipments}">
+									<a th:if="${item.spec.url != null and !#strings.isEmpty(item.spec.url)}"
+										th:href="${item.spec.url}"
+										target="_blank"
+										rel="noopener noreferrer"
+										class="equipment-item">
+										<span class="tech-corner top-left"></span>
+										<span class="tech-corner top-right"></span>
+										<span class="tech-corner bottom-left"></span>
+										<span class="tech-corner bottom-right"></span>
 
-									<div class="item-meta-header">
-										<span class="meta-label">PRODUCT_OVERVIEW</span>
-										<span class="meta-status">核心设备</span>
+										<div class="item-meta-header">
+											<span class="meta-label">PRODUCT_OVERVIEW</span>
+											<span class="meta-status">核心设备</span>
+										</div>
+
+										<h3 class="item-title" th:text="${item.spec.displayName}">设备名称</h3>
+
+										<div class="item-specification"
+											th:if="${!#strings.isEmpty(item.spec.specification)}"
+											th:text="${item.spec.specification}">
+											规格参数
+										</div>
+
+										<div class="item-image-box" th:if="${!#strings.isEmpty(item.spec.cover)}">
+											<img th:src="${item.spec.cover}" th:alt="${item.spec.displayName}" loading="lazy">
+										</div>
+
+										<p class="item-desc" th:if="${!#strings.isEmpty(item.spec.description)}"
+											th:text="${item.spec.description}">描述信息</p>
+
+										<div class="item-meta-footer">
+											<span th:if="${#strings.length(item.metadata.name) >= 16}"
+												th:text="'ID. ' + ${#strings.toUpperCase(#strings.substring(item.metadata.name, 10, 16))}">
+												ID. HQH7FY
+											</span>
+											<span th:unless="${#strings.length(item.metadata.name) >= 16}"
+												th:text="'ID. ' + ${#strings.toUpperCase(item.metadata.name)}">
+												ID. XXXXXX
+											</span>
+										</div>
+									</a>
+
+									<div th:unless="${item.spec.url != null and !#strings.isEmpty(item.spec.url)}"
+										class="equipment-item equipment-item-static">
+										<span class="tech-corner top-left"></span>
+										<span class="tech-corner top-right"></span>
+										<span class="tech-corner bottom-left"></span>
+										<span class="tech-corner bottom-right"></span>
+
+										<div class="item-meta-header">
+											<span class="meta-label">PRODUCT_OVERVIEW</span>
+											<span class="meta-status">核心设备</span>
+										</div>
+
+										<h3 class="item-title" th:text="${item.spec.displayName}">设备名称</h3>
+
+										<div class="item-specification"
+											th:if="${!#strings.isEmpty(item.spec.specification)}"
+											th:text="${item.spec.specification}">
+											规格参数
+										</div>
+
+										<div class="item-image-box" th:if="${!#strings.isEmpty(item.spec.cover)}">
+											<img th:src="${item.spec.cover}" th:alt="${item.spec.displayName}" loading="lazy">
+										</div>
+
+										<p class="item-desc" th:if="${!#strings.isEmpty(item.spec.description)}"
+											th:text="${item.spec.description}">描述信息</p>
+
+										<div class="item-meta-footer">
+											<span th:if="${#strings.length(item.metadata.name) >= 16}"
+												th:text="'ID. ' + ${#strings.toUpperCase(#strings.substring(item.metadata.name, 10, 16))}">
+												ID. HQH7FY
+											</span>
+											<span th:unless="${#strings.length(item.metadata.name) >= 16}"
+												th:text="'ID. ' + ${#strings.toUpperCase(item.metadata.name)}">
+												ID. XXXXXX
+											</span>
+										</div>
 									</div>
-
-									<h3 class="item-title" th:text="${item.spec.displayName}">设备名称</h3>
-
-									<div class="item-specification"
-										th:if="${!#strings.isEmpty(item.spec.specification)}"
-										th:text="${item.spec.specification}">
-										规格参数
-									</div>
-
-									<div class="item-image-box" th:if="${!#strings.isEmpty(item.spec.cover)}">
-										<img th:src="${item.spec.cover}" th:alt="${item.spec.displayName}" loading="lazy">
-									</div>
-
-									<p class="item-desc" th:if="${!#strings.isEmpty(item.spec.description)}"
-										th:text="${item.spec.description}">描述信息</p>
-
-									<div class="item-meta-footer">
-										<span th:if="${#strings.length(item.metadata.name) >= 16}"
-											th:text="'ID. ' + ${#strings.toUpperCase(#strings.substring(item.metadata.name, 10, 16))}">
-											ID. HQH7FY
-										</span>
-										<span th:unless="${#strings.length(item.metadata.name) >= 16}"
-											th:text="'ID. ' + ${#strings.toUpperCase(item.metadata.name)}">
-											ID. XXXXXX
-										</span>
-									</div>
-								</a>
+								</th:block>
 							</div>
 						</div>
 					</th:block>

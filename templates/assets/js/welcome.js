@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-18 20:18:24
- * Fingerprint: d54be6a69e9c9bfb
+ * Build: 2026-06-19 11:46:37
+ * Fingerprint: d071f399271682be
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -43,6 +43,7 @@
   function hideOverlay(overlay) {
     overlay.classList.add('hidden');
     sessionStorage.setItem('serenity-welcomed', 'true');
+    document.documentElement.classList.remove('welcome-pending');
 
     var scrollY = document.body.dataset.scrollY;
     unlockBodyScroll();
@@ -57,7 +58,7 @@
     
     setTimeout(function() {
       overlay.style.display = 'none';
-    }, 800);
+    }, 400);
   }
   
   function lockBodyScroll() {
@@ -130,6 +131,7 @@
     }
 
     if (hasVisited) {
+      document.documentElement.classList.remove('welcome-pending');
       overlay.classList.add('hidden');
       overlay.style.display = 'none';
       unlockBodyScroll();
@@ -140,6 +142,12 @@
     createParticles();
     setRandomSaying();
     initThemeToggle();
+
+    var autoHideTimer = setTimeout(function() {
+      if (!overlay.classList.contains('hidden')) {
+        hideOverlay(overlay);
+      }
+    }, 1600);
     
     overlay.addEventListener('wheel', function(e) {
       e.preventDefault();
@@ -153,11 +161,13 @@
 
     overlay.addEventListener('click', function(e) {
       if (e.target.closest('.welcome-theme-toggle')) return;
+      clearTimeout(autoHideTimer);
       hideOverlay(overlay);
     });
 
     function handleKey(e) {
       if (!overlay.classList.contains('hidden')) {
+        clearTimeout(autoHideTimer);
         hideOverlay(overlay);
         document.removeEventListener('keydown', handleKey);
       }

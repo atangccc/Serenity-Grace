@@ -1,8 +1,8 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-18 20:18:24
- * Fingerprint: d54be6a69e9c9bfb
+ * Build: 2026-06-19 11:46:37
+ * Fingerprint: d071f399271682be
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -459,6 +459,9 @@ html.theme-vt::view-transition-new(root) {
 #nav-music .nav-music-tips {
   color: #fff;
   background: var(--color-accent);
+  border: 0;
+  padding: 0;
+  font: inherit;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -1582,7 +1585,8 @@ a.footer-provider {
   background: var(--color-accent);
 }
 
-.widget-list a {
+.widget-list a,
+.widget-link-placeholder {
   font-size: 13px;
   color: var(--color-text-secondary);
   display: -webkit-box;

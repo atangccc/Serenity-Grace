@@ -67,6 +67,7 @@
       }
       
       if(!welcomed){
+        document.documentElement.classList.add('welcome-pending');
         var theme = document.documentElement.getAttribute('data-theme') || 'dark';
         var bgColor;
         if (theme === 'light') {
@@ -76,9 +77,9 @@
           // 深色模式
           bgColor = 'var(--gateway-bg-dark-start, #1b1b22)';
         }
-        document.write('<style id="welcome-init-style">.header,.footer,.back-to-top,.page-gradient,.hero-background{opacity:0!important;visibility:hidden!important}body{overflow:hidden!important}.welcome-overlay{display:flex!important;background:' + bgColor + '!important}<\/style>');
+        document.write('<style id="welcome-init-style">.welcome-overlay{display:flex!important;background:' + bgColor + '!important}<\/style>');
       } else {
-
+        document.documentElement.classList.remove('welcome-pending');
         document.write('<style id="welcome-init-style">.welcome-overlay{display:none!important}<\/style>');
       }
     })();
@@ -117,17 +118,24 @@
   <meta name="twitter:image" th:content="${site.logo != null && !#strings.isEmpty(site.logo) ? site.logo : '/themes/theme-Serenity/assets/public/logo.webp'}" />
 
   
-  <link rel="stylesheet" th:href="@{/assets/fonts/qweather-icons.css}" />
-  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome.min.css}" />
+  <link rel="preload" th:href="@{/assets/fonts/qweather-icons.css}" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" th:href="@{/assets/fonts/qweather-icons.css}" />
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome.min.css}" />
+  </noscript>
   
   <link rel="preload" th:href="@{/assets/css/base.css}" as="style" />
-  <link rel="stylesheet" th:href="@{/assets/css/lenis.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/aos.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/swiper-bundle.min.css}" />
+  <link rel="preload" th:href="@{/assets/css/lenis.css}" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" th:href="@{/assets/css/aos.css}" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" th:href="@{/assets/css/swiper-bundle.min.css}" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" th:href="@{/assets/css/lenis.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/aos.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/swiper-bundle.min.css}" />
+  </noscript>
 
   <style id="critical-css-gate">
-    body { visibility: hidden !important; }
-    body.css-ready { visibility: visible !important; }
+    body { background: var(--color-bg, #1b1b22); }
   </style>
 
   <style>
@@ -143,22 +151,93 @@
       animation: none;
     }
   </style>
-  <link rel="stylesheet" th:href="@{/assets/css/base.css}" onload="if(document.body)document.body.classList.add('css-ready')" />
-  <script>
-    (function () {
-      function show() { if (document.body) document.body.classList.add('css-ready'); }
-      window.addEventListener('load', show, { once: true });
-      setTimeout(show, 6000);
-    })();
-  </script>
+  <link rel="stylesheet" th:href="@{/assets/css/base.css}" />
 
   <script th:inline="javascript">
     window.__ACCENT_LIGHT = /*[[${theme.config.basic != null and theme.config.basic.lightColor != null and !#strings.isEmpty(theme.config.basic.lightColor) ? theme.config.basic.lightColor : '#7DCDE8'}]]*/ '#7DCDE8';
     window.__ACCENT_DARK  = /*[[${theme.config.basic != null and theme.config.basic.darkColor != null and !#strings.isEmpty(theme.config.basic.darkColor) ? theme.config.basic.darkColor : '#E87D98'}]]*/ '#E87D98';
   </script>
-  <script th:src="@{/assets/js/theme-color-init.js}"></script>
+  <script>
+    (function() {
+      function hexToHsl(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(hex || '').trim());
+        if (!result) return null;
+        var r = parseInt(result[1], 16) / 255;
+        var g = parseInt(result[2], 16) / 255;
+        var b = parseInt(result[3], 16) / 255;
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var h, s, l = (max + min) / 2;
+        if (max === min) {
+          h = s = 0;
+        } else {
+          var d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+      }
+      function hexToRgbString(hex) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(String(hex || '').trim());
+        if (!result) return '124, 205, 232';
+        return parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16);
+      }
+      function hslToRgbString(h, s, l) {
+        s /= 100; l /= 100;
+        var c = (1 - Math.abs(2 * l - 1)) * s;
+        var x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        var m = l - c / 2;
+        var r = 0, g = 0, b = 0;
+        if (0 <= h && h < 60) { r = c; g = x; }
+        else if (60 <= h && h < 120) { r = x; g = c; }
+        else if (120 <= h && h < 180) { g = c; b = x; }
+        else if (180 <= h && h < 240) { g = x; b = c; }
+        else if (240 <= h && h < 300) { r = x; b = c; }
+        else { r = c; b = x; }
+        return Math.round((r + m) * 255) + ', ' + Math.round((g + m) * 255) + ', ' + Math.round((b + m) * 255);
+      }
+      function applyAccent(color) {
+        var root = document.documentElement;
+        var hsl = hexToHsl(color);
+        var secondary, secondaryRgb;
+        if (hsl) {
+          var sh = (hsl.h + 20) % 360;
+          secondary = 'hsl(' + sh + ', ' + hsl.s + '%, ' + hsl.l + '%)';
+          secondaryRgb = hslToRgbString(sh, hsl.s, hsl.l);
+        } else {
+          secondary = color;
+          secondaryRgb = hexToRgbString(color);
+        }
+        root.style.setProperty('--color-accent', color);
+        root.style.setProperty('--color-accent-secondary', secondary);
+        root.style.setProperty('--color-accent-rgb', hexToRgbString(color));
+        root.style.setProperty('--color-accent-secondary-rgb', secondaryRgb);
+        root.setAttribute('data-hue-active', 'true');
+        var h = hsl ? hsl.h : 195;
+        root.style.setProperty('--gateway-bg-light-start', 'hsl(' + h + ', 8%, 97%)');
+        root.style.setProperty('--gateway-bg-light-end', 'hsl(' + h + ', 6%, 95%)');
+        root.style.setProperty('--gateway-bg-light-mute', 'hsl(' + h + ', 5%, 92%)');
+        root.style.setProperty('--gateway-bg-dark-start', 'hsl(' + h + ', 4%, 12%)');
+        root.style.setProperty('--gateway-bg-dark-end', 'hsl(' + ((h + 15) % 360) + ', 3%, 10%)');
+        root.style.setProperty('--gateway-bg-dark-mute', 'hsl(' + ((h + 10) % 360) + ', 3%, 14%)');
+      }
+      function applyThemeAccent() {
+        var theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        applyAccent(theme === 'light' ? (window.__ACCENT_LIGHT || '#7DCDE8') : (window.__ACCENT_DARK || '#E87D98'));
+      }
+      window.__applyThemeAccent = applyThemeAccent;
+      applyThemeAccent();
+    })();
+  </script>
 
-  <link rel="stylesheet" th:if="${theme.config.welcome == null || theme.config.welcome.welcomeConfig == null || theme.config.welcome.welcomeConfig.enabled == null || theme.config.welcome.welcomeConfig.enabled}" th:href="@{/assets/css/welcome.css}" />
+  <link rel="preload" th:if="${theme.config.welcome == null || theme.config.welcome.welcomeConfig == null || theme.config.welcome.welcomeConfig.enabled == null || theme.config.welcome.welcomeConfig.enabled}" th:href="@{/assets/css/welcome.css}" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" th:if="${theme.config.welcome == null || theme.config.welcome.welcomeConfig == null || theme.config.welcome.welcomeConfig.enabled == null || theme.config.welcome.welcomeConfig.enabled}" th:href="@{/assets/css/welcome.css}" />
+  </noscript>
   
   <th:block th:replace="${head}" />
   
@@ -290,17 +369,30 @@
         opacity: 0 !important;
         visibility: hidden !important;
       }
-      html.page-loading, html.page-loading body {
-        overflow: hidden !important;
-      }
     </style>
-    <script>document.documentElement.classList.add('page-loading');</script>
+    <script>
+      (function () {
+        if (!document.documentElement.classList.contains('welcome-pending')) {
+          document.documentElement.classList.add('page-loading');
+        }
+      })();
+    </script>
     <div class="page-transition is-initial-loading" id="page-transition">
       <img class="page-transition-gif" th:src="${theme.config.basic.loadingConfig.loadingGif != null and !#strings.isEmpty(theme.config.basic.loadingConfig.loadingGif) ? theme.config.basic.loadingConfig.loadingGif : '/themes/theme-Serenity/assets/images/welcome/kirara.gif'}" alt="加载中" />
     </div>
     <script>
       (function () {
-        var TIMEOUT_MS = 6000;
+        if (document.documentElement.classList.contains('welcome-pending')) {
+          var welcomeMaskedEl = document.getElementById('page-transition');
+          if (welcomeMaskedEl) {
+            welcomeMaskedEl.classList.add('is-loaded');
+            welcomeMaskedEl.classList.remove('is-initial-loading');
+            welcomeMaskedEl.style.display = 'none';
+          }
+          document.documentElement.classList.remove('page-loading');
+          return;
+        }
+        var TIMEOUT_MS = 1200;
         var hidden = false;
         function hideMask() {
           if (hidden) return;
@@ -311,7 +403,6 @@
             requestAnimationFrame(function () {
               el.classList.add('is-loaded');
               document.documentElement.classList.remove('page-loading');
-              if (document.body) document.body.classList.add('css-ready');
               setTimeout(function () {
                 el.classList.remove('is-loaded');
                 el.classList.remove('is-initial-loading');
@@ -319,10 +410,10 @@
             });
           });
         }
-        if (document.readyState === 'complete') {
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
           hideMask();
         } else {
-          window.addEventListener('load', hideMask, { once: true });
+          document.addEventListener('DOMContentLoaded', hideMask, { once: true });
         }
         setTimeout(hideMask, TIMEOUT_MS);
       })();
@@ -357,7 +448,7 @@
        th:attr="data-autoplay=${theme.config.music.musicConfig.autoPlay != null && theme.config.music.musicConfig.autoPlay ? 'true' : 'false'},
                 data-meting-api=${theme.config.music.musicConfig.metingApi},
                 data-playlist-id=${theme.config.music.musicConfig.playlistId}">
-    <a id="nav-music-hoverTips" class="nav-music-tips">播放音乐</a>
+    <button id="nav-music-hoverTips" type="button" class="nav-music-tips">播放音乐</button>
     <meting-js
       th:if="${!#strings.isEmpty(theme.config.music.musicConfig.metingApi)}"
       th:attr="api=${theme.config.music.musicConfig.metingApi}"
@@ -468,8 +559,8 @@
       </div>
     </div>
   </div>
-  <script th:src="@{/assets/js/APlayer.min.js}"></script>
-  <script th:src="@{/assets/js/Meting2.min.js}"></script>
+  <script th:src="@{/assets/js/APlayer.min.js}" defer></script>
+  <script th:src="@{/assets/js/Meting2.min.js}" defer></script>
   </th:block>
 
   <button class="back-to-top" id="back-to-top" aria-label="返回顶部">
@@ -499,7 +590,25 @@
   </th:block>
 
   <!-- ANI 动态鼠标指针 (Hue 定制) -->
-  <script th:src="@{/assets/js/cursor-init.js}"></script>
+  <script th:inline="javascript">
+    (function () {
+      var href = /*[[@{/assets/fonts/fontawesome.min.css}]]*/ '/themes/theme-Serenity/assets/fonts/fontawesome.min.css';
+      function loadFontAwesome() {
+        if (document.querySelector('link[data-fa-loaded]')) return;
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.setAttribute('data-fa-loaded', 'true');
+        document.head.appendChild(link);
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadFontAwesome, { timeout: 3000 });
+      } else {
+        setTimeout(loadFontAwesome, 1500);
+      }
+    })();
+  </script>
+  <script th:src="@{/assets/js/cursor-init.js}" defer></script>
   <halo:footer />
 </body>
 </html>

@@ -3,7 +3,7 @@
 <header class="header">
   <div class="header-inner">
     <div class="header-left">
-      <a class="logo" th:href="@{/}">
+      <a class="logo" th:href="@{/}" th:title="${site.title}" th:aria-label="${site.title}">
         <img class="logo-avatar" 
              th:src="${site.logo ?: '/themes/theme-Serenity/assets/public/logo.webp'}" 
              th:alt="${site.title}" />

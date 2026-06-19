@@ -17,16 +17,16 @@
           <span>版权所有</span>
           <th:block th:if="${theme.config.footer != null && ((theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true) || (theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true))}">
             <span class="footer-legal-separator">|</span>
-            <a th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true}"
-               href="javascript:void(0)"
-               class="footer-legal-link"
-               onclick="openLegalModal('privacy')">隐私协议</a>
+            <button th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true}"
+                    type="button"
+                    class="footer-legal-link footer-legal-button"
+                    onclick="openLegalModal('privacy')">隐私协议</button>
             <span th:if="${theme.config.footer.privacyConfig != null && theme.config.footer.privacyConfig.showPrivacy == true && theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}"
                   class="footer-legal-separator">|</span>
-            <a th:if="${theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}"
-               href="javascript:void(0)"
-               class="footer-legal-link"
-               onclick="openLegalModal('terms')">服务条款</a>
+            <button th:if="${theme.config.footer.termsConfig != null && theme.config.footer.termsConfig.showTerms == true}"
+                    type="button"
+                    class="footer-legal-link footer-legal-button"
+                    onclick="openLegalModal('terms')">服务条款</button>
           </th:block>
         </div>
 

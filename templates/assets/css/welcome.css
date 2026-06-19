@@ -1,8 +1,8 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-18 20:18:24
- * Fingerprint: d54be6a69e9c9bfb
+ * Build: 2026-06-19 11:46:37
+ * Fingerprint: d071f399271682be
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -22,8 +22,8 @@
   cursor: pointer;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-              visibility 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+              visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   contain: none !important;
   overflow: hidden !important;
   overscroll-behavior: contain;

@@ -1,8 +1,8 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-06-18 20:18:24
- * Fingerprint: d54be6a69e9c9bfb
+ * Build: 2026-06-19 11:46:37
+ * Fingerprint: d071f399271682be
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -123,6 +123,13 @@
   color: inherit;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+button.project-card {
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 [data-theme="light"] .project-card {

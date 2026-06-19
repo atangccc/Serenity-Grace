@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-06-18 20:18:24
-  Fingerprint: d54be6a69e9c9bfb
+  Build: 2026-06-19 11:46:37
+  Fingerprint: d071f399271682be
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -49,8 +49,11 @@
         <th:block th:if="${hasApi}">
           <img class="hero-background-img hero-bg-api-img" 
                alt="" 
+               decoding="async"
+               fetchpriority="low"
                th:data-api="${theme.config.home.backgroundConfig.heroBackgroundApi}"
-               th:data-api-mobile="${theme.config.home.backgroundConfig.heroBackgroundApiMobile}" />
+               th:data-api-mobile="${theme.config.home.backgroundConfig.heroBackgroundApiMobile}"
+               th:src="${theme.config.basic != null and theme.config.basic.defaultTheme == 'light' ? '/themes/theme-Serenity/assets/public/lightbg.webp' : '/themes/theme-Serenity/assets/public/darkbg.webp'}" />
         </th:block>
         <th:block th:unless="${hasApi}">
           <th:block th:with="legacyBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : ''},
@@ -58,6 +61,8 @@
                              darkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDark != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDark)) ? theme.config.home.backgroundConfig.heroBackgroundDark : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/darkbg.webp')}">
             <img class="hero-background-img hero-bg-theme-img"
                  alt=""
+                 decoding="async"
+                 fetchpriority="low"
                  th:attr="data-light=${lightBg},data-dark=${darkBg},data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}" />
             <video class="hero-background-img hero-bg-theme-video"
                    style="display:none"
@@ -200,6 +205,7 @@
           var cachedUrl = localStorage.getItem(STORAGE_KEY);
           var currentSession = sessionStorage.getItem(sessionKey);
 
+          var fallbackUrl = img.getAttribute('src') || '';
           var finalUrl = (cachedUrl && currentSession) ? cachedUrl : currentApi;
           
           function markLoaded() {
@@ -209,6 +215,10 @@
               localStorage.setItem(STORAGE_KEY, img.src);
               sessionStorage.setItem(sessionKey, 'true');
             }
+          }
+
+          if (fallbackUrl) {
+            img.classList.add('loaded');
           }
 
           img.onload = markLoaded;
@@ -221,7 +231,20 @@
 
           img.decoding = 'async';
           img.loading = 'eager';
-          img.src = finalUrl;
+          if (finalUrl && finalUrl !== fallbackUrl) {
+            var preload = new Image();
+            preload.decoding = 'async';
+            preload.onload = function() {
+              img.src = finalUrl;
+              markLoaded();
+            };
+            preload.onerror = function() {
+              if (!fallbackUrl) img.src = currentApi;
+            };
+            preload.src = finalUrl;
+          } else if (finalUrl) {
+            img.src = finalUrl;
+          }
 
           if (img.complete && img.naturalWidth > 0) {
             markLoaded();

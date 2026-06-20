@@ -1,11 +1,11 @@
 <div align="center">
 
-<img src="screenshots/1.png" alt="Serenity-Hue Banner" width="800" />
+<img src="screenshots/1.png" alt="Serenity-Grace Banner" width="800" />
 
 <br/>
 <br/>
 
-# 🌸 Serenity-Hue
+# 🌸 Serenity-Grace
 
 **简约优雅的 Halo 2.x 博客主题**
 
@@ -16,8 +16,6 @@
 [![License](https://img.shields.io/badge/License-GPL--3.0-33A6B8?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
 &nbsp;&nbsp;
 [![Halo](https://img.shields.io/badge/Halo-2.x-blue?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjEwIi8+PC9zdmc+)](https://halo.run)
-&nbsp;&nbsp;
-[![Based on](https://img.shields.io/badge/Based%20on-Serenity--Grace-F596AA?style=for-the-badge&logo=github&logoColor=white)](https://github.com/atangccc/Serenity-Grace)
 
 <br/>
 

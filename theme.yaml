@@ -3,11 +3,11 @@ kind: Theme
 metadata:
   name: theme-Serenity
 spec:
-  displayName: Serenity-Hue
+  displayName: Serenity-Grace
   author:
-    name: Serenity-Hue
-    website: https://github.com/atangccc/Serenity-Grace
-  description: 基于 Serenity-Grace 二次开发的 Halo 博客主题，简约优雅，以樱花粉与湖水蓝为主色调，支持亮色/暗色双主题色配置。
+    name: Serenity
+    website: https://github.com/atangccc
+  description: Serenity 开发的 Halo 博客主题，简约优雅，支持亮色/暗色双主题色配置。
   logo: /themes/theme-Serenity/assets/public/logo.webp
   homepage: https://github.com/atangccc/Serenity-Grace
   repo: https://github.com/atangccc/Serenity-Grace

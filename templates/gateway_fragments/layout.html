@@ -83,12 +83,22 @@
         <th:block th:if="${hasApi}">
           <img class="gateway-wallpaper-img" id="gateway-wallpaper-img" alt=""
                th:data-api="${theme.config.home.backgroundConfig.heroBackgroundApi}"
-               th:data-api-mobile="${theme.config.home.backgroundConfig.heroBackgroundApiMobile}" />
+               th:data-api-mobile="${theme.config.home.backgroundConfig.heroBackgroundApiMobile}"
+               th:data-mobile-light="${theme.config.home.backgroundConfig.heroBackgroundLightMobile}"
+               th:data-mobile-dark="${theme.config.home.backgroundConfig.heroBackgroundDarkMobile}"
+               th:data-mobile-light-url="${theme.config.home.backgroundConfig.heroBackgroundLightMobileUrl}"
+               th:data-mobile-dark-url="${theme.config.home.backgroundConfig.heroBackgroundDarkMobileUrl}" />
         </th:block>
         <th:block th:unless="${hasApi}">
-          <th:block th:with="bgUrl = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : '/themes/theme-Serenity/assets/public/labixiaoxi.webp'}">
-            <img th:unless="${#strings.endsWith(#strings.toLowerCase(bgUrl), '.mp4') || #strings.endsWith(#strings.toLowerCase(bgUrl), '.webm')}"
-                 th:src="${bgUrl}" alt="" class="gateway-wallpaper-img loaded" />
+          <th:block th:with="legacyBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : ''},
+                             lightBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundLight != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundLight)) ? theme.config.home.backgroundConfig.heroBackgroundLight : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/labixiaoxi.webp')},
+                             darkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDark != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDark)) ? theme.config.home.backgroundConfig.heroBackgroundDark : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/labixiaoxi.webp')},
+                             mobileLightBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundLightMobile != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundLightMobile)) ? theme.config.home.backgroundConfig.heroBackgroundLightMobile : ''},
+                             mobileDarkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDarkMobile != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDarkMobile)) ? theme.config.home.backgroundConfig.heroBackgroundDarkMobile : ''},
+                             mobileLightUrl = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundLightMobileUrl != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundLightMobileUrl)) ? theme.config.home.backgroundConfig.heroBackgroundLightMobileUrl : ''},
+                             mobileDarkUrl = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDarkMobileUrl != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDarkMobileUrl)) ? theme.config.home.backgroundConfig.heroBackgroundDarkMobileUrl : ''}">
+            <img class="gateway-wallpaper-img" id="gateway-wallpaper-img" alt=""
+                 th:attr="data-light=${lightBg},data-dark=${darkBg},data-mobile-light=${mobileLightBg},data-mobile-dark=${mobileDarkBg},data-mobile-light-url=${mobileLightUrl},data-mobile-dark-url=${mobileDarkUrl}" />
           </th:block>
         </th:block>
       </div>
@@ -106,22 +116,92 @@
             var cached = sessionStorage.getItem(CACHE_KEY);
             var apiMobile = img.getAttribute('data-api-mobile');
             var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            var finalUrl = cached || ((isMobile && apiMobile) ? apiMobile : api);
-            img.src = finalUrl;
+            var mobileLight = img.getAttribute('data-mobile-light-url') || img.getAttribute('data-mobile-light');
+            var mobileDark = img.getAttribute('data-mobile-dark-url') || img.getAttribute('data-mobile-dark');
+            var initialUrl = cached || ((isMobile && apiMobile) ? apiMobile : api);
+            function currentTheme() {
+              return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            }
+            function mobileUrl() {
+              return currentTheme() === 'light' ? mobileLight : mobileDark;
+            }
+            function currentUrl() {
+              return isMobile && mobileUrl() ? mobileUrl() : initialUrl;
+            }
+            function applyApiWallpaper() {
+              var finalUrl = currentUrl();
+              if (finalUrl) img.src = finalUrl;
+            }
+            applyApiWallpaper();
             img.decoding = 'async';
             img.onload = function() {
               img.classList.add('loaded');
-              if (!cached && img.src) sessionStorage.setItem(CACHE_KEY, img.src);
+              if (!mobileUrl() && !cached && img.src) sessionStorage.setItem(CACHE_KEY, img.src);
             };
             img.onerror = function() {
-              if (cached) {
+              var fallback = (isMobile && apiMobile) ? apiMobile : api;
+              if (img.src !== fallback) {
+                img.src = fallback;
+              } else if (cached) {
                 sessionStorage.removeItem(CACHE_KEY);
-                img.src = (isMobile && apiMobile) ? apiMobile : api;
+                initialUrl = fallback;
+                img.src = fallback;
               } else {
                 wrap.style.display = 'none';
                 document.body.classList.remove('has-gateway-wallpaper');
               }
             };
+            if (window.__gatewayApiWallpaperObserver && typeof window.__gatewayApiWallpaperObserver.disconnect === 'function') {
+              window.__gatewayApiWallpaperObserver.disconnect();
+            }
+            window.__gatewayApiWallpaperObserver = new MutationObserver(function(mutations) {
+              for (var i = 0; i < mutations.length; i++) {
+                if (mutations[i].attributeName === 'data-theme') {
+                  applyApiWallpaper();
+                  break;
+                }
+              }
+            });
+            window.__gatewayApiWallpaperObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+          } else {
+            function isMobileDevice() {
+              return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+            function currentTheme() {
+              return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            }
+            function mobileUrl(theme) {
+              var linked = theme === 'light' ? img.getAttribute('data-mobile-light-url') : img.getAttribute('data-mobile-dark-url');
+              var attached = theme === 'light' ? img.getAttribute('data-mobile-light') : img.getAttribute('data-mobile-dark');
+              return linked || attached || '';
+            }
+            function desktopUrl(theme) {
+              var selected = theme === 'light' ? img.getAttribute('data-light') : img.getAttribute('data-dark');
+              var pure = String(selected || '').split('?')[0].split('#')[0].toLowerCase();
+              return pure.endsWith('.mp4') || pure.endsWith('.webm')
+                ? '/themes/theme-Serenity/assets/public/labixiaoxi.webp'
+                : selected;
+            }
+            function applyWallpaper() {
+              var theme = currentTheme();
+              var finalUrl = isMobileDevice() ? (mobileUrl(theme) || desktopUrl(theme)) : desktopUrl(theme);
+              if (!finalUrl) return;
+              img.src = finalUrl;
+              img.classList.add('loaded');
+            }
+            applyWallpaper();
+            if (window.__gatewayWallpaperObserver && typeof window.__gatewayWallpaperObserver.disconnect === 'function') {
+              window.__gatewayWallpaperObserver.disconnect();
+            }
+            window.__gatewayWallpaperObserver = new MutationObserver(function(mutations) {
+              for (var i = 0; i < mutations.length; i++) {
+                if (mutations[i].attributeName === 'data-theme') {
+                  applyWallpaper();
+                  break;
+                }
+              }
+            });
+            window.__gatewayWallpaperObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
           }
         })();
       </script>

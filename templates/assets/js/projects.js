@@ -69,6 +69,10 @@ function projectCategoryTitle(category, ownerType) {
   return text || projectOwnerTitle(ownerType);
 }
 
+function isMineProject(category, ownerType) {
+  return ownerType === 'mine' || projectCategoryTitle(category, ownerType) === '我的项目';
+}
+
 async function fetchWithTimeout(url, options = {}, timeout = FETCH_TIMEOUT) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -552,19 +556,21 @@ async function loadProjects() {
     
     const data = await fetchGitHubRepo(parsed.owner, parsed.repo);
     if (data) {
-      projects.push({ data, isCustom: false, ownerType, category: projectCategoryTitle(category, ownerType) });
+      const categoryTitle = projectCategoryTitle(category, ownerType);
+      projects.push({ data, isCustom: false, ownerType, category: categoryTitle });
       totalStars += parseInt(data.stargazers_count) || 0;
       totalForks += parseInt(data.forks_count) || 0;
-      if (ownerType === 'mine') mineCount++; else starredCount++;
+      if (isMineProject(categoryTitle, ownerType)) mineCount++; else starredCount++;
     }
   }
   
   for (const customProject of CUSTOM_PROJECTS) {
     const ownerType = customProject.ownerType || 'mine';
-    projects.push({ data: customProject, isCustom: true, ownerType, category: projectCategoryTitle(customProject.category || '', ownerType) });
+    const categoryTitle = projectCategoryTitle(customProject.category || '', ownerType);
+    projects.push({ data: customProject, isCustom: true, ownerType, category: categoryTitle });
     totalStars += parseInt(customProject.stars) || 0;
     totalForks += parseInt(customProject.forks) || 0;
-    if (ownerType === 'mine') mineCount++; else starredCount++;
+    if (isMineProject(categoryTitle, ownerType)) mineCount++; else starredCount++;
   }
   
   loading.style.display = 'none';
@@ -618,6 +624,24 @@ async function loadProjects() {
     section.appendChild(list);
     grid.appendChild(section);
   });
+
+  // 项目卡片在 GitHub 数据返回后才插入 DOM。若 AOS 已完成首屏初始化，
+  // 新节点会保留 data-aos 的初始透明状态，因此需要主动标记为可见。
+  const revealProjects = function () {
+    grid.querySelectorAll('[data-aos]').forEach((element) => {
+      element.classList.add('aos-animate');
+    });
+    if (typeof AOS !== 'undefined') {
+      if (typeof AOS.refreshHard === 'function') {
+        AOS.refreshHard();
+      } else if (typeof AOS.refresh === 'function') {
+        AOS.refresh();
+      }
+    }
+  };
+
+  revealProjects();
+  window.requestAnimationFrame(revealProjects);
 }
 
 function loadProjectsInit() {

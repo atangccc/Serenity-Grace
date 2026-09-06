@@ -660,6 +660,10 @@ spec:
             heroBackground: ""
             heroBackgroundLight: ""
             heroBackgroundDark: ""
+            heroBackgroundLightMobile: ""
+            heroBackgroundDarkMobile: ""
+            heroBackgroundLightMobileUrl: ""
+            heroBackgroundDarkMobileUrl: ""
             heroBackgroundApi: ""
             heroBackgroundApiMobile: ""
           children:
@@ -678,6 +682,34 @@ spec:
               name: heroBackgroundDark
               label: 暗色模式背景壁纸图片/视频
               help: 上传暗色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 darkbg.webp
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundLightMobile
+              label: 移动端亮色背景图片
+              help: 上传移动端亮色背景图片，留空则回退到桌面端亮色背景
+              accepts:
+                - "image/*"
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundDarkMobile
+              label: 移动端暗色背景图片
+              help: 上传移动端暗色背景图片，留空则回退到桌面端暗色背景
+              accepts:
+                - "image/*"
+              if: $get(home_bg_enabled).value
+            - $formkit: text
+              name: heroBackgroundLightMobileUrl
+              label: 移动端亮色背景图片链接
+              value: ""
+              placeholder: "例如：https://example.com/mobile-light.webp"
+              help: 填写移动端亮色背景图片链接；如果同时选择附件，以链接为准，留空则使用附件或桌面端背景
+              if: $get(home_bg_enabled).value
+            - $formkit: text
+              name: heroBackgroundDarkMobileUrl
+              label: 移动端暗色背景图片链接
+              value: ""
+              placeholder: "例如：https://example.com/mobile-dark.webp"
+              help: 填写移动端暗色背景图片链接；如果同时选择附件，以链接为准，留空则使用附件或桌面端背景
               if: $get(home_bg_enabled).value
             - $formkit: text
               name: heroBackgroundApi

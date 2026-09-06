@@ -104,6 +104,12 @@ theme-Serenity/
 └── README.md                 项目说明
 ```
 
+## 交流群
+
+欢迎加入 Serenity-Grace 主题交流群，交流主题使用、配置和开发问题。
+
+群号：`1079644597`
+
 ## 许可
 
 本项目采用 [GNU General Public License v3.0](LICENSE) 开源。基于本项目进行二次开发时，请保留原项目的许可证和版权声明。

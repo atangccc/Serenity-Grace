@@ -1,6 +1,22 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
+ * Build: 2026-09-06 17:08:20
+ * Fingerprint: 91b2dee920cf4cca
+ * Copyright (c) 2026 Serenity. All rights reserved.
+ */
+
+/**
+ * Theme: theme-Serenity
+ * Author: Serenity
+ * Build: 2026-08-31 17:36:31
+ * Fingerprint: 897f796e1b7f0d91
+ * Copyright (c) 2026 Serenity. All rights reserved.
+ */
+
+/**
+ * Theme: theme-Serenity
+ * Author: Serenity
  * Build: 2026-07-05 00:01:15
  * Fingerprint: 1a93cc3686d739b8
  * Copyright (c) 2026 Serenity. All rights reserved.
@@ -60,6 +76,16 @@ function sanitizeUrl(url, fallback = '#') {
   return fallback;
 }
 
+function createLinkProjectData(url) {
+  const cleanUrl = sanitizeUrl(url, '#');
+  let name = cleanUrl;
+  try {
+    const parsed = new URL(cleanUrl);
+    name = parsed.hostname + (parsed.pathname && parsed.pathname !== '/' ? parsed.pathname : '');
+  } catch (e) {}
+  return { name, url: cleanUrl, html_url: cleanUrl, description: '点击访问项目', stars: 0, forks: 0 };
+}
+
 function projectOwnerTitle(ownerType) {
   return ownerType === 'starred' ? '收藏项目' : '我的项目';
 }
@@ -114,7 +140,7 @@ async function fetchGitHubReleases(owner, repo) {
   }
 }
 
-function createProjectCard(data, isCustom = false, ownerType = 'mine') {
+function createProjectCard(data, isCustom = false, ownerType = 'mine', openMode = 'display') {
   const languageColor = LANGUAGE_COLORS[data.language] || '#858585';
   let topics = [];
   if (isCustom && typeof data.topics === 'string') {
@@ -134,14 +160,16 @@ function createProjectCard(data, isCustom = false, ownerType = 'mine') {
   const safeTopics = topics.map(t => escapeForHtml(t));
   const hasProjectUrl = projectUrl !== '#';
 
-  const card = document.createElement(ownerType === 'starred' && hasProjectUrl ? 'a' : 'button');
+  const shouldLink = openMode === 'link' && hasProjectUrl;
+  const card = document.createElement(shouldLink ? 'a' : 'button');
   card.className = 'project-card';
   card.setAttribute('data-aos', 'fade-up');
   card.setAttribute('data-owner-type', ownerType);
   
   // 根据项目类型设置不同行为
-  if (ownerType === 'starred' && hasProjectUrl) {
+  if (shouldLink) {
     // 收藏项目：直接跳转链接
+    card.href = projectUrl;
     card.href = projectUrl;
     card.target = '_blank';
     card.rel = 'noopener noreferrer';
@@ -547,12 +575,18 @@ async function loadProjects() {
     const url = typeof item === 'string' ? item : item.url;
     const ownerType = typeof item === 'string' ? 'mine' : (item.ownerType || 'mine');
     const category = typeof item === 'string' ? '' : (item.category || '');
+    const openMode = typeof item === 'string' ? 'display' : (item.openMode || 'display');
+    if (openMode === 'link') {
+      projects.push({ data: createLinkProjectData(url), isCustom: false, ownerType, openMode, category: projectCategoryTitle(category, ownerType) });
+      if (ownerType === 'mine') mineCount++; else starredCount++;
+      continue;
+    }
     const parsed = parseGitHubUrl(url);
     if (!parsed) continue;
     
     const data = await fetchGitHubRepo(parsed.owner, parsed.repo);
     if (data) {
-      projects.push({ data, isCustom: false, ownerType, category: projectCategoryTitle(category, ownerType) });
+      projects.push({ data, isCustom: false, ownerType, openMode, category: projectCategoryTitle(category, ownerType) });
       totalStars += parseInt(data.stargazers_count) || 0;
       totalForks += parseInt(data.forks_count) || 0;
       if (ownerType === 'mine') mineCount++; else starredCount++;
@@ -561,7 +595,8 @@ async function loadProjects() {
   
   for (const customProject of CUSTOM_PROJECTS) {
     const ownerType = customProject.ownerType || 'mine';
-    projects.push({ data: customProject, isCustom: true, ownerType, category: projectCategoryTitle(customProject.category || '', ownerType) });
+    const openMode = customProject.openMode || 'display';
+    projects.push({ data: customProject, isCustom: true, ownerType, openMode, category: projectCategoryTitle(customProject.category || '', ownerType) });
     totalStars += parseInt(customProject.stars) || 0;
     totalForks += parseInt(customProject.forks) || 0;
     if (ownerType === 'mine') mineCount++; else starredCount++;
@@ -609,7 +644,7 @@ async function loadProjects() {
     list.className = 'projects-category-grid';
 
     items.forEach((p, i) => {
-      const card = createProjectCard(p.data, p.isCustom, p.ownerType);
+      const card = createProjectCard(p.data, p.isCustom, p.ownerType, p.openMode);
       card.setAttribute('data-aos-delay', String(i * 40));
       list.appendChild(card);
     });

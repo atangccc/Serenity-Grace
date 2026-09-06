@@ -2,6 +2,22 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
+  Build: 2026-09-06 17:08:20
+  Fingerprint: 91b2dee920cf4cca
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-08-31 17:36:30
+  Fingerprint: 897f796e1b7f0d91
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
   Build: 2026-07-05 00:01:15
   Fingerprint: 1a93cc3686d739b8
   Copyright (c) 2026 Serenity. All rights reserved.
@@ -81,16 +97,17 @@
     
     window.GITHUB_PROJECTS = Array.isArray(GITHUB_PROJECTS_RAW) 
       ? GITHUB_PROJECTS_RAW.map(item => {
-          if (typeof item === 'string') return { url: item, ownerType: 'mine' };
-          if (item && item.realNode) return { url: item.realNode.url, ownerType: item.realNode.ownerType || 'mine', category: item.realNode.category || '' };
-          if (item && item.url) return { url: item.url, ownerType: item.ownerType || 'mine', category: item.category || '' };
+          if (typeof item === 'string') return { url: item, ownerType: 'mine', openMode: 'display' };
+          if (item && item.realNode) return { url: item.realNode.url, ownerType: item.realNode.ownerType || 'mine', category: item.realNode.category || '', openMode: item.realNode.openMode || 'display' };
+          if (item && item.url) return { url: item.url, ownerType: item.ownerType || 'mine', category: item.category || '', openMode: item.openMode || 'display' };
           return null;
         }).filter(item => item !== null && item.url !== '')
       : [];
     
     window.CUSTOM_PROJECTS = Array.isArray(CUSTOM_PROJECTS_RAW)
       ? CUSTOM_PROJECTS_RAW.map(item => {
-          if (item && item.realNode) return item.realNode;
+          if (item && item.realNode) return { ...item.realNode, openMode: item.realNode.openMode || 'display' };
+          if (item && typeof item === 'object') return { ...item, openMode: item.openMode || 'display' };
           return item;
         }).filter(item => item && item.name && item.url)
       : [];

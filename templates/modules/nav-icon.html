@@ -2,7 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 
 <th:block th:fragment="icon(href, item)"
-          th:with="bs=${theme.config.basic}, ni=${theme.config.basic != null ? theme.config.basic.navIcons : null}, ac=${item != null ? #annotations.getOrDefault(item, 'icon_code', '') : ''}">
+          th:with="bs=${theme.config.basic}, ni=${theme.config.basic != null ? theme.config.basic.navIcons : null}, ac=${item != null ? #annotations.getOrDefault(item, 'icon_code', '') : ''}, safeHref=${href ?: ''}">
 
   <!-- 首页 -->
   <th:block th:if="${href == '/' or href == '' or href == site.url or href == site.url + '/'}">
@@ -14,7 +14,7 @@
   </th:block>
 
   <!-- 归档 -->
-  <th:block th:if="${#strings.contains(href, '/archives')}">
+  <th:block th:if="${#strings.contains(safeHref, '/archives')}">
     <i th:if="${(ni != null and ni.iconArchives != null and !#strings.isEmpty(ni.iconArchives)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconArchives != null and !#strings.isEmpty(ni.iconArchives)) ? ni.iconArchives : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconArchives == null or #strings.isEmpty(ni.iconArchives)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -23,7 +23,7 @@
   </th:block>
 
   <!-- 标签 -->
-  <th:block th:if="${#strings.contains(href, '/tags')}">
+  <th:block th:if="${#strings.contains(safeHref, '/tags')}">
     <i th:if="${(ni != null and ni.iconTags != null and !#strings.isEmpty(ni.iconTags)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconTags != null and !#strings.isEmpty(ni.iconTags)) ? ni.iconTags : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconTags == null or #strings.isEmpty(ni.iconTags)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -32,7 +32,7 @@
   </th:block>
 
   <!-- 分类 -->
-  <th:block th:if="${#strings.contains(href, '/categories')}">
+  <th:block th:if="${#strings.contains(safeHref, '/categories')}">
     <i th:if="${(ni != null and ni.iconCategories != null and !#strings.isEmpty(ni.iconCategories)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconCategories != null and !#strings.isEmpty(ni.iconCategories)) ? ni.iconCategories : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconCategories == null or #strings.isEmpty(ni.iconCategories)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -41,7 +41,7 @@
   </th:block>
 
   <!-- 关于我 -->
-  <th:block th:if="${#strings.contains(href, '/about')}">
+  <th:block th:if="${#strings.contains(safeHref, '/about')}">
     <i th:if="${(ni != null and ni.iconAbout != null and !#strings.isEmpty(ni.iconAbout)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconAbout != null and !#strings.isEmpty(ni.iconAbout)) ? ni.iconAbout : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconAbout == null or #strings.isEmpty(ni.iconAbout)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -50,7 +50,7 @@
   </th:block>
 
   <!-- 碎碎念 -->
-  <th:block th:if="${#strings.contains(href, '/moments')}">
+  <th:block th:if="${#strings.contains(safeHref, '/moments')}">
     <i th:if="${(ni != null and ni.iconMoments != null and !#strings.isEmpty(ni.iconMoments)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconMoments != null and !#strings.isEmpty(ni.iconMoments)) ? ni.iconMoments : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconMoments == null or #strings.isEmpty(ni.iconMoments)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -59,7 +59,7 @@
   </th:block>
 
   <!-- 朋友们 -->
-  <th:block th:if="${#strings.contains(href, '/links')}">
+  <th:block th:if="${#strings.contains(safeHref, '/links')}">
     <i th:if="${(ni != null and ni.iconLinks != null and !#strings.isEmpty(ni.iconLinks)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconLinks != null and !#strings.isEmpty(ni.iconLinks)) ? ni.iconLinks : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconLinks == null or #strings.isEmpty(ni.iconLinks)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -68,7 +68,7 @@
   </th:block>
 
   <!-- 留言板 -->
-  <th:block th:if="${#strings.contains(href, '/guestbook')}">
+  <th:block th:if="${#strings.contains(safeHref, '/guestbook')}">
     <i th:if="${(ni != null and ni.iconGuestbook != null and !#strings.isEmpty(ni.iconGuestbook)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconGuestbook != null and !#strings.isEmpty(ni.iconGuestbook)) ? ni.iconGuestbook : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconGuestbook == null or #strings.isEmpty(ni.iconGuestbook)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -77,7 +77,7 @@
   </th:block>
 
   <!-- 项目集 -->
-  <th:block th:if="${#strings.contains(href, '/projects')}">
+  <th:block th:if="${#strings.contains(safeHref, '/projects')}">
     <i th:if="${(ni != null and ni.iconProjects != null and !#strings.isEmpty(ni.iconProjects)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconProjects != null and !#strings.isEmpty(ni.iconProjects)) ? ni.iconProjects : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconProjects == null or #strings.isEmpty(ni.iconProjects)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="currentColor">
@@ -86,7 +86,7 @@
   </th:block>
 
   <!-- 图库 -->
-  <th:block th:if="${#strings.contains(href, '/photos')}">
+  <th:block th:if="${#strings.contains(safeHref, '/photos')}">
     <i th:if="${(ni != null and ni.iconPhotos != null and !#strings.isEmpty(ni.iconPhotos)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconPhotos != null and !#strings.isEmpty(ni.iconPhotos)) ? ni.iconPhotos : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconPhotos == null or #strings.isEmpty(ni.iconPhotos)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -95,7 +95,7 @@
   </th:block>
 
   <!-- 朋友圈 -->
-  <th:block th:if="${#strings.contains(href, '/friends-circle')}">
+  <th:block th:if="${#strings.contains(safeHref, '/friends-circle')}">
     <i th:if="${(ni != null and ni.iconFriendsCircle != null and !#strings.isEmpty(ni.iconFriendsCircle)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconFriendsCircle != null and !#strings.isEmpty(ni.iconFriendsCircle)) ? ni.iconFriendsCircle : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconFriendsCircle == null or #strings.isEmpty(ni.iconFriendsCircle)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -104,7 +104,7 @@
   </th:block>
 
   <!-- 便签墙 -->
-  <th:block th:if="${#strings.contains(href, '/wishes')}">
+  <th:block th:if="${#strings.contains(safeHref, '/wishes')}">
     <i th:if="${(ni != null and ni.iconWishes != null and !#strings.isEmpty(ni.iconWishes)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconWishes != null and !#strings.isEmpty(ni.iconWishes)) ? ni.iconWishes : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconWishes == null or #strings.isEmpty(ni.iconWishes)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -113,12 +113,12 @@
   </th:block>
 
   <!-- 星图库 -->
-  <th:block th:if="${#strings.contains(href, '/star-gallery')}">
+  <th:block th:if="${#strings.contains(safeHref, '/star-gallery')}">
     <i th:classappend="${!#strings.isEmpty(ac) ? ac : ((ni != null and ni.iconStarGallery != null and !#strings.isEmpty(ni.iconStarGallery)) ? ni.iconStarGallery : 'fa-solid fa-location-arrow')}" class="nav-custom-icon"></i>
   </th:block>
 
   <!-- 装备 -->
-  <th:block th:if="${#strings.contains(href, '/equipments')}">
+  <th:block th:if="${#strings.contains(safeHref, '/equipments')}">
     <i th:if="${(ni != null and ni.iconEquipments != null and !#strings.isEmpty(ni.iconEquipments)) or !#strings.isEmpty(ac)}"
        th:classappend="${(ni != null and ni.iconEquipments != null and !#strings.isEmpty(ni.iconEquipments)) ? ni.iconEquipments : ac}" class="nav-custom-icon"></i>
     <svg th:if="${(ni == null or ni.iconEquipments == null or #strings.isEmpty(ni.iconEquipments)) and #strings.isEmpty(ac)}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -127,11 +127,11 @@
   </th:block>
 
   <!-- 未匹配已知路径：先查自定义页面图标列表，再走 annotation fallback -->
-  <th:block th:if="${href != '/' and href != '' and href != site.url and href != site.url + '/' and !#strings.contains(href, '/archives') and !#strings.contains(href, '/tags') and !#strings.contains(href, '/categories') and !#strings.contains(href, '/about') and !#strings.contains(href, '/moments') and !#strings.contains(href, '/links') and !#strings.contains(href, '/guestbook') and !#strings.contains(href, '/projects') and !#strings.contains(href, '/photos') and !#strings.contains(href, '/friends-circle') and !#strings.contains(href, '/wishes') and !#strings.contains(href, '/star-gallery') and !#strings.contains(href, '/equipments')}"
+  <th:block th:if="${safeHref != '/' and safeHref != '' and safeHref != site.url and safeHref != site.url + '/' and !#strings.contains(safeHref, '/archives') and !#strings.contains(safeHref, '/tags') and !#strings.contains(safeHref, '/categories') and !#strings.contains(safeHref, '/about') and !#strings.contains(safeHref, '/moments') and !#strings.contains(safeHref, '/links') and !#strings.contains(safeHref, '/guestbook') and !#strings.contains(safeHref, '/projects') and !#strings.contains(safeHref, '/photos') and !#strings.contains(safeHref, '/friends-circle') and !#strings.contains(safeHref, '/wishes') and !#strings.contains(safeHref, '/star-gallery') and !#strings.contains(safeHref, '/equipments')}"
             th:with="customIcons=${theme.config.basic != null ? theme.config.basic.customNavIcons : null}">
     <!--/* 遍历自定义页面图标列表匹配 */-->
     <th:block th:if="${customIcons != null}" th:each="ci : ${customIcons}">
-      <i th:if="${ci.slug != null and !#strings.isEmpty(ci.slug) and #strings.contains(href, '/' + ci.slug) and ci.icon != null and !#strings.isEmpty(ci.icon)}"
+      <i th:if="${ci.slug != null and !#strings.isEmpty(ci.slug) and #strings.contains(safeHref, '/' + ci.slug) and ci.icon != null and !#strings.isEmpty(ci.icon)}"
          th:classappend="${ci.icon}" class="nav-custom-icon"></i>
     </th:block>
     <!--/* annotation fallback（自定义列表未匹配时） */-->

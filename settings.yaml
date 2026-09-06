@@ -1816,9 +1816,9 @@ spec:
           children:
             - $formkit: text
               name: url
-              label: GitHub 仓库链接
+              label: 项目链接
               validation: required
-              help: 完整的 GitHub 仓库链接，如 https://github.com/username/repo
+              help: 项目展示请输入 GitHub 仓库链接；跳转链接可填写任意 http(s) 地址
               placeholder: "https://github.com/username/repo"
             - $formkit: select
               name: ownerType
@@ -1830,6 +1830,16 @@ spec:
                 - label: 收藏项目
                   value: starred
               help: 区分是自己开发的项目还是收藏的他人项目
+            - $formkit: select
+              name: openMode
+              label: 项目打开方式
+              value: display
+              options:
+                - label: 项目展示
+                  value: display
+                - label: 跳转链接
+                  value: link
+              help: 项目展示获取 GitHub 信息；跳转链接直接打开项目地址
             - $formkit: text
               name: category
               label: 项目分类
@@ -1863,6 +1873,16 @@ spec:
                 - label: 收藏项目
                   value: starred
               help: 区分是自己开发的项目还是收藏的他人项目
+            - $formkit: select
+              name: openMode
+              label: 项目打开方式
+              value: display
+              options:
+                - label: 项目展示
+                  value: display
+                - label: 跳转链接
+                  value: link
+              help: 项目展示显示项目卡片；跳转链接直接打开项目地址
             - $formkit: text
               name: category
               label: 项目分类
@@ -1884,12 +1904,12 @@ spec:
               placeholder: "JavaScript"
             - $formkit: number
               name: stars
-              label: Star 鏁伴噺
+              label: Star 数量
               value: 0
               help: 项目的 Star 数量（可选）
             - $formkit: number
               name: forks
-              label: Fork 鏁伴噺
+              label: Fork 数量
               value: 0
               help: 项目的 Fork 数量（可选）
             - $formkit: text

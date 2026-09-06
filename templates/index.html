@@ -2,6 +2,22 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
+  Build: 2026-09-06 17:08:20
+  Fingerprint: 91b2dee920cf4cca
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-08-31 17:36:30
+  Fingerprint: 897f796e1b7f0d91
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
   Build: 2026-07-05 00:01:15
   Fingerprint: 1a93cc3686d739b8
   Copyright (c) 2026 Serenity. All rights reserved.
@@ -297,7 +313,7 @@
                  th:style="${theme.config.hero != null and theme.config.hero.colorConfig != null and theme.config.hero.colorConfig.taglineColor != null and !#strings.isEmpty(theme.config.hero.colorConfig.taglineColor) ? (#strings.contains(theme.config.hero.colorConfig.taglineColor, 'gradient') ? 'background:' + theme.config.hero.colorConfig.taglineColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : 'color:' + theme.config.hero.colorConfig.taglineColor) : ''}">一个热爱技术与生活的开发者</p>
               <p class="hero-bio" th:text="${theme.config.hero != null and theme.config.hero.profileInfo != null and theme.config.hero.profileInfo.bio != null ? theme.config.hero.profileInfo.bio : '专注于前端开发，热爱开源，喜欢分享技术与生活。'}"
                  th:classappend="${theme.config.hero != null and theme.config.hero.colorConfig != null and theme.config.hero.colorConfig.bioColor != null and !#strings.isEmpty(theme.config.hero.colorConfig.bioColor) ? ' hero-bio-custom' : ''}"
-                 th:style="${theme.config.hero != null and theme.config.hero.colorConfig != null and theme.config.hero.colorConfig.bioColor != null and !#strings.isEmpty(theme.config.hero.colorConfig.bioColor) ? (#strings.contains(theme.config.hero.colorConfig.bioColor, 'gradient') ? 'background:' + theme.config.hero.colorConfig.bioColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : 'color:' + theme.config.hero.colorConfig.bioColor) : ''}">专注于前端开发，热爱开源，喜欢分享技术与生活。</p>
+                 th:style="${'white-space:pre-line;' + (theme.config.hero != null and theme.config.hero.colorConfig != null and theme.config.hero.colorConfig.bioColor != null and !#strings.isEmpty(theme.config.hero.colorConfig.bioColor) ? (#strings.contains(theme.config.hero.colorConfig.bioColor, 'gradient') ? 'background:' + theme.config.hero.colorConfig.bioColor + ';-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent' : 'color:' + theme.config.hero.colorConfig.bioColor) : '')}">专注于前端开发，热爱开源，喜欢分享技术与生活。</p>
               
               <div class="hero-social" th:if="${theme.config.social != null && theme.config.social.links != null}">
                 <th:block th:each="link : ${theme.config.social.links}">
@@ -371,7 +387,7 @@
               <!--/* 遍历主菜单（含子菜单），根据风向标开关过滤，图标和文字与导航菜单同步 */-->
               <th:block th:each="menuItem, iterStat : ${menuFinder.getPrimary().menuItems}">
                 <!--/* 一级菜单项：内置模板路径匹配 */-->
-                <th:block th:with="mHref=${menuItem.status.href}">
+                <th:block th:with="mHref=${menuItem.status.href ?: ''}">
                   <a th:if="${
                     (#strings.contains(mHref, '/archives') and theme.config.compass.compassConfig.showArchives) or
                     (#strings.contains(mHref, '/tags') and theme.config.compass.compassConfig.showTags) or
@@ -418,7 +434,7 @@
                 <!--/* 二级子菜单展开 */-->
                 <th:block th:if="${not #lists.isEmpty(menuItem.children)}"
                           th:each="childMenu, childStat : ${menuItem.children}"
-                          th:with="cHref=${childMenu.status.href}">
+                          th:with="cHref=${childMenu.status.href ?: ''}">
                   <a th:if="${
                     (#strings.contains(cHref, '/archives') and theme.config.compass.compassConfig.showArchives) or
                     (#strings.contains(cHref, '/tags') and theme.config.compass.compassConfig.showTags) or

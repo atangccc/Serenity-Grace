@@ -1,6 +1,22 @@
 /*
  * Theme: theme-Serenity
  * Author: Serenity
+ * Build: 2026-09-06 17:08:20
+ * Fingerprint: 91b2dee920cf4cca
+ * Copyright (c) 2026 Serenity. All rights reserved.
+ */
+
+/*
+ * Theme: theme-Serenity
+ * Author: Serenity
+ * Build: 2026-08-31 17:36:30
+ * Fingerprint: 897f796e1b7f0d91
+ * Copyright (c) 2026 Serenity. All rights reserved.
+ */
+
+/*
+ * Theme: theme-Serenity
+ * Author: Serenity
  * Build: 2026-07-05 00:01:15
  * Fingerprint: 1a93cc3686d739b8
  * Copyright (c) 2026 Serenity. All rights reserved.
@@ -11,12 +27,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .hero-weather-bar {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   gap: var(--space-2);
   margin-top: var(--space-4);
   --weather-accent: var(--weather-color, var(--color-accent));
@@ -26,6 +45,7 @@
 .weather-item {
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 .weather-item::after {
@@ -46,6 +66,7 @@
   cursor: default;
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
   gap: 4px;
   position: relative;
   line-height: 1.4;
@@ -1179,6 +1200,7 @@
   font-size: 15px;
   font-weight: 400;
   font-style: italic;
+  white-space: pre-line;
   color: rgba(255, 255, 255, 0.85);
   margin-top: var(--space-1);
   max-width: 480px;

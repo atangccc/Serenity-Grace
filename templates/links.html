@@ -2,6 +2,22 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
+  Build: 2026-09-06 17:08:20
+  Fingerprint: 91b2dee920cf4cca
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
+  Build: 2026-08-31 17:36:30
+  Fingerprint: 897f796e1b7f0d91
+  Copyright (c) 2026 Serenity. All rights reserved.
+-->
+
+<!--
+  Theme: theme-Serenity
+  Author: Serenity
   Build: 2026-07-05 00:01:15
   Fingerprint: 1a93cc3686d739b8
   Copyright (c) 2026 Serenity. All rights reserved.
@@ -240,9 +256,8 @@
   }
 
   function copyApplicationValue(button) {
-    let value = button.parentElement?.querySelector('.link-application-site-value')?.dataset?.copyValue?.trim();
+    const value = button.parentElement?.querySelector('.link-application-site-value')?.dataset?.copyValue?.trim();
     if (!value || !navigator.clipboard) return;
-    try { value = new URL(value, window.location.origin).href; } catch (_) {}
     navigator.clipboard.writeText(value).then(function() {
       button.classList.add('copied');
       button.setAttribute('title', '已复制');

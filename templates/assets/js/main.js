@@ -553,9 +553,10 @@ function initHeroBackground() {
     const blurAmount = scrollProgress * 20;
     const opacity = 1 - scrollProgress;
 
+    // 滚动只控制容器透明度，媒体透明度留给视频首帧与交叉淡入淡出。
+    heroBackground.style.opacity = opacity;
     heroBackgroundMedia.forEach((el) => {
       el.style.filter = `blur(${blurAmount}px)`;
-      el.style.opacity = opacity;
     });
   }
   

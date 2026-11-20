@@ -672,6 +672,8 @@ spec:
             heroBackground: ""
             heroBackgroundLight: ""
             heroBackgroundDark: ""
+            heroBackgroundPosterLight: ""
+            heroBackgroundPosterDark: ""
             heroBackgroundMobileLight: ""
             heroBackgroundMobileDark: ""
             heroBackgroundApi: ""
@@ -692,6 +694,16 @@ spec:
               name: heroBackgroundDark
               label: 电脑端暗色模式背景壁纸图片/视频
               help: 上传暗色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 darkbg.webp
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundPosterLight
+              label: 亮色模式视频背景海报图
+              help: 视频首帧就绪前及加载失败时显示的静态图片，电脑端和手机端共用；留空使用主题默认亮色壁纸。仅首页视频背景生效，背景 API 不受影响
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundPosterDark
+              label: 暗色模式视频背景海报图
+              help: 视频首帧就绪前及加载失败时显示的静态图片，电脑端和手机端共用；留空使用主题默认暗色壁纸。仅首页视频背景生效，背景 API 不受影响
               if: $get(home_bg_enabled).value
             - $formkit: attachment
               name: heroBackgroundMobileLight

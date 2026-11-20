@@ -74,11 +74,16 @@
         <th:block th:unless="${hasApi}">
           <th:block th:with="legacyBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : ''},
                              lightBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundLight != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundLight)) ? theme.config.home.backgroundConfig.heroBackgroundLight : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/lightbg.webp')},
-                             darkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDark != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDark)) ? theme.config.home.backgroundConfig.heroBackgroundDark : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/darkbg.webp')}">
+                             darkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDark != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDark)) ? theme.config.home.backgroundConfig.heroBackgroundDark : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/darkbg.webp')},
+                             lightPoster = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundPosterLight)) ? theme.config.home.backgroundConfig.heroBackgroundPosterLight : '/themes/theme-Serenity/assets/public/lightbg.webp'},
+                             darkPoster = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundPosterDark)) ? theme.config.home.backgroundConfig.heroBackgroundPosterDark : '/themes/theme-Serenity/assets/public/darkbg.webp'}">
             <img class="hero-background-img hero-bg-theme-img"
                  alt=""
                  decoding="async"
                  fetchpriority="low"
+                 th:src="${theme.config.basic != null and theme.config.basic.defaultTheme == 'light' ? lightPoster : darkPoster}"
+                 th:data-poster-light="${lightPoster}"
+                 th:data-poster-dark="${darkPoster}"
                  th:attr="data-light=${lightBg},data-dark=${darkBg},data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}"
                  th:data-mobile-light="${theme.config.home != null and theme.config.home.backgroundConfig != null ? theme.config.home.backgroundConfig.heroBackgroundMobileLight : ''}"
                  th:data-mobile-dark="${theme.config.home != null and theme.config.home.backgroundConfig != null ? theme.config.home.backgroundConfig.heroBackgroundMobileDark : ''}" />
@@ -89,6 +94,7 @@
                    muted
                    playsinline
                    preload="metadata"
+                   th:poster="${theme.config.basic != null and theme.config.basic.defaultTheme == 'light' ? lightPoster : darkPoster}"
                    disablepictureinpicture></video>
             <video class="hero-background-img hero-bg-theme-video hero-bg-video-secondary"
                    style="display:none;opacity:0;transition:opacity 0.4s ease;"
@@ -97,6 +103,7 @@
                    muted
                    playsinline
                    preload="metadata"
+                   th:poster="${theme.config.basic != null and theme.config.basic.defaultTheme == 'light' ? lightPoster : darkPoster}"
                    disablepictureinpicture></video>
           </th:block>
         </th:block>
@@ -135,104 +142,124 @@
 
             var activeVideo = document.querySelector('.hero-bg-video-primary') || video;
             var inactiveVideo = document.querySelector('.hero-bg-video-secondary');
-            var isSwapping = false;
+            var pending = null;
 
-            function resetVideo() {
-              [activeVideo, inactiveVideo].forEach(function(v) {
-                if (!v || !v.getAttribute('src')) return;
-                v.pause();
+            function posterUrl(theme) {
+              return img.getAttribute('data-poster-' + theme) || defaultUrl(theme);
+            }
+
+            function cancelPending() {
+              if (!pending) return;
+              var request = pending;
+              pending = null;
+              request.video.removeEventListener('loadeddata', request.ready);
+              request.video.removeEventListener('error', request.error);
+              if (request.frame != null && request.video.cancelVideoFrameCallback) {
+                request.video.cancelVideoFrameCallback(request.frame);
+              }
+            }
+
+            function resetVideo(v) {
+              if (!v) return;
+              clearTimeout(v._heroFadeTimer);
+              v.style.display = 'none';
+              v.style.opacity = '0';
+              v.classList.remove('loaded');
+              v.pause();
+              if (v.getAttribute('src')) {
                 v.removeAttribute('src');
                 v.removeAttribute('data-current-src');
                 try { v.load(); } catch (e) {}
-              });
+              }
+            }
+
+            function showImage(url) {
+              if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+              img.style.display = 'block';
             }
 
             function useImage(url) {
-              if (img.getAttribute('src') !== url) {
-                img.setAttribute('src', url);
-              }
-              img.style.display = 'block';
-              if (activeVideo) activeVideo.style.display = 'none';
-              if (inactiveVideo) inactiveVideo.style.display = 'none';
-              resetVideo();
+              cancelPending();
+              showImage(url);
+              resetVideo(activeVideo);
+              resetVideo(inactiveVideo);
             }
 
-            function markVideoLoaded(target) {
-              if (target) target.classList.add('loaded');
-            }
-
-            function performSwap(nextVid) {
-              if (!nextVid) return;
-              nextVid.style.display = 'block';
+            function performSwap(request) {
+              if (pending !== request) return;
+              var nextVid = request.video;
+              var previous = activeVideo;
+              cancelPending();
+              // 海报始终保留在视频下方，首帧淡入时不会露出页面底色。
+              nextVid.classList.add('loaded');
               nextVid.style.opacity = '1';
-              img.style.display = 'none';
-              markVideoLoaded(nextVid);
-
-              if (activeVideo && activeVideo !== nextVid) {
-                activeVideo.style.opacity = '0';
-                setTimeout(function() {
-                  if (activeVideo !== nextVid) {
-                    activeVideo.style.display = 'none';
-                    activeVideo.pause();
+              activeVideo = nextVid;
+              inactiveVideo = previous;
+              if (previous && previous !== nextVid) {
+                previous.style.opacity = '0';
+                previous._heroFadeTimer = setTimeout(function() {
+                  if (activeVideo !== previous && (!pending || pending.video !== previous)) {
+                    previous.style.display = 'none';
+                    previous.pause();
                   }
                 }, 400);
               }
-
-              var prev = activeVideo;
-              activeVideo = nextVid;
-              inactiveVideo = prev || inactiveVideo;
-              isSwapping = false;
             }
 
             function useVideo(url) {
-              // 若当前活跃视频源相同，直接确保播放
-              if (activeVideo && activeVideo.getAttribute('data-current-src') === url) {
+              var poster = posterUrl(currentTheme());
+              showImage(poster);
+              [activeVideo, inactiveVideo].forEach(function(v) {
+                if (v) v.setAttribute('poster', poster);
+              });
+              if (pending && pending.url === url) return;
+              cancelPending();
+
+              if (activeVideo && activeVideo.getAttribute('data-current-src') === url &&
+                  activeVideo.classList.contains('loaded')) {
+                resetVideo(inactiveVideo);
                 activeVideo.style.display = 'block';
                 activeVideo.style.opacity = '1';
-                img.style.display = 'none';
-                var p = activeVideo.play();
-                if (p && typeof p.catch === 'function') p.catch(function() {});
+                var playing = activeVideo.play();
+                if (playing && playing.catch) playing.catch(function() {});
                 return;
               }
 
-              // 首帧就绪再平滑叠化（Cross-fade），避免单视频换源重置导致画面跳变
               var targetVideo = inactiveVideo || activeVideo;
               if (!targetVideo) return;
+              resetVideo(targetVideo);
+              targetVideo.style.display = 'block';
+              // 显示但保持透明，允许浏览器为待切换视频提交首帧。
+              targetVideo.style.opacity = '0';
+              var request = { video: targetVideo, url: url, frame: null };
+              pending = request;
 
-              isSwapping = true;
-              targetVideo.setAttribute('data-current-src', url);
-              targetVideo.setAttribute('src', url);
-              try { targetVideo.load(); } catch (e) {}
-
-              var onReady = function() {
-                targetVideo.removeEventListener('loadeddata', onReady);
-                targetVideo.removeEventListener('error', onError);
-
-                var p = targetVideo.play();
-                if (p && typeof p.catch === 'function') p.catch(function() {});
-
-                if ('requestVideoFrameCallback' in targetVideo) {
-                  targetVideo.requestVideoFrameCallback(function() {
-                    performSwap(targetVideo);
-                  });
-                } else {
-                  performSwap(targetVideo);
+              request.error = function() {
+                if (pending === request || (!pending && activeVideo === targetVideo &&
+                    targetVideo.getAttribute('data-current-src') === url)) {
+                  useImage(posterUrl(currentTheme()));
                 }
               };
-
-              var onError = function() {
-                targetVideo.removeEventListener('loadeddata', onReady);
-                targetVideo.removeEventListener('error', onError);
-                isSwapping = false;
-                useImage(defaultUrl(currentTheme()));
+              request.ready = function() {
+                if (pending !== request) return;
+                targetVideo.removeEventListener('loadeddata', request.ready);
+                var playing = targetVideo.play();
+                if (playing && playing.catch) playing.catch(request.error);
+                if (targetVideo.requestVideoFrameCallback) {
+                  request.frame = targetVideo.requestVideoFrameCallback(function() {
+                    performSwap(request);
+                  });
+                } else {
+                  performSwap(request);
+                }
               };
-
-              targetVideo.addEventListener('loadeddata', onReady);
-              targetVideo.addEventListener('error', onError);
-
-              if (targetVideo.readyState >= 2) {
-                onReady();
-              }
+              // 先监听再 load，兼容缓存命中及快速换源。
+              targetVideo.addEventListener('loadeddata', request.ready);
+              targetVideo.addEventListener('error', request.error);
+              targetVideo.setAttribute('data-current-src', url);
+              targetVideo.setAttribute('src', url);
+              try { targetVideo.load(); } catch (e) { request.error(); }
+              if (pending === request && targetVideo.readyState >= 2) request.ready();
             }
 
             function applyThemeBackground() {
@@ -270,12 +297,13 @@
               }
             });
 
-            video.addEventListener('loadeddata', function() {
-              video.classList.add('loaded');
-            });
-
-            video.addEventListener('error', function() {
-              useImage(defaultUrl(currentTheme()));
+            [activeVideo, inactiveVideo].forEach(function(v) {
+              if (!v) return;
+              v.addEventListener('error', function() {
+                if (v === activeVideo && (!pending || pending.video !== v)) {
+                  useImage(posterUrl(currentTheme()));
+                }
+              });
             });
 
             applyThemeBackground();

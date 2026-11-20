@@ -672,6 +672,8 @@ spec:
             heroBackground: ""
             heroBackgroundLight: ""
             heroBackgroundDark: ""
+            heroBackgroundPosterLight: ""
+            heroBackgroundPosterDark: ""
             heroBackgroundMobileLight: ""
             heroBackgroundMobileDark: ""
             heroBackgroundApi: ""
@@ -694,6 +696,16 @@ spec:
               help: 上传暗色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 darkbg.webp
               if: $get(home_bg_enabled).value
             - $formkit: attachment
+              name: heroBackgroundPosterLight
+              label: 亮色模式视频背景海报图
+              help: 视频首帧就绪前及加载失败时显示的静态图片，电脑端和手机端共用；留空使用主题默认亮色壁纸。仅首页视频背景生效，背景 API 不受影响
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundPosterDark
+              label: 暗色模式视频背景海报图
+              help: 视频首帧就绪前及加载失败时显示的静态图片，电脑端和手机端共用；留空使用主题默认暗色壁纸。仅首页视频背景生效，背景 API 不受影响
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
               name: heroBackgroundMobileLight
               label: 手机端亮色模式背景壁纸图片/视频
               help: 手机端亮色模式专用壁纸，支持图片或 MP4/WebM 视频；留空则使用电脑端亮色壁纸
@@ -714,13 +726,6 @@ spec:
               label: 移动端背景 API
               value: ""
               help: 移动端专用 API，留空则使用桌面端 API
-              if: $get(home_bg_enabled).value
-            - $formkit: switch
-              id: home_bg_global_enabled
-              name: enableGlobalBackground
-              label: 将背景壁纸应用至全站内页
-              value: false
-              help: 开启后，首页配置的亮暗壁纸（图片或视频）将作为归档、标签、分类及文章等页面的全局通用背景。提示：若文章页开启了独立的随机图片壁纸，则文章详情页优先使用文章页独立配置
               if: $get(home_bg_enabled).value
         - $formkit: group
           name: decorConfig

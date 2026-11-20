@@ -715,6 +715,13 @@ spec:
               value: ""
               help: 移动端专用 API，留空则使用桌面端 API
               if: $get(home_bg_enabled).value
+            - $formkit: switch
+              id: home_bg_global_enabled
+              name: enableGlobalBackground
+              label: 将背景壁纸应用至全站内页
+              value: false
+              help: 开启后，首页配置的亮暗壁纸（图片或视频）将作为归档、标签、分类及文章等页面的全局通用背景。提示：若文章页开启了独立的随机图片壁纸，则文章详情页优先使用文章页独立配置
+              if: $get(home_bg_enabled).value
         - $formkit: group
           name: decorConfig
           label: 主题装饰图片设置

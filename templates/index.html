@@ -82,8 +82,16 @@
                  th:attr="data-light=${lightBg},data-dark=${darkBg},data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}"
                  th:data-mobile-light="${theme.config.home != null and theme.config.home.backgroundConfig != null ? theme.config.home.backgroundConfig.heroBackgroundMobileLight : ''}"
                  th:data-mobile-dark="${theme.config.home != null and theme.config.home.backgroundConfig != null ? theme.config.home.backgroundConfig.heroBackgroundMobileDark : ''}" />
-            <video class="hero-background-img hero-bg-theme-video"
-                   style="display:none"
+            <video class="hero-background-img hero-bg-theme-video hero-bg-video-primary"
+                   style="display:none;transition:opacity 0.4s ease;"
+                   autoplay
+                   loop
+                   muted
+                   playsinline
+                   preload="metadata"
+                   disablepictureinpicture></video>
+            <video class="hero-background-img hero-bg-theme-video hero-bg-video-secondary"
+                   style="display:none;opacity:0;transition:opacity 0.4s ease;"
                    autoplay
                    loop
                    muted
@@ -125,12 +133,18 @@
               return window.matchMedia ? window.matchMedia('(max-width: 768px)').matches : window.innerWidth <= 768;
             }
 
+            var activeVideo = document.querySelector('.hero-bg-video-primary') || video;
+            var inactiveVideo = document.querySelector('.hero-bg-video-secondary');
+            var isSwapping = false;
+
             function resetVideo() {
-              if (!video.getAttribute('src')) return;
-              video.pause();
-              video.removeAttribute('src');
-              video.removeAttribute('data-current-src');
-              try { video.load(); } catch (e) {}
+              [activeVideo, inactiveVideo].forEach(function(v) {
+                if (!v || !v.getAttribute('src')) return;
+                v.pause();
+                v.removeAttribute('src');
+                v.removeAttribute('data-current-src');
+                try { v.load(); } catch (e) {}
+              });
             }
 
             function useImage(url) {
@@ -138,28 +152,86 @@
                 img.setAttribute('src', url);
               }
               img.style.display = 'block';
-              video.style.display = 'none';
+              if (activeVideo) activeVideo.style.display = 'none';
+              if (inactiveVideo) inactiveVideo.style.display = 'none';
               resetVideo();
             }
 
-            function markVideoLoaded() {
-              video.classList.add('loaded');
+            function markVideoLoaded(target) {
+              if (target) target.classList.add('loaded');
+            }
+
+            function performSwap(nextVid) {
+              if (!nextVid) return;
+              nextVid.style.display = 'block';
+              nextVid.style.opacity = '1';
+              img.style.display = 'none';
+              markVideoLoaded(nextVid);
+
+              if (activeVideo && activeVideo !== nextVid) {
+                activeVideo.style.opacity = '0';
+                setTimeout(function() {
+                  if (activeVideo !== nextVid) {
+                    activeVideo.style.display = 'none';
+                    activeVideo.pause();
+                  }
+                }, 400);
+              }
+
+              var prev = activeVideo;
+              activeVideo = nextVid;
+              inactiveVideo = prev || inactiveVideo;
+              isSwapping = false;
             }
 
             function useVideo(url) {
-              if (video.getAttribute('data-current-src') !== url) {
-                video.setAttribute('src', url);
-                video.setAttribute('data-current-src', url);
-                try { video.load(); } catch (e) {}
+              // 若当前活跃视频源相同，直接确保播放
+              if (activeVideo && activeVideo.getAttribute('data-current-src') === url) {
+                activeVideo.style.display = 'block';
+                activeVideo.style.opacity = '1';
+                img.style.display = 'none';
+                var p = activeVideo.play();
+                if (p && typeof p.catch === 'function') p.catch(function() {});
+                return;
               }
-              video.style.display = 'block';
-              img.style.display = 'none';
-              if (video.readyState >= 2) {
-                markVideoLoaded();
-              }
-              var playPromise = video.play();
-              if (playPromise && typeof playPromise.catch === 'function') {
-                playPromise.catch(function() {});
+
+              // 首帧就绪再平滑叠化（Cross-fade），避免单视频换源重置导致画面跳变
+              var targetVideo = inactiveVideo || activeVideo;
+              if (!targetVideo) return;
+
+              isSwapping = true;
+              targetVideo.setAttribute('data-current-src', url);
+              targetVideo.setAttribute('src', url);
+              try { targetVideo.load(); } catch (e) {}
+
+              var onReady = function() {
+                targetVideo.removeEventListener('loadeddata', onReady);
+                targetVideo.removeEventListener('error', onError);
+
+                var p = targetVideo.play();
+                if (p && typeof p.catch === 'function') p.catch(function() {});
+
+                if ('requestVideoFrameCallback' in targetVideo) {
+                  targetVideo.requestVideoFrameCallback(function() {
+                    performSwap(targetVideo);
+                  });
+                } else {
+                  performSwap(targetVideo);
+                }
+              };
+
+              var onError = function() {
+                targetVideo.removeEventListener('loadeddata', onReady);
+                targetVideo.removeEventListener('error', onError);
+                isSwapping = false;
+                useImage(defaultUrl(currentTheme()));
+              };
+
+              targetVideo.addEventListener('loadeddata', onReady);
+              targetVideo.addEventListener('error', onError);
+
+              if (targetVideo.readyState >= 2) {
+                onReady();
               }
             }
 

@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-11-21 16:48:16
-  Fingerprint: 07c0cfc71865f1be
+  Build: 2026-11-21 16:50:51
+  Fingerprint: aa52ad889ce25ad2
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -64,6 +64,7 @@
            th:if="${theme.config.home?.backgroundConfig?.showHeroBackground != false}">
         <div class="hero-bg-theme-layer" aria-hidden="true"
              th:attr="data-light=${background?.heroBackgroundLight},data-dark=${background?.heroBackgroundDark},
+                      data-mobile-light=${background?.heroBackgroundMobileLight},data-mobile-dark=${background?.heroBackgroundMobileDark},
                       data-legacy=${background?.heroBackground},data-api=${background?.heroBackgroundApi},
                       data-api-mobile=${background?.heroBackgroundApiMobile},
                       data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}"></div>

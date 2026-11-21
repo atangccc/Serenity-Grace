@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-11-21 16:48:16
- * Fingerprint: 07c0cfc71865f1be
+ * Build: 2026-11-21 16:50:51
+ * Fingerprint: aa52ad889ce25ad2
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -577,8 +577,7 @@ function initThemeWallpapers(layer) {
   const root = document.documentElement;
   const desktopApi = layer.dataset.api?.trim();
   const mobileApi = layer.dataset.apiMobile?.trim();
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const api = desktopApi && ((isMobile && mobileApi) || desktopApi);
+  const mobileViewport = window.matchMedia('(max-width: 768px)');
   let active = null;
   let pending = null;
 
@@ -610,7 +609,8 @@ function initThemeWallpapers(layer) {
   }
 
   function stageMedia(url, fallback) {
-    const isVideo = url !== api && /\.(mp4|webm)$/i.test(url.split(/[?#]/, 1)[0]);
+    const isApi = url === desktopApi || url === mobileApi;
+    const isVideo = !isApi && /\.(mp4|webm)$/i.test(url.split(/[?#]/, 1)[0]);
     const media = document.createElement(isVideo ? 'video' : 'img');
     const candidate = { url, media, isVideo, listeners: new AbortController(), frameRequest: null };
     const options = { signal: candidate.listeners.signal };
@@ -692,8 +692,12 @@ function initThemeWallpapers(layer) {
   function applyThemeBackground() {
     const light = root.getAttribute('data-theme') === 'light';
     const fallback = light ? layer.dataset.defaultLight : layer.dataset.defaultDark;
+    const api = mobileViewport.matches ? mobileApi || desktopApi : desktopApi;
+    const mobileConfigured = mobileViewport.matches
+      ? (light ? layer.dataset.mobileLight : layer.dataset.mobileDark)?.trim()
+      : '';
     const configured = (light ? layer.dataset.light : layer.dataset.dark)?.trim();
-    const url = api || configured || layer.dataset.legacy?.trim() || fallback;
+    const url = api || mobileConfigured || configured || layer.dataset.legacy?.trim() || fallback;
     if (pending?.url === url) return;
     cancelPending();
     if (url && active?.url !== url) stageMedia(url, fallback);
@@ -701,11 +705,13 @@ function initThemeWallpapers(layer) {
 
   const observer = new MutationObserver(applyThemeBackground);
   observer.observe(root, { attributeFilter: ['data-theme'] });
+  mobileViewport.addEventListener('change', applyThemeBackground);
   applyThemeBackground();
 
   if (typeof window.__pjaxOnLeave === 'function') {
     window.__pjaxOnLeave(() => {
       observer.disconnect();
+      mobileViewport.removeEventListener('change', applyThemeBackground);
       cancelPending();
       if (active?.isVideo) active.media.pause();
     });

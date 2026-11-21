@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-11-21 16:20:12
-  Fingerprint: d4f3454ebda328da
+  Build: 2026-11-21 16:48:16
+  Fingerprint: 07c0cfc71865f1be
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -92,6 +92,7 @@
                th:attr="data-aos-delay=${150 + groupStat.index * 50 + linkStat.index * 30},
                         data-link-name=${link.spec.displayName},
                         data-link-desc=${link.spec.description},
+                        data-link-cover=${link.spec.cover},
                         data-link-group=${groupName}">
               <div class="link-avatar-wrap">
                 <img th:if="${link.spec.logo}" 
@@ -124,6 +125,13 @@
             <span>没有找到匹配的友链</span>
           </div>
         </div>
+        <div class="link-cover-preview" data-link-cover-preview hidden
+             th:if="${theme.config.links != null && theme.config.links.linksConfig != null && theme.config.links.linksConfig.showCoverPreview != false}"
+             th:attr="data-loading-gif=${theme.config.links != null && theme.config.links.linksConfig != null ? theme.config.links.linksConfig.coverPreviewLoadingGif : ''}">
+          <div class="link-cover-preview-loading" data-cover-loading hidden><span></span><span></span><span></span></div>
+          <img class="link-cover-preview-image" data-cover-image alt="博客首页预览" hidden>
+          <div class="link-cover-preview-message" data-cover-message></div>
+        </div>
         <div th:if="${groups == null || #lists.isEmpty(groups)}" class="plugin-notice">
           <div class="plugin-notice-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -145,17 +153,18 @@
           </button>
         </div>
         <form id="link-application-form" class="link-application-form" th:if="${linkApplicationEnabled}" method="post" th:action="@{/links/apply/submit}" hidden>
-          <input type="hidden" name="_csrf" th:value="${csrfToken}">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
           <div class="link-application-fields">
             <label>网站地址<input name="url" type="url" required></label>
             <label>网站名称<input name="displayName" required></label>
             <label>Logo 地址<input name="logo" type="url"></label>
+            <label>博客首页图片（可选）<input name="cover" type="url" placeholder="首页截图或封面图片地址"></label>
             <label>网站描述<textarea name="description" rows="3"></textarea></label>
             <label>联系邮箱<input name="email" type="email"></label>
             <label>反链地址<input name="backlink" type="url"></label>
             <label>订阅地址<input name="feedUrls" type="url" placeholder="RSS/Atom 地址"></label>
             <div class="link-application-captcha">
-              <img src="/links/apply/captcha" alt="友链申请验证码" width="160" height="48">
+              <img data-link-captcha alt="友链申请验证码" width="160" height="48">
               <label>验证码<input name="captchaCode" required minlength="5" maxlength="5" autocomplete="off"></label>
             </div>
           </div>
@@ -200,23 +209,25 @@
           <button type="button" class="link-application-copy" onclick="copyApplicationValue(this)" aria-label="复制站点描述" title="复制"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
         </div>
       </div>
-      <form class="link-application-form" method="post" th:action="@{/links/apply/submit}">
-        <input type="hidden" name="_csrf" th:value="${csrfToken}">
+      <form class="link-application-form" method="post" th:action="@{/links/apply/submit}" onsubmit="return submitLinkApplication(event, this)">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         <div class="link-application-fields">
             <label>网站地址<input name="url" type="url" required></label>
             <label>网站名称<input name="displayName" required></label>
             <label>Logo 地址<input name="logo" type="url"></label>
+            <label>博客首页图片（可选）<input name="cover" type="url" placeholder="首页截图或封面图片地址"></label>
             <label>联系邮箱<input name="email" type="email"></label>
             <label>反链地址<input name="backlink" type="url"></label>
             <label>订阅地址<input name="feedUrls" type="url" placeholder="RSS/Atom 地址"></label>
             <label class="link-application-description-field">网站描述<textarea name="description" rows="3"></textarea></label>
           <div class="link-application-captcha">
-            <img src="/links/apply/captcha" alt="友链申请验证码" width="160" height="48">
+            <button type="button" class="link-application-captcha-refresh" onclick="refreshLinkApplicationCaptcha(this.closest('form'))" title="点击刷新验证码" aria-label="刷新验证码"><img data-link-captcha alt="友链申请验证码" width="160" height="48"></button>
               <label>验证码<input name="captchaCode" required minlength="5" maxlength="5" autocomplete="off"></label>
               <button type="submit" class="link-application-submit">提交申请</button>
             </div>
           </div>
       </form>
+      <p class="link-application-feedback" role="status" aria-live="polite" hidden></p>
     </div>
   </div>
   <div id="linkApplicationToast" class="link-application-toast" role="status" aria-live="polite"></div>
@@ -247,58 +258,207 @@
 
   <script>
   function copyApplyInfo(el) {
-    const value = el.querySelector('.link-apply-value')?.textContent?.trim();
-    if (!value) return;
+    var value = el && el.querySelector('.link-apply-value')?.textContent?.trim();
+    if (!value || !navigator.clipboard) return;
     navigator.clipboard.writeText(value).then(function() {
       el.classList.add('copied');
-      setTimeout(function() { el.classList.remove('copied'); }, 1500);
+      window.setTimeout(function() { el.classList.remove('copied'); }, 1500);
     });
   }
 
   function copyApplicationValue(button) {
-    const value = button.parentElement?.querySelector('.link-application-site-value')?.dataset?.copyValue?.trim();
+    var value = button?.parentElement?.querySelector('.link-application-site-value')?.dataset?.copyValue?.trim();
     if (!value || !navigator.clipboard) return;
     navigator.clipboard.writeText(value).then(function() {
       button.classList.add('copied');
-      button.setAttribute('title', '已复制');
-      const toast = document.getElementById('linkApplicationToast');
-      if (toast) {
-        toast.textContent = '已复制';
-        toast.classList.add('visible');
-        setTimeout(function() { toast.classList.remove('visible'); }, 1500);
-      }
-      setTimeout(function() {
-        button.classList.remove('copied');
-        button.setAttribute('title', '复制');
-      }, 1500);
+      showLinkApplicationMessage('已复制', 'success', 1500, false);
+      window.setTimeout(function() { button.classList.remove('copied'); }, 1500);
     });
   }
 
   function openLinkApplication() {
-    const modal = document.getElementById('linkApplicationModal');
+    var modal = document.getElementById('linkApplicationModal');
     if (!modal) return;
+    var feedback = modal.querySelector('.link-application-feedback');
+    if (feedback) feedback.hidden = true;
     modal.querySelectorAll('[data-normalize-url]').forEach(function(element) {
-      const value = element.dataset.copyValue?.trim();
+      var value = element.dataset.copyValue?.trim();
       if (!value) return;
       try {
-        const absoluteUrl = new URL(value, window.location.origin).href;
+        var absoluteUrl = new URL(value, window.location.origin).href;
         element.textContent = absoluteUrl;
         element.dataset.copyValue = absoluteUrl;
       } catch (_) {}
     });
+    var form = modal.querySelector('.link-application-form');
+    if (form && form.dataset.captchaLoaded !== 'true') refreshLinkApplicationCaptcha(form);
     modal.hidden = false;
     document.body.classList.add('link-application-open');
     document.querySelector('.links-apply-trigger')?.setAttribute('aria-expanded', 'true');
     modal.querySelector('input[name="url"]')?.focus();
   }
 
+  function toggleLinkApplication() { openLinkApplication(); }
+
+  function refreshLinkApplicationCaptcha(container) {
+    var scope = container || document;
+    var captcha = scope.querySelector('img[data-link-captcha]');
+    if (!captcha) return;
+    var form = captcha.closest('form');
+    if (form.dataset.captchaLoading === 'true' || form.dataset.submitting === 'true') return;
+    var submit = form.querySelector('button[type="submit"]');
+    var refresh = captcha.closest('button');
+    if (refresh) refresh.disabled = true;
+    form.dataset.captchaReady = 'false';
+    form.dataset.captchaLoaded = 'false';
+    form.dataset.captchaLoading = 'true';
+    delete form.dataset.challengeId;
+    form.querySelector('input[name="captchaCode"]').value = '';
+    if (submit) submit.disabled = true;
+    var finish = function() {
+      form.dataset.captchaLoading = 'false';
+      if (refresh) refresh.disabled = false;
+    };
+    captcha.onload = function() {
+      form.dataset.captchaReady = 'true';
+      form.dataset.captchaLoaded = 'true';
+      finish();
+      if (submit && form.dataset.submitting !== 'true') submit.disabled = false;
+    };
+    captcha.onerror = function() {
+      form.dataset.captchaLoaded = 'false';
+      finish();
+      showLinkApplicationMessage('验证码加载失败，请点击验证码图片重试。', 'error', 5000);
+    };
+    fetch('/apis/api.link.halo.run/v1alpha1/link-applications/captcha', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: '{}',
+      cache: 'no-store'
+    }).then(function(response) {
+      if (!response.ok) throw new Error('验证码加载失败（HTTP ' + response.status + '），请点击图片重试。');
+      return response.json();
+    }).then(function(challenge) {
+      if (!challenge.challengeId || !challenge.image || !challenge.image.startsWith('data:image/')) {
+        throw new Error('验证码接口返回异常，请确认使用 PluginLinks 2.5.0 或更新版本。');
+      }
+      form.dataset.challengeId = challenge.challengeId;
+      form.dataset.captchaExpiresAt = String(Date.now() + Number(challenge.expiresInSeconds || 300) * 1000);
+      captcha.src = challenge.image;
+    }).catch(function(error) {
+      finish();
+      showLinkApplicationMessage(error.message || '验证码加载失败，请点击图片重试。', 'error', 5000);
+    });
+  }
+
   function closeLinkApplication() {
-    const modal = document.getElementById('linkApplicationModal');
+    var modal = document.getElementById('linkApplicationModal');
     if (!modal) return;
     modal.hidden = true;
     document.body.classList.remove('link-application-open');
     document.querySelector('.links-apply-trigger')?.setAttribute('aria-expanded', 'false');
   }
+
+  function showLinkApplicationMessage(message, kind, duration, inline) {
+    var feedback = document.querySelector('#linkApplicationModal .link-application-feedback');
+    if (feedback && inline !== false) {
+      feedback.textContent = message;
+      feedback.hidden = false;
+      feedback.style.color = kind === 'error' ? '#ff8994' : (kind === 'success' ? '#65cf9c' : 'inherit');
+      if (kind && !document.getElementById('linkApplicationModal')?.hidden) {
+        feedback.scrollIntoView({ block: 'nearest' });
+      }
+    }
+    var toast = document.getElementById('linkApplicationToast');
+    if (!toast) return;
+    window.clearTimeout(window.__linkApplicationToastTimer);
+    toast.textContent = message;
+    toast.classList.remove('is-success', 'is-error', 'is-loading');
+    toast.classList.add('visible', kind ? 'is-' + kind : 'is-loading');
+    if (duration) window.__linkApplicationToastTimer = window.setTimeout(function() { toast.classList.remove('visible'); }, duration);
+  }
+
+  function submitLinkApplication(event, form) {
+    if (event) event.preventDefault();
+    if (!form || form.dataset.submitting === 'true') return false;
+    var submit = form.querySelector('button[type="submit"]');
+    var captcha = form.querySelector('input[name="captchaCode"]');
+    if (form.dataset.captchaReady !== 'true' || !form.dataset.challengeId) {
+      showLinkApplicationMessage('请等待验证码加载完成，或点击验证码图片重新加载。', 'error', 5000);
+      return false;
+    }
+    if (Date.now() >= Number(form.dataset.captchaExpiresAt)) {
+      showLinkApplicationMessage('验证码已过期，已为你刷新，请填写新验证码。', 'error', 5000);
+      refreshLinkApplicationCaptcha(form);
+      return false;
+    }
+    if (!captcha || !captcha.value.trim()) {
+      showLinkApplicationMessage('请先填写验证码。', 'error', 4000);
+      captcha?.focus();
+      return false;
+    }
+    form.dataset.submitting = 'true';
+    if (submit) { submit.disabled = true; submit.textContent = '提交中…'; }
+    showLinkApplicationMessage('正在提交申请，请稍候…', null, 0);
+    var data = new FormData(form);
+    var body = {};
+    ['url', 'displayName', 'logo', 'description', 'email', 'backlink'].forEach(function(name) {
+      body[name] = String(data.get(name) || '').trim();
+    });
+    var cover = String(data.get('cover') || '').trim();
+    if (cover) body.cover = cover;
+    body.feedUrls = String(data.get('feedUrls') || '').split(/[\s,]+/).filter(Boolean);
+    body.challengeId = form.dataset.challengeId;
+    body.captchaCode = captcha.value.trim();
+    var controller = new AbortController();
+    var timeout = window.setTimeout(function() { controller.abort(); }, 20000);
+    fetch('/apis/api.link.halo.run/v1alpha1/link-applications', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+      redirect: 'follow',
+      cache: 'no-store'
+    }).then(async function(response) {
+      var result = await response.json().catch(function() { return {}; });
+      if (!response.ok) {
+        var errors = Array.isArray(result.errors) ? result.errors.join('；') : '';
+        throw new Error(errors || result.detail || ('申请提交失败（HTTP ' + response.status + '）'));
+      }
+      if (!result.id) throw new Error('未收到申请成功确认，请稍后查看申请状态。');
+      showLinkApplicationMessage('友链申请提交成功，请等待站长审核。', 'success', 5000);
+      form.reset();
+      form.dataset.captchaReady = 'false';
+      form.dataset.captchaLoaded = 'false';
+      delete form.dataset.challengeId;
+      window.setTimeout(closeLinkApplication, 800);
+    }).catch(function(error) {
+      showLinkApplicationMessage(error.name === 'AbortError' ? '提交超时，结果暂未确认。请稍后再试，避免重复提交。' : (error.message || '申请提交失败，请稍后重试。'), 'error', 5000);
+      captcha.value = '';
+      form.dataset.submitting = 'false';
+      refreshLinkApplicationCaptcha(form.closest('#linkApplicationModal') || document);
+    }).finally(function() {
+      window.clearTimeout(timeout);
+      form.dataset.submitting = 'false';
+      if (submit) { submit.disabled = form.dataset.captchaReady === 'false'; submit.textContent = '提交申请'; }
+    });
+    return false;
+  }
+
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var status = params.get('applied');
+    if (!status) return;
+    showLinkApplicationMessage(status === 'success' ? '友链申请提交成功，请等待站长审核。' : (params.get('message') || '友链申请提交失败，请检查填写内容后重试。'), status === 'success' ? 'success' : 'error', 5000);
+    params.delete('applied'); params.delete('field'); params.delete('message');
+    var query = params.toString();
+    window.history.replaceState({}, document.title, window.location.pathname + (query ? '?' + query : '') + window.location.hash);
+  }());
   </script>
 
 </th:block>

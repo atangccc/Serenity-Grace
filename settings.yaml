@@ -672,6 +672,8 @@ spec:
             heroBackground: ""
             heroBackgroundLight: ""
             heroBackgroundDark: ""
+            heroBackgroundMobileLight: ""
+            heroBackgroundMobileDark: ""
             heroBackgroundApi: ""
             heroBackgroundApiMobile: ""
           children:
@@ -683,13 +685,23 @@ spec:
               help: 在首页第一屏显示背景壁纸，滚动时逐渐模糊消失。提示：为避免影响观感，建议背景壁纸和装饰图片只启用其一
             - $formkit: attachment
               name: heroBackgroundLight
-              label: 亮色模式背景壁纸图片/视频
+              label: 电脑端亮色模式背景壁纸图片/视频
               help: 上传亮色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 lightbg.webp
               if: $get(home_bg_enabled).value
             - $formkit: attachment
               name: heroBackgroundDark
-              label: 暗色模式背景壁纸图片/视频
+              label: 电脑端暗色模式背景壁纸图片/视频
               help: 上传暗色模式壁纸（支持图片或 MP4/WebM 视频），留空则默认使用 darkbg.webp
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundMobileLight
+              label: 手机端亮色模式背景壁纸图片/视频
+              help: 手机端亮色模式专用壁纸，支持图片或 MP4/WebM 视频；留空则使用电脑端亮色壁纸
+              if: $get(home_bg_enabled).value
+            - $formkit: attachment
+              name: heroBackgroundMobileDark
+              label: 手机端暗色模式背景壁纸图片/视频
+              help: 手机端暗色模式专用壁纸，支持图片或 MP4/WebM 视频；留空则使用电脑端暗色壁纸
               if: $get(home_bg_enabled).value
             - $formkit: text
               name: heroBackgroundApi
@@ -2005,6 +2017,20 @@ spec:
               label: 启用友链设置
               value: true
               help: 启用后可自定义友链申请区域的站点信息
+            - $formkit: switch
+              id: links_cover_preview_enabled
+              name: showCoverPreview
+              label: 开启博客首页封面悬停预览
+              value: true
+              help: 仅在一体川流和极简画廊模式的电脑端显示，未设置封面时显示提示文字
+            - $formkit: attachment
+              name: coverPreviewLoadingGif
+              label: 博客首页预览加载动画 GIF
+              if: $get(links_cover_preview_enabled).value
+              value: ""
+              accepts:
+                - "image/gif"
+              help: 仅用于友链首页封面预览，与页面过渡动画独立。动图按预览框等比例缩放，留空则使用主题色呼吸灯
             - $formkit: text
               name: ownerName
               if: $get(links_enabled).value

@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-11-21 16:20:13
- * Fingerprint: d4f3454ebda328da
+ * Build: 2026-11-21 16:48:16
+ * Fingerprint: 07c0cfc71865f1be
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -54,6 +54,13 @@ function initLinksPage() {
   var bubbleSimulation = null;
   var bubbleResizeHandler = null;
   var activeBubbleDrag = null;
+  var coverPreview = document.querySelector('[data-link-cover-preview]');
+  var coverCard = null;
+  var coverTimer = 0;
+  var coverImage = null;
+  var coverMedia = window.matchMedia('(min-width: 1024px) and (hover: hover) and (pointer: fine)');
+  var coverCache = new Set();
+  if (coverPreview) document.body.appendChild(coverPreview);
   var bubbleBounds = {
     left: 30,
     right: 30,
@@ -62,6 +69,8 @@ function initLinksPage() {
   };
 
   function cleanupLinksPage() {
+    hideCoverPreview();
+    if (coverPreview) coverPreview.remove();
     stopBubblePhysics();
     while (cleanups.length) {
       cleanups.pop()();
@@ -162,6 +171,7 @@ function initLinksPage() {
 
   function clearGrid() {
     if (!grid) return;
+    hideCoverPreview();
     stopBubblePhysics();
     grid.innerHTML = '';
   }
@@ -745,6 +755,120 @@ function initLinksPage() {
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
   }
+
+  // A fixed portal avoids clipping by the stream's animated, overflow-hidden rows.
+  function hideCoverPreview() {
+    window.clearTimeout(coverTimer);
+    if (coverImage) { coverImage.onload = null; coverImage.onerror = null; }
+    coverImage = null;
+    coverCard = null;
+    if (coverPreview) coverPreview.hidden = true;
+    if (board) board.classList.remove('links-cover-preview-active');
+  }
+
+  function positionCoverPreview() {
+    if (!coverCard || !coverPreview || coverPreview.hidden) return;
+    var rect = coverCard.getBoundingClientRect();
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) {
+      coverPreview.hidden = true;
+      return;
+    }
+    var width = Math.min(rect.width, window.innerWidth - 32);
+    // Keep the preview above its card even near the top of the viewport.
+    var height = Math.min(Math.round(width * 0.625), Math.max(0, rect.top - 24));
+    if (height < 64) {
+      coverPreview.hidden = true;
+      return;
+    }
+    coverPreview.style.width = width + 'px';
+    coverPreview.style.height = height + 'px';
+    coverPreview.style.left = clamp(rect.left, 16, window.innerWidth - width - 16) + 'px';
+    coverPreview.style.top = (rect.top - height - 12) + 'px';
+  }
+
+  function showCoverPreview(card) {
+    if (!coverPreview || !coverMedia.matches || activeMode === 'orbit') return;
+    window.clearTimeout(coverTimer);
+    if (coverImage) { coverImage.onload = null; coverImage.onerror = null; }
+    coverImage = null;
+    coverCard = card;
+    var loading = coverPreview.querySelector('[data-cover-loading]');
+    var image = coverPreview.querySelector('[data-cover-image]');
+    var message = coverPreview.querySelector('[data-cover-message]');
+    image.hidden = true;
+    image.removeAttribute('src');
+    loading.hidden = true;
+    message.hidden = false;
+    message.textContent = '该站点未提供博客首页图片';
+    coverPreview.hidden = false;
+    board.classList.add('links-cover-preview-active');
+    positionCoverPreview();
+    if (coverPreview.hidden) return;
+    var src = (card.getAttribute('data-link-cover') || '').trim();
+    if (!src) return;
+    try {
+      var url = new URL(src, window.location.href);
+      if (!/^https?:$/.test(url.protocol)) throw new Error('Unsupported image URL');
+      src = url.href;
+    } catch (_) { message.textContent = '博客首页图片地址无效'; return; }
+    message.hidden = true;
+    loading.hidden = false;
+    if (!loading.dataset.initialized) {
+      loading.dataset.initialized = 'true';
+      var gifSrc = coverPreview.getAttribute('data-loading-gif');
+      if (gifSrc) {
+        var gif = document.createElement('img');
+        gif.className = 'link-cover-loading-gif';
+        gif.alt = '加载中';
+        gif.onerror = function () { loading.classList.remove('has-gif'); gif.remove(); };
+        loading.appendChild(gif);
+        loading.classList.add('has-gif');
+        gif.src = gifSrc;
+      }
+    }
+    function fail() {
+      window.clearTimeout(coverTimer);
+      if (coverCard !== card) return;
+      loading.hidden = true;
+      message.hidden = false;
+      message.textContent = '博客首页图片加载失败，请稍后重试';
+    }
+    function ready() {
+      window.clearTimeout(coverTimer);
+      if (coverCard !== card) return;
+      coverCache.add(src);
+      image.src = src;
+      image.alt = (card.getAttribute('data-link-name') || '博客') + '首页预览';
+      image.hidden = false;
+      loading.hidden = true;
+    }
+    image.onload = ready;
+    image.onerror = fail;
+    image.alt = (card.getAttribute('data-link-name') || '博客') + '首页预览';
+    coverTimer = window.setTimeout(fail, 8000);
+    image.src = src;
+    if (image.complete && image.naturalWidth) ready();
+  }
+
+  bind(board, 'pointerover', function (event) {
+    if (event.pointerType === 'touch') return;
+    var card = event.target.closest('.link-card[data-link]');
+    if (!card || !board.contains(card) || card.contains(event.relatedTarget)) return;
+    showCoverPreview(card);
+  });
+  bind(board, 'pointerout', function (event) {
+    if (coverCard && coverCard.contains(event.target) && !coverCard.contains(event.relatedTarget)) hideCoverPreview();
+  });
+  bind(board, 'focusin', function (event) {
+    var card = event.target.closest('.link-card[data-link]');
+    if (card) showCoverPreview(card);
+  });
+  bind(board, 'focusout', hideCoverPreview);
+  bind(board, 'click', hideCoverPreview);
+  bind(window, 'scroll', positionCoverPreview, { passive: true });
+  bind(window, 'resize', hideCoverPreview);
+  bind(coverMedia, 'change', hideCoverPreview);
+  bind(document, 'keydown', function (event) { if (event.key === 'Escape') hideCoverPreview(); });
 
   bind(board, 'click', function (event) {
     var link = event.target.closest('.link-card[data-link], .links-bubble-node[data-link]');

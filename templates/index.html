@@ -2,8 +2,8 @@
 <!--
   Theme: theme-Serenity
   Author: Serenity
-  Build: 2026-10-14 23:50:57
-  Fingerprint: 6a6b842778fedbf0
+  Build: 2026-11-21 16:16:28
+  Fingerprint: 3902a2953af6531c
   Copyright (c) 2026 Serenity. All rights reserved.
 -->
 
@@ -59,215 +59,16 @@
         };
       </script>
       <script th:if="${theme.config.home != null and theme.config.home.weatherConfig != null and theme.config.home.weatherConfig.showWeatherClock}" th:src="@{/assets/js/weather-clock.js}" defer></script>
-      <div class="hero-background" th:if="${theme.config.home == null || theme.config.home.backgroundConfig == null || theme.config.home.backgroundConfig.showHeroBackground == null || theme.config.home.backgroundConfig.showHeroBackground}"
-           th:with="hasApi = ${theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundApi != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundApi)}">
-        <!-- 首页背景不使用色调遮罩，保持原始颜色 -->
-        <th:block th:if="${hasApi}">
-          <img class="hero-background-img hero-bg-api-img" 
-               alt="" 
-               decoding="async"
-               fetchpriority="low"
-               th:data-api="${theme.config.home.backgroundConfig.heroBackgroundApi}"
-               th:data-api-mobile="${theme.config.home.backgroundConfig.heroBackgroundApiMobile}"
-               th:src="${theme.config.basic != null and theme.config.basic.defaultTheme == 'light' ? '/themes/theme-Serenity/assets/public/lightbg.webp' : '/themes/theme-Serenity/assets/public/darkbg.webp'}" />
-        </th:block>
-        <th:block th:unless="${hasApi}">
-          <th:block th:with="legacyBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackground != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackground)) ? theme.config.home.backgroundConfig.heroBackground : ''},
-                             lightBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundLight != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundLight)) ? theme.config.home.backgroundConfig.heroBackgroundLight : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/lightbg.webp')},
-                             darkBg = ${(theme.config.home != null and theme.config.home.backgroundConfig != null and theme.config.home.backgroundConfig.heroBackgroundDark != null and not #strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundDark)) ? theme.config.home.backgroundConfig.heroBackgroundDark : (!#strings.isEmpty(legacyBg) ? legacyBg : '/themes/theme-Serenity/assets/public/darkbg.webp')}">
-            <img class="hero-background-img hero-bg-theme-img"
-                 alt=""
-                 decoding="async"
-                 fetchpriority="low"
-                 th:attr="data-light=${lightBg},data-dark=${darkBg},data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}" />
-            <video class="hero-background-img hero-bg-theme-video"
-                   style="display:none"
-                   autoplay
-                   loop
-                   muted
-                   playsinline
-                   preload="metadata"
-                   disablepictureinpicture></video>
-          </th:block>
-        </th:block>
-        <script th:unless="${hasApi}">
-          (function() {
-            var root = document.documentElement;
-            var img = document.querySelector('.hero-bg-theme-img');
-            var video = document.querySelector('.hero-bg-theme-video');
-            if (!img || !video) return;
-
-            function isVideoUrl(url) {
-              if (!url) return false;
-              var pure = String(url).split('?')[0].split('#')[0].toLowerCase();
-              return pure.endsWith('.mp4') || pure.endsWith('.webm');
-            }
-
-            function currentTheme() {
-              return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-            }
-
-            function defaultUrl(theme) {
-              return theme === 'light' ? img.getAttribute('data-default-light') : img.getAttribute('data-default-dark');
-            }
-
-            function themeUrl(theme) {
-              var selected = theme === 'light' ? img.getAttribute('data-light') : img.getAttribute('data-dark');
-              var fallback = defaultUrl(theme);
-              return selected || fallback || '';
-            }
-
-            function resetVideo() {
-              if (!video.getAttribute('src')) return;
-              video.pause();
-              video.removeAttribute('src');
-              video.removeAttribute('data-current-src');
-              try { video.load(); } catch (e) {}
-            }
-
-            function useImage(url) {
-              if (img.getAttribute('src') !== url) {
-                img.setAttribute('src', url);
-              }
-              img.style.display = 'block';
-              video.style.display = 'none';
-              resetVideo();
-            }
-
-            function markVideoLoaded() {
-              video.classList.add('loaded');
-            }
-
-            function useVideo(url) {
-              if (video.getAttribute('data-current-src') !== url) {
-                video.setAttribute('src', url);
-                video.setAttribute('data-current-src', url);
-                try { video.load(); } catch (e) {}
-              }
-              video.style.display = 'block';
-              img.style.display = 'none';
-              if (video.readyState >= 2) {
-                markVideoLoaded();
-              }
-              var playPromise = video.play();
-              if (playPromise && typeof playPromise.catch === 'function') {
-                playPromise.catch(function() {});
-              }
-            }
-
-            function applyThemeBackground() {
-              var theme = currentTheme();
-              var url = themeUrl(theme);
-              if (!url) return;
-              if (isVideoUrl(url)) {
-                useVideo(url);
-              } else {
-                useImage(url);
-              }
-            }
-
-            img.addEventListener('load', function() {
-              img.classList.add('loaded');
-            });
-
-            img.addEventListener('error', function() {
-              var fallback = defaultUrl(currentTheme());
-              if (fallback && img.getAttribute('src') !== fallback) {
-                img.setAttribute('src', fallback);
-              }
-            });
-
-            video.addEventListener('loadeddata', function() {
-              video.classList.add('loaded');
-            });
-
-            video.addEventListener('error', function() {
-              useImage(defaultUrl(currentTheme()));
-            });
-
-            applyThemeBackground();
-
-            if (window.__homeThemeBgObserver && typeof window.__homeThemeBgObserver.disconnect === 'function') {
-              window.__homeThemeBgObserver.disconnect();
-            }
-            window.__homeThemeBgObserver = new MutationObserver(function(mutations) {
-              for (var i = 0; i < mutations.length; i++) {
-                if (mutations[i].attributeName === 'data-theme') {
-                  applyThemeBackground();
-                  break;
-                }
-              }
-            });
-            window.__homeThemeBgObserver.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-          })();
-        </script>
+      <div class="hero-background"
+           th:with="background=${theme.config.home?.backgroundConfig}"
+           th:if="${theme.config.home?.backgroundConfig?.showHeroBackground != false}">
+        <div class="hero-bg-theme-layer" aria-hidden="true"
+             th:attr="data-light=${background?.heroBackgroundLight},data-dark=${background?.heroBackgroundDark},
+                      data-legacy=${background?.heroBackground},data-api=${background?.heroBackgroundApi},
+                      data-api-mobile=${background?.heroBackgroundApiMobile},
+                      data-default-light=@{/assets/public/lightbg.webp},data-default-dark=@{/assets/public/darkbg.webp}"></div>
       </div>
-      
-      <!-- 首页背景 API 脚本 -->
-      <script th:if="${theme.config.home != null && theme.config.home.backgroundConfig != null && !#strings.isEmpty(theme.config.home.backgroundConfig.heroBackgroundApi)}" th:inline="javascript">
-        (function() {
-          var img = document.querySelector('.hero-bg-api-img');
-          if (!img) return;
-          
-          var api = img.getAttribute('data-api');
-          var apiMobile = img.getAttribute('data-api-mobile');
-          var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-          var currentApi = isMobile && apiMobile ? apiMobile : api;
-          
-          var STORAGE_KEY = 'serenity_home_wallpaper_url';
-          var sessionKey = 'serenity_home_wallpaper_session';
-          
-          // 检查是否有缓存
-          var cachedUrl = localStorage.getItem(STORAGE_KEY);
-          var currentSession = sessionStorage.getItem(sessionKey);
 
-          var fallbackUrl = img.getAttribute('src') || '';
-          var finalUrl = (cachedUrl && currentSession) ? cachedUrl : currentApi;
-          
-          function markLoaded() {
-            img.classList.add('loaded');
-
-            if (!cachedUrl && img.src && img.src.startsWith('http')) {
-              localStorage.setItem(STORAGE_KEY, img.src);
-              sessionStorage.setItem(sessionKey, 'true');
-            }
-          }
-
-          if (fallbackUrl) {
-            img.classList.add('loaded');
-          }
-
-          img.onload = markLoaded;
-
-          img.onerror = function() {
-            if (finalUrl !== currentApi) {
-              img.src = currentApi;
-            }
-          };
-
-          img.decoding = 'async';
-          img.loading = 'eager';
-          if (finalUrl && finalUrl !== fallbackUrl) {
-            var preload = new Image();
-            preload.decoding = 'async';
-            preload.onload = function() {
-              img.src = finalUrl;
-              markLoaded();
-            };
-            preload.onerror = function() {
-              if (!fallbackUrl) img.src = currentApi;
-            };
-            preload.src = finalUrl;
-          } else if (finalUrl) {
-            img.src = finalUrl;
-          }
-
-          if (img.complete && img.naturalWidth > 0) {
-            markLoaded();
-          }
-        })();
-      </script>
-      
       <section class="hero">
         <div class="container">
           <div class="hero-profile">

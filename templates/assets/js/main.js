@@ -1,8 +1,8 @@
 /**
  * Theme: theme-Serenity
  * Author: Serenity
- * Build: 2026-10-14 23:50:57
- * Fingerprint: 6a6b842778fedbf0
+ * Build: 2026-11-21 16:16:28
+ * Fingerprint: 3902a2953af6531c
  * Copyright (c) 2026 Serenity. All rights reserved.
  */
 
@@ -534,10 +534,11 @@ function sortStreamFeed() {
 
 function initHeroBackground() {
   const heroBackground = document.querySelector('.hero-background');
+  const initialStyle = document.getElementById('hero-bg-init-style');
+  if (initialStyle) initialStyle.remove();
   if (!heroBackground) return;
-  
-  const heroBackgroundMedia = heroBackground.querySelectorAll('.hero-background-img');
-  if (!heroBackgroundMedia || heroBackgroundMedia.length === 0) return;
+
+  const themeLayer = heroBackground.querySelector('.hero-bg-theme-layer');
   
   // 立即根据当前滚动位置设置状态（防止刷新时闪烁）
   var lastProgress = -1;
@@ -550,17 +551,13 @@ function initHeroBackground() {
     if (scrollProgress === lastProgress) return;
     lastProgress = scrollProgress;
 
-    const blurAmount = scrollProgress * 20;
-    const opacity = 1 - scrollProgress;
-
-    heroBackgroundMedia.forEach((el) => {
-      el.style.filter = `blur(${blurAmount}px)`;
-      el.style.opacity = opacity;
-    });
+    heroBackground.style.setProperty('--hero-bg-scroll-blur', `${scrollProgress * 20}px`);
+    heroBackground.style.setProperty('--hero-bg-scroll-opacity', 1 - scrollProgress);
   }
   
   // 立即执行一次
   updateBackground();
+  if (themeLayer) initThemeWallpapers(themeLayer);
   
   let ticking = false;
   
@@ -574,6 +571,145 @@ function initHeroBackground() {
     }
   };
   addPageScrollListener(handler, { passive: true });
+}
+
+function initThemeWallpapers(layer) {
+  const root = document.documentElement;
+  const desktopApi = layer.dataset.api?.trim();
+  const mobileApi = layer.dataset.apiMobile?.trim();
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const api = desktopApi && ((isMobile && mobileApi) || desktopApi);
+  let active = null;
+  let pending = null;
+
+  function stopWaiting(candidate) {
+    candidate.listeners.abort();
+    if (candidate.frameRequest !== null) {
+      candidate.media.cancelVideoFrameCallback(candidate.frameRequest);
+    }
+  }
+
+  function removeMedia(candidate) {
+    const { media, isVideo } = candidate;
+    if (isVideo) {
+      media.pause();
+      media.removeAttribute('src');
+      media.load();
+    } else {
+      media.removeAttribute('src');
+    }
+    media.remove();
+  }
+
+  function cancelPending() {
+    if (!pending) return;
+    const candidate = pending;
+    pending = null;
+    stopWaiting(candidate);
+    removeMedia(candidate);
+  }
+
+  function stageMedia(url, fallback) {
+    const isVideo = url !== api && /\.(mp4|webm)$/i.test(url.split(/[?#]/, 1)[0]);
+    const media = document.createElement(isVideo ? 'video' : 'img');
+    const candidate = { url, media, isVideo, listeners: new AbortController(), frameRequest: null };
+    const options = { signal: candidate.listeners.signal };
+    pending = candidate;
+    media.className = 'hero-background-img hero-bg-theme-media';
+
+    function showMedia() {
+      if (pending !== candidate) return;
+      stopWaiting(candidate);
+      const previous = active;
+      active = candidate;
+      pending = null;
+      media.classList.add('is-active');
+      if (previous) {
+        let retired = false;
+        let retirementTimer;
+        function retirePrevious(event) {
+          if (retired || (event && event.propertyName !== 'opacity')) return;
+          retired = true;
+          window.clearTimeout(retirementTimer);
+          media.removeEventListener('transitionend', retirePrevious);
+          removeMedia(previous);
+        }
+        media.addEventListener('transitionend', retirePrevious);
+        retirementTimer = window.setTimeout(retirePrevious, 350);
+      }
+    }
+
+    function handleError() {
+      if (pending !== candidate) return;
+      cancelPending();
+      if (!active && fallback && url !== fallback) stageMedia(fallback, '');
+    }
+
+    media.addEventListener('error', handleError, options);
+    if (isVideo) {
+      media.muted = true;
+      media.defaultMuted = true;
+      media.loop = true;
+      media.playsInline = true;
+      media.preload = 'auto';
+      media.disablePictureInPicture = true;
+
+      // Keep the current wallpaper visible until the browser can present a frame.
+      let waitForFrame = typeof media.requestVideoFrameCallback === 'function';
+      function showDecodedFrame() {
+        if (!waitForFrame && media.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) showMedia();
+      }
+      media.addEventListener('loadeddata', showDecodedFrame, options);
+      media.addEventListener('canplay', showDecodedFrame, options);
+      layer.appendChild(media);
+      media.src = url;
+      if (waitForFrame) {
+        candidate.frameRequest = media.requestVideoFrameCallback(() => {
+          candidate.frameRequest = null;
+          showMedia();
+        });
+      }
+      media.play()?.catch(() => {
+        // Autoplay restrictions can still leave a usable decoded still frame.
+        waitForFrame = false;
+        showDecodedFrame();
+      });
+    } else {
+      media.alt = '';
+      media.decoding = 'async';
+      media.addEventListener('load', () => {
+        if (typeof media.decode === 'function') {
+          media.decode().then(showMedia, handleError);
+        } else {
+          showMedia();
+        }
+      }, options);
+      layer.appendChild(media);
+      media.src = url;
+    }
+  }
+
+  function applyThemeBackground() {
+    const light = root.getAttribute('data-theme') === 'light';
+    const fallback = light ? layer.dataset.defaultLight : layer.dataset.defaultDark;
+    const configured = (light ? layer.dataset.light : layer.dataset.dark)?.trim();
+    const url = api || configured || layer.dataset.legacy?.trim() || fallback;
+    if (pending?.url === url) return;
+    cancelPending();
+    if (url && active?.url !== url) stageMedia(url, fallback);
+  }
+
+  const observer = new MutationObserver(applyThemeBackground);
+  observer.observe(root, { attributeFilter: ['data-theme'] });
+  applyThemeBackground();
+
+  if (typeof window.__pjaxOnLeave === 'function') {
+    window.__pjaxOnLeave(() => {
+      observer.disconnect();
+      cancelPending();
+      if (active?.isVideo) active.media.pause();
+    });
+  }
 }
 
 function initBackToTop() {
